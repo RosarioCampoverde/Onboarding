@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luna Onboarding Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: #f3f4f6;
+      color: #1f2328;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: #f3f4f6;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      background: #7c3aed;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-logo svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.8;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2328;
+    }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 48px;
+      max-width: 1180px;
+      margin: 80px auto 0;
+      padding: 0 48px 80px;
+    }
+
+    /* LEFT COLUMN */
+    .hero-left {
+      flex: 1;
+      max-width: 560px;
+      padding-top: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 28px;
+      background: #fff;
+    }
+
+    .badge svg {
+      width: 15px;
+      height: 15px;
+      stroke: #059669;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .hero-heading {
+      font-size: clamp(36px, 4.5vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+      margin-bottom: 22px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.65;
+      color: #57606a;
+      margin-bottom: 36px;
+      max-width: 500px;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .btn-primary {
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 26px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #6d28d9; }
+
+    .btn-secondary {
+      background: #fff;
+      color: #7c3aed;
+      border: 1.5px solid #7c3aed;
+      border-radius: 999px;
+      padding: 13px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { border-color: #6d28d9; color: #6d28d9; }
+
+    /* ── AI SEARCH BAR ── */
+    .ai-bar-wrapper {
+      background: #fff;
+      border-top: 1.5px solid #e5e7eb;
+      padding: 28px 48px 32px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .ai-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 760px;
+      width: 100%;
+    }
+
+    .ai-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .ai-bar-logo {
+      width: 38px;
+      height: 38px;
+      background: #7c3aed;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ai-bar-logo svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ai-bar-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2328;
+      white-space: nowrap;
+    }
+
+    .ai-bar-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .ai-bar-input {
+      width: 100%;
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 14px;
+      color: #1f2328;
+      background: #f9fafb;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .ai-bar-input::placeholder { color: #9ca3af; }
+    .ai-bar-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+      background: #fff;
+    }
+
+    .demo-note {
+      font-size: 12px;
+      color: #9ca3af;
+      line-height: 1.55;
+      max-width: 480px;
+    }
+
+    /* RIGHT COLUMN – feature cards */
+    .hero-right {
+      flex-shrink: 0;
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 4px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 22px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      background: #ede9fe;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: #7c3aed;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #57606a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <!-- crescent moon icon -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+    </div>
+    <span class="nav-title">Luna Onboarding Assistant</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="badge">
+        <!-- shield-check -->
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        For incoming first-year students
+      </div>
+
+      <h1 class="hero-heading">Your first semester,<br>organized from day one.</h1>
+
+      <p class="hero-sub">
+        Answer a few questions and get a personal onboarding plan: what is due, who to contact, which courses to consider, and where to get help on campus.
+      </p>
+
+      <div class="btn-group">
+        <a href="profiles.html" style="text-decoration:none;"><button class="btn-primary">Profiles</button></a>
+        <button class="btn-secondary">Deadlines</button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-right">
+
+      <div class="card">
+        <div class="card-icon">
+          <!-- calendar-clock -->
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="16" cy="16" r="3"/><path d="M16 14.5V16l1 1" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="card-title">A personalized deadline plan</div>
+          <div class="card-desc">Required onboarding tasks generated from your student type, housing, and start term.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <!-- graduation cap -->
+          <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z" stroke-linejoin="round"/><path d="M6 12v5c0 2.21 2.69 4 6 4s6-1.79 6-4v-5" stroke-linecap="round"/><line x1="22" y1="10" x2="22" y2="16"/></svg>
+        </div>
+        <div>
+          <div class="card-title">Faculty and course matches</div>
+          <div class="card-desc">Professors, advisors, and first-year courses ranked by your major and interests, with the reason shown.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <!-- message-check / cite -->
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9 11l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="card-title">Cited, honest answers</div>
+          <div class="card-desc">Answers cite the university records they used and say clearly when information is not available.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AI SEARCH BAR -->
+  <div class="ai-bar-wrapper">
+    <div class="ai-bar">
+      <div class="ai-bar-brand">
+        <div class="ai-bar-logo">
+          <!-- crescent moon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+          </svg>
+        </div>
+        <span class="ai-bar-label">How can I assist you?</span>
+      </div>
+      <div class="ai-bar-input-wrap">
+        <input class="ai-bar-input" type="text" placeholder="Ask Luna anything about your onboarding…" />
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

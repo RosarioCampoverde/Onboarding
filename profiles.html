@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profiles — Luna Onboarding Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: #f3f4f6;
+      color: #1f2328;
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: #f3f4f6;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      background: #7c3aed;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2328;
+      text-decoration: none;
+    }
+
+    .back-link {
+      margin-left: auto;
+      font-size: 13px;
+      color: #7c3aed;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .page-content {
+      max-width: 820px;
+      margin: 60px auto 80px;
+      padding: 0 48px;
+    }
+
+    .page-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .page-sub {
+      font-size: 16px;
+      color: #57606a;
+      margin-bottom: 48px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .option-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      text-decoration: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+
+    .option-card:hover {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+    }
+
+    .option-icon {
+      width: 52px;
+      height: 52px;
+      background: #ede9fe;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: #7c3aed;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .option-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: #57606a;
+      line-height: 1.6;
+    }
+
+    .option-arrow {
+      margin-top: auto;
+      font-size: 22px;
+      color: #7c3aed;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+    </a>
+    <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
+    <a href="index.html" class="back-link">← Back to home</a>
+  </nav>
+
+  <div class="page-content">
+    <h1 class="page-title">Profiles</h1>
+    <p class="page-sub">Choose a category to explore.</p>
+
+    <div class="options-grid">
+
+      <a href="professors.html" class="option-card">
+        <div class="option-icon">
+          <!-- user / person -->
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="option-title">Professors</div>
+        <div class="option-desc">Browse faculty by name. Find professors, advisors, and department contacts.</div>
+        <span class="option-arrow">→</span>
+      </a>
+
+      <a href="subjects.html" class="option-card">
+        <div class="option-icon">
+          <!-- book -->
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="option-title">Subjects</div>
+        <div class="option-desc">Explore courses and subjects offered for first-year students by department.</div>
+        <span class="option-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>

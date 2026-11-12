@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subjects — Luna Onboarding Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: #f3f4f6;
+      color: #1f2328;
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: #f3f4f6;
+    }
+
+    .nav-logo {
+      width: 40px; height: 40px;
+      background: #7c3aed;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; text-decoration: none;
+    }
+    .nav-logo svg { width: 20px; height: 20px; }
+
+    .nav-title {
+      font-size: 15px; font-weight: 600; color: #1f2328; text-decoration: none;
+    }
+
+    .back-link {
+      margin-left: auto; font-size: 13px; color: #7c3aed;
+      text-decoration: none; font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* PAGE */
+    .page-content {
+      max-width: 960px;
+      margin: 48px auto 80px;
+      padding: 0 48px;
+    }
+
+    .breadcrumb {
+      font-size: 13px; color: #9ca3af; margin-bottom: 20px;
+    }
+    .breadcrumb a { color: #7c3aed; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .page-title {
+      font-size: 34px; font-weight: 800; color: #0f172a; margin-bottom: 6px;
+    }
+    .page-sub {
+      font-size: 15px; color: #57606a; margin-bottom: 8px;
+    }
+    .college-tag {
+      display: inline-block;
+      background: #ede9fe;
+      color: #7c3aed;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 32px;
+    }
+
+    /* ALPHABET BAR */
+    .alpha-bar {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 36px;
+    }
+    .alpha-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+      font-family: inherit;
+    }
+    .alpha-btn:hover { border-color: #7c3aed; color: #7c3aed; }
+    .alpha-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .alpha-btn.empty { opacity: 0.35; cursor: default; }
+    .alpha-btn.empty:hover { border-color: #e5e7eb; color: #374151; }
+
+    .results-header {
+      font-size: 13px; color: #9ca3af; margin-bottom: 24px;
+    }
+
+    /* FACULTY GROUP */
+    .faculty-group { margin-bottom: 40px; }
+
+    .faculty-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .faculty-letter {
+      width: 40px; height: 40px;
+      background: #7c3aed; color: #fff;
+      border-radius: 10px;
+      font-size: 20px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .faculty-name-wrap {}
+    .faculty-name {
+      font-size: 17px; font-weight: 700; color: #0f172a;
+    }
+    .faculty-count {
+      font-size: 13px; color: #9ca3af;
+    }
+
+    /* SUBJECT CARDS */
+    .subject-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-left: 52px;
+    }
+
+    .subject-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: border-color 0.12s;
+      cursor: default;
+    }
+    .subject-card:hover { border-color: #7c3aed; }
+
+    .subject-code {
+      font-size: 11px; font-weight: 700;
+      color: #7c3aed;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .subject-name {
+      font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px;
+    }
+    .subject-credits {
+      font-size: 12px; color: #9ca3af;
+    }
+    .subject-tags {
+      display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px;
+    }
+    .subject-tag {
+      font-size: 11px; font-weight: 500;
+      background: #f3f4f6; color: #57606a;
+      border-radius: 999px; padding: 2px 9px;
+    }
+    .subject-tag.core {
+      background: #ede9fe; color: #7c3aed;
+    }
+
+    .empty-state {
+      display: none; text-align: center;
+      padding: 60px 20px; color: #9ca3af; font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+    </a>
+    <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
+    <a href="profiles.html" class="back-link">← Back to Profiles</a>
+  </nav>
+
+  <div class="page-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> / <a href="profiles.html">Profiles</a> / Subjects
+    </div>
+    <h1 class="page-title">Subjects</h1>
+    <p class="page-sub">First-year graduate courses by school and department.</p>
+    <span class="college-tag">Baruch College — CUNY · New York City</span>
+
+    <div class="alpha-bar" id="alphaBar"></div>
+    <div class="results-header" id="resultsHeader"></div>
+    <div id="subjectGroups"></div>
+    <div class="empty-state" id="emptyState">No subjects found for this letter.</div>
+  </div>
+
+  <script>
+    // Data keyed by first letter of school/faculty name
+    // Each entry: { faculty, subjects: [{code, name, credits, tags}] }
+    const data = [
+      {
+        letter: "A",
+        faculty: "Marxe School of Public and International Affairs",
+        subjects: [
+          { code: "PAF 9100", name: "Public Affairs and Administration", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "PAF 9120", name: "Quantitative Methods for Public Affairs", credits: 3, tags: ["Core", "Methods"] },
+          { code: "PAF 9130", name: "Economics for Public Policy", credits: 3, tags: ["Core", "Policy"] },
+          { code: "PAF 9140", name: "Public Policy Analysis", credits: 3, tags: ["Core", "Policy"] },
+        ]
+      },
+      {
+        letter: "B",
+        faculty: "Baruch School of Business (Zicklin)",
+        subjects: [
+          { code: "MBA 7000", name: "Business Leadership and Communication", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "ACC 7000", name: "Financial Accounting for MBAs", credits: 3, tags: ["Core", "Finance"] },
+          { code: "BUS 7000", name: "Business Statistics", credits: 3, tags: ["Core", "Methods"] },
+          { code: "MGT 7100", name: "Organizational Behavior", credits: 3, tags: ["Core", "Management"] },
+          { code: "FIN 7100", name: "Corporate Finance", credits: 3, tags: ["Elective", "Finance"] },
+          { code: "MKT 7100", name: "Marketing Management", credits: 3, tags: ["Elective", "Marketing"] },
+        ]
+      },
+      {
+        letter: "C",
+        faculty: "Department of Computer Information Systems",
+        subjects: [
+          { code: "CIS 9001", name: "Foundations of Information Systems", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "CIS 9010", name: "Database Management Systems", credits: 3, tags: ["Core", "Tech"] },
+          { code: "CIS 9020", name: "Systems Analysis and Design", credits: 3, tags: ["Core", "Tech"] },
+          { code: "CIS 9490", name: "Data Analytics for Business", credits: 3, tags: ["Elective", "Analytics"] },
+        ]
+      },
+      {
+        letter: "E",
+        faculty: "Department of Economics and Finance",
+        subjects: [
+          { code: "ECO 9710", name: "Microeconomic Theory", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "ECO 9720", name: "Macroeconomic Theory", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "FIN 9770", name: "Financial Markets and Institutions", credits: 3, tags: ["Elective", "Finance"] },
+          { code: "FIN 9780", name: "Investment Analysis", credits: 3, tags: ["Elective", "Finance"] },
+          { code: "ECO 9800", name: "Econometrics", credits: 3, tags: ["Elective", "Methods"] },
+        ]
+      },
+      {
+        letter: "H",
+        faculty: "Weissman School of Arts and Sciences — Humanities",
+        subjects: [
+          { code: "ENG 7001", name: "Graduate Writing Seminar", credits: 3, tags: ["Core", "Writing"] },
+          { code: "COM 9100", name: "Corporate Communication", credits: 3, tags: ["Core", "Communication"] },
+          { code: "COM 9110", name: "Intercultural Communication", credits: 3, tags: ["Elective", "Communication"] },
+        ]
+      },
+      {
+        letter: "M",
+        faculty: "Department of Management",
+        subjects: [
+          { code: "MGT 9100", name: "Leadership and Team Dynamics", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "MGT 9200", name: "Strategic Management", credits: 3, tags: ["Core", "Strategy"] },
+          { code: "MGT 9300", name: "Entrepreneurship and Innovation", credits: 3, tags: ["Elective", "Business"] },
+          { code: "MGT 9410", name: "Human Resource Management", credits: 3, tags: ["Elective", "HR"] },
+          { code: "MGT 9420", name: "Negotiations", credits: 3, tags: ["Elective", "Management"] },
+        ]
+      },
+      {
+        letter: "O",
+        faculty: "Department of Operations Management",
+        subjects: [
+          { code: "OPM 9100", name: "Operations Management", credits: 3, tags: ["Core", "Graduate"] },
+          { code: "OPM 9200", name: "Supply Chain Management", credits: 3, tags: ["Elective", "Operations"] },
+          { code: "OPM 9300", name: "Project Management", credits: 3, tags: ["Elective", "Operations"] },
+        ]
+      },
+      {
+        letter: "P",
+        faculty: "Department of Marketing and International Business",
+        subjects: [
+          { code: "MKT 9100", name: "Consumer Behavior", credits: 3, tags: ["Core", "Marketing"] },
+          { code: "MKT 9200", name: "Marketing Research", credits: 3, tags: ["Elective", "Methods"] },
+          { code: "IBS 9100", name: "International Business Strategy", credits: 3, tags: ["Elective", "International"] },
+          { code: "MKT 9300", name: "Digital Marketing", credits: 3, tags: ["Elective", "Marketing"] },
+        ]
+      },
+      {
+        letter: "S",
+        faculty: "Weissman School of Arts and Sciences — Social Sciences",
+        subjects: [
+          { code: "SOC 9100", name: "Sociology of Organizations", credits: 3, tags: ["Elective", "Social Science"] },
+          { code: "PSY 9100", name: "Industrial-Organizational Psychology", credits: 3, tags: ["Elective", "Psychology"] },
+          { code: "POL 9100", name: "Urban Politics and Policy", credits: 3, tags: ["Elective", "Policy"] },
+        ]
+      },
+      {
+        letter: "T",
+        faculty: "Department of Technology and Innovation",
+        subjects: [
+          { code: "TEC 9100", name: "Emerging Technologies in Business", credits: 3, tags: ["Elective", "Tech"] },
+          { code: "TEC 9200", name: "Cybersecurity for Managers", credits: 3, tags: ["Elective", "Tech"] },
+          { code: "TEC 9300", name: "Business Intelligence and Data Visualization", credits: 3, tags: ["Elective", "Analytics"] },
+        ]
+      },
+    ];
+
+    // Build lookup by letter
+    const byLetter = {};
+    data.forEach(d => { byLetter[d.letter] = d; });
+
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let activeLetter = null;
+
+    const alphaBar      = document.getElementById("alphaBar");
+    const groupsEl      = document.getElementById("subjectGroups");
+    const emptyState    = document.getElementById("emptyState");
+    const resultsHeader = document.getElementById("resultsHeader");
+
+    // Build alphabet buttons
+    alphabet.forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "alpha-btn" + (byLetter[letter] ? "" : " empty");
+      btn.textContent = letter;
+      btn.dataset.letter = letter;
+      if (byLetter[letter]) {
+        btn.addEventListener("click", () => selectLetter(letter));
+      }
+      alphaBar.appendChild(btn);
+    });
+
+    function selectLetter(letter) {
+      if (activeLetter === letter) {
+        activeLetter = null;
+        document.querySelectorAll(".alpha-btn").forEach(b => b.classList.remove("active"));
+        renderAll();
+        return;
+      }
+      activeLetter = letter;
+      document.querySelectorAll(".alpha-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.letter === letter);
+      });
+      renderFiltered(letter);
+    }
+
+    function buildSubjectCard(s) {
+      const isCore = s.tags.includes("Core");
+      const tagsHtml = s.tags.map(t =>
+        `<span class="subject-tag${t === "Core" ? " core" : ""}">${t}</span>`
+      ).join("");
+      return `
+        <div class="subject-card">
+          <div class="subject-code">${s.code}</div>
+          <div class="subject-name">${s.name}</div>
+          <div class="subject-credits">${s.credits} credits</div>
+          <div class="subject-tags">${tagsHtml}</div>
+        </div>`;
+    }
+
+    function buildGroup(entry) {
+      const count = entry.subjects.length;
+      return `
+        <div class="faculty-group" id="group-${entry.letter}">
+          <div class="faculty-header">
+            <div class="faculty-letter">${entry.letter}</div>
+            <div class="faculty-name-wrap">
+              <div class="faculty-name">${entry.faculty}</div>
+              <div class="faculty-count">${count} subject${count !== 1 ? "s" : ""}</div>
+            </div>
+          </div>
+          <div class="subject-list">
+            ${entry.subjects.map(buildSubjectCard).join("")}
+          </div>
+        </div>`;
+    }
+
+    function renderAll() {
+      const total = data.reduce((s, d) => s + d.subjects.length, 0);
+      resultsHeader.textContent = `Showing all ${total} subjects across ${data.length} schools & departments`;
+      groupsEl.innerHTML = data.map(buildGroup).join("");
+      emptyState.style.display = "none";
+    }
+
+    function renderFiltered(letter) {
+      const entry = byLetter[letter];
+      if (!entry) {
+        groupsEl.innerHTML = "";
+        emptyState.style.display = "block";
+        resultsHeader.textContent = "";
+        return;
+      }
+      const count = entry.subjects.length;
+      resultsHeader.textContent = `${count} subject${count !== 1 ? "s" : ""} found under "${entry.faculty}"`;
+      groupsEl.innerHTML = buildGroup(entry);
+      emptyState.style.display = "none";
+    }
+
+    renderAll();
+  </script>
+
+</body>
+</html>

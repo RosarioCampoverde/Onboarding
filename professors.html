@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professors — Luna Onboarding Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: #f3f4f6;
+      color: #1f2328;
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: #f3f4f6;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      background: #7c3aed;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo svg { width: 20px; height: 20px; }
+
+    .nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2328;
+      text-decoration: none;
+    }
+
+    .back-link {
+      margin-left: auto;
+      font-size: 13px;
+      color: #7c3aed;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    /* ── MAIN CONTENT ── */
+    .page-content {
+      max-width: 900px;
+      margin: 48px auto 80px;
+      padding: 0 48px;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+    .breadcrumb a { color: #7c3aed; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .page-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .page-sub {
+      font-size: 15px;
+      color: #57606a;
+      margin-bottom: 36px;
+    }
+
+    /* ── ALPHABET BAR ── */
+    .alpha-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 40px;
+    }
+
+    .alpha-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+      font-family: inherit;
+    }
+
+    .alpha-btn:hover {
+      border-color: #7c3aed;
+      color: #7c3aed;
+    }
+
+    .alpha-btn.active {
+      background: #7c3aed;
+      border-color: #7c3aed;
+      color: #fff;
+    }
+
+    .alpha-btn.empty {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .alpha-btn.empty:hover {
+      border-color: #e5e7eb;
+      color: #374151;
+    }
+
+    /* ── PROFESSOR LIST ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-letter {
+      width: 40px;
+      height: 40px;
+      background: #7c3aed;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-count {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .professor-group {
+      margin-bottom: 36px;
+    }
+
+    .professor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .professor-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.12s;
+      cursor: pointer;
+    }
+
+    .professor-card:hover {
+      border-color: #7c3aed;
+    }
+
+    .professor-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ede9fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #7c3aed;
+      flex-shrink: 0;
+    }
+
+    .professor-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .professor-dept {
+      font-size: 13px;
+      color: #57606a;
+      margin-top: 2px;
+    }
+
+    .professor-tag {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 500;
+      color: #7c3aed;
+      background: #ede9fe;
+      border-radius: 999px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+      font-size: 15px;
+    }
+
+    .results-header {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+    </a>
+    <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
+    <a href="profiles.html" class="back-link">← Back to Profiles</a>
+  </nav>
+
+  <div class="page-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> / <a href="profiles.html">Profiles</a> / Professors
+    </div>
+    <h1 class="page-title">Professors</h1>
+    <p class="page-sub">Browse faculty by last name. Click a letter to filter.</p>
+
+    <!-- ALPHABET BAR -->
+    <div class="alpha-bar" id="alphaBar"></div>
+
+    <div class="results-header" id="resultsHeader"></div>
+
+    <!-- PROFESSOR GROUPS -->
+    <div id="professorGroups"></div>
+    <div class="empty-state" id="emptyState">No professors found for this letter.</div>
+  </div>
+
+  <script>
+    const professors = {
+      A: [
+        { name: "Dr. Andrea Alvarez",    dept: "Mathematics",          tag: "Advisor" },
+        { name: "Prof. Alan Ashford",    dept: "Physics",              tag: "Lecturer" },
+        { name: "Dr. Amara Adesanya",    dept: "Computer Science",     tag: "Faculty" },
+      ],
+      B: [
+        { name: "Prof. Barbara Bennett", dept: "English Literature",   tag: "Faculty" },
+        { name: "Dr. Benjamin Brooks",   dept: "Biology",              tag: "Advisor" },
+        { name: "Dr. Beatriz Bastos",    dept: "Chemistry",            tag: "Lecturer" },
+      ],
+      C: [
+        { name: "Dr. Carlos Castillo",   dept: "History",              tag: "Faculty" },
+        { name: "Prof. Claire Chen",     dept: "Computer Science",     tag: "Advisor" },
+        { name: "Dr. Colin Crawford",    dept: "Economics",            tag: "Lecturer" },
+      ],
+      D: [
+        { name: "Prof. Diana Dolan",     dept: "Philosophy",           tag: "Faculty" },
+        { name: "Dr. David Diaz",        dept: "Engineering",          tag: "Advisor" },
+      ],
+      E: [
+        { name: "Dr. Elena Eriksson",    dept: "Psychology",           tag: "Faculty" },
+        { name: "Prof. Elias Everett",   dept: "Sociology",            tag: "Lecturer" },
+      ],
+      F: [
+        { name: "Dr. Fatima Farooq",     dept: "Political Science",    tag: "Faculty" },
+        { name: "Prof. Frank Fletcher",  dept: "Mathematics",          tag: "Advisor" },
+      ],
+      G: [
+        { name: "Dr. Grace Gomez",       dept: "Art History",          tag: "Faculty" },
+        { name: "Prof. George Grant",    dept: "Physics",              tag: "Lecturer" },
+      ],
+      H: [
+        { name: "Dr. Hannah Hayes",      dept: "Nursing",              tag: "Faculty" },
+        { name: "Prof. Henry Huang",     dept: "Computer Science",     tag: "Advisor" },
+      ],
+      I: [
+        { name: "Dr. Irene Ibarra",      dept: "Linguistics",          tag: "Faculty" },
+      ],
+      J: [
+        { name: "Prof. James Johnson",   dept: "Business",             tag: "Advisor" },
+        { name: "Dr. Julia Jensen",      dept: "Chemistry",            tag: "Faculty" },
+        { name: "Prof. Jerome Jackson",  dept: "Law",                  tag: "Lecturer" },
+      ],
+      K: [
+        { name: "Dr. Karen Kim",         dept: "Biology",              tag: "Faculty" },
+        { name: "Prof. Kevin Knight",    dept: "Mathematics",          tag: "Advisor" },
+      ],
+      L: [
+        { name: "Dr. Laura Lopez",       dept: "History",              tag: "Faculty" },
+        { name: "Prof. Liam Lewis",      dept: "Engineering",          tag: "Lecturer" },
+      ],
+      M: [
+        { name: "Dr. Maria Martinez",    dept: "Psychology",           tag: "Advisor" },
+        { name: "Prof. Michael Moore",   dept: "Economics",            tag: "Faculty" },
+        { name: "Dr. Maya Mehta",        dept: "Computer Science",     tag: "Lecturer" },
+      ],
+      N: [
+        { name: "Prof. Nina Nakamura",   dept: "Art History",          tag: "Faculty" },
+        { name: "Dr. Nathan Nguyen",     dept: "Physics",              tag: "Advisor" },
+      ],
+      O: [
+        { name: "Dr. Olivia O'Brien",    dept: "Sociology",            tag: "Faculty" },
+      ],
+      P: [
+        { name: "Prof. Patricia Park",   dept: "English Literature",   tag: "Advisor" },
+        { name: "Dr. Peter Patel",       dept: "Mathematics",          tag: "Faculty" },
+      ],
+      Q: [
+        { name: "Dr. Quinn Quintero",    dept: "Political Science",    tag: "Lecturer" },
+      ],
+      R: [
+        { name: "Prof. Rachel Rivera",   dept: "Chemistry",            tag: "Faculty" },
+        { name: "Dr. Robert Ross",       dept: "Biology",              tag: "Advisor" },
+        { name: "Prof. Riya Reddy",      dept: "Computer Science",     tag: "Lecturer" },
+      ],
+      S: [
+        { name: "Dr. Sarah Singh",       dept: "Nursing",              tag: "Advisor" },
+        { name: "Prof. Samuel Scott",    dept: "Business",             tag: "Faculty" },
+        { name: "Dr. Sofia Santos",      dept: "Philosophy",           tag: "Lecturer" },
+      ],
+      T: [
+        { name: "Prof. Thomas Turner",   dept: "Engineering",          tag: "Faculty" },
+        { name: "Dr. Tanya Thompson",    dept: "Psychology",           tag: "Advisor" },
+      ],
+      U: [
+        { name: "Dr. Uma Upadhyay",      dept: "Linguistics",          tag: "Faculty" },
+      ],
+      V: [
+        { name: "Prof. Victor Vargas",   dept: "History",              tag: "Lecturer" },
+        { name: "Dr. Vanessa Vidal",     dept: "Art History",          tag: "Faculty" },
+      ],
+      W: [
+        { name: "Dr. William Walsh",     dept: "Economics",            tag: "Advisor" },
+        { name: "Prof. Wei Wang",        dept: "Computer Science",     tag: "Faculty" },
+      ],
+      X: [
+        { name: "Prof. Xiu Xiao",        dept: "Mathematics",          tag: "Lecturer" },
+      ],
+      Y: [
+        { name: "Dr. Yasmin Yilmaz",     dept: "Sociology",            tag: "Faculty" },
+      ],
+      Z: [
+        { name: "Prof. Zara Zaidi",      dept: "Political Science",    tag: "Advisor" },
+      ],
+    };
+
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let activeLetter = null;
+
+    const alphaBar       = document.getElementById("alphaBar");
+    const groupsEl       = document.getElementById("professorGroups");
+    const emptyState     = document.getElementById("emptyState");
+    const resultsHeader  = document.getElementById("resultsHeader");
+
+    // Build alphabet buttons
+    alphabet.forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "alpha-btn" + (professors[letter] ? "" : " empty");
+      btn.textContent = letter;
+      btn.dataset.letter = letter;
+      if (professors[letter]) {
+        btn.addEventListener("click", () => selectLetter(letter));
+      }
+      alphaBar.appendChild(btn);
+    });
+
+    function selectLetter(letter) {
+      // Toggle off if same letter clicked again
+      if (activeLetter === letter) {
+        activeLetter = null;
+        document.querySelectorAll(".alpha-btn").forEach(b => b.classList.remove("active"));
+        renderAll();
+        return;
+      }
+
+      activeLetter = letter;
+      document.querySelectorAll(".alpha-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.letter === letter);
+      });
+      renderFiltered(letter);
+    }
+
+    function initials(name) {
+      return name.replace(/^(Dr\.|Prof\.)\s+/, "")
+                 .split(" ").slice(0, 2)
+                 .map(p => p[0]).join("").toUpperCase();
+    }
+
+    function buildCard(p) {
+      return `
+        <div class="professor-card">
+          <div class="professor-avatar">${initials(p.name)}</div>
+          <div>
+            <div class="professor-name">${p.name}</div>
+            <div class="professor-dept">${p.dept}</div>
+          </div>
+          <span class="professor-tag">${p.tag}</span>
+        </div>`;
+    }
+
+    function buildGroup(letter) {
+      const list = professors[letter];
+      return `
+        <div class="professor-group" id="group-${letter}">
+          <div class="section-label">
+            <div class="section-letter">${letter}</div>
+            <span class="section-count">${list.length} professor${list.length !== 1 ? "s" : ""}</span>
+          </div>
+          <div class="professor-list">
+            ${list.map(buildCard).join("")}
+          </div>
+        </div>`;
+    }
+
+    function renderAll() {
+      const letters = Object.keys(professors).sort();
+      const total = letters.reduce((s, l) => s + professors[l].length, 0);
+      resultsHeader.textContent = `Showing all ${total} professors`;
+      groupsEl.innerHTML = letters.map(buildGroup).join("");
+      emptyState.style.display = "none";
+    }
+
+    function renderFiltered(letter) {
+      if (!professors[letter]) {
+        groupsEl.innerHTML = "";
+        emptyState.style.display = "block";
+        resultsHeader.textContent = "";
+        return;
+      }
+      const count = professors[letter].length;
+      resultsHeader.textContent = `${count} professor${count !== 1 ? "s" : ""} found for "${letter}"`;
+      groupsEl.innerHTML = buildGroup(letter);
+      emptyState.style.display = "none";
+    }
+
+    // Show all on load
+    renderAll();
+  </script>
+
+</body>
+</html>
