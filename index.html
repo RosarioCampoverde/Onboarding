@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luna Onboarding Assistant</title>
+  <title>Luna Onboarding Agent</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,264 +12,2250 @@
       background: #f3f4f6;
       color: #1f2328;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* ── NAV ── */
     nav {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
-      padding: 18px 48px;
-      background: #f3f4f6;
+      padding: 16px 48px;
+      background: #ffffff;
+      border-bottom: 1.5px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .nav-logo {
-      width: 40px;
-      height: 40px;
-      background: #7c3aed;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .nav-logo svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: #fff;
-      stroke-width: 1.8;
+    .nav-logo img {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
     }
 
     .nav-title {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       color: #1f2328;
+      letter-spacing: -0.1px;
     }
 
-    /* ── HERO SECTION ── */
-    .hero {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 48px;
-      max-width: 1180px;
-      margin: 80px auto 0;
-      padding: 0 48px 80px;
-    }
-
-    /* LEFT COLUMN */
-    .hero-left {
+    /* ── DASHBOARD WRAPPER ── */
+    .dashboard {
       flex: 1;
-      max-width: 560px;
-      padding-top: 8px;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 44px 48px 56px;
     }
 
-    .badge {
+    /* ── GREETING HEADER ── */
+    .greeting-block {
+      background: #ffffff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+    }
+
+    .greeting-hello {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+
+    .greeting-hello .name { color: #7c3aed; }
+
+    /* ── GREETING PROGRESS STRIP ── */
+    .greeting-progress-strip {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f5f3ff;
+      border: 1.5px solid #ede9fe;
+      border-radius: 14px;
+      padding: 13px 18px;
+      margin: 14px 0 18px;
+      width: 100%;
+    }
+
+    .gp-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #d1fae5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gp-icon svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: #059669;
+      stroke-width: 1.8;
+    }
+
+    .gp-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .gp-bar-wrap {
+      flex: 1;
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+      min-width: 60px;
+    }
+
+    .gp-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      width: 20%;
+      transition: width 0.4s;
+    }
+
+    .gp-pct {
+      font-size: 14px;
+      font-weight: 800;
+      color: #7c3aed;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .gp-sep {
+      width: 1px;
+      height: 22px;
+      background: #d8b4fe;
+      flex-shrink: 0;
+    }
+
+    .gp-next-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .gp-next-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      border: 1.5px solid #d1d5db;
-      border-radius: 999px;
-      padding: 5px 14px;
+      gap: 5px;
       font-size: 13px;
-      color: #374151;
-      margin-bottom: 28px;
-      background: #fff;
+      font-weight: 500;
+      color: #6d28d9;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.15s;
     }
 
-    .badge svg {
-      width: 15px;
-      height: 15px;
-      stroke: #059669;
+    .gp-next-link:hover { color: #5b21b6; text-decoration: underline; }
+
+    .gp-next-link svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
       fill: none;
-      stroke-width: 2;
+      stroke-width: 2.2;
       flex-shrink: 0;
     }
 
-    .hero-heading {
-      font-size: clamp(36px, 4.5vw, 52px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-      color: #0f172a;
-      margin-bottom: 22px;
-    }
-
-    .hero-sub {
-      font-size: 17px;
-      line-height: 1.65;
-      color: #57606a;
-      margin-bottom: 36px;
-      max-width: 500px;
-    }
-
-    .btn-group {
-      display: flex;
+    .gp-view-link {
+      display: inline-flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 36px;
-    }
-
-    .btn-primary {
-      background: #7c3aed;
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 14px 26px;
-      font-size: 15px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .btn-primary:hover { background: #6d28d9; }
-
-    .btn-secondary {
-      background: #fff;
       color: #7c3aed;
-      border: 1.5px solid #7c3aed;
-      border-radius: 999px;
-      padding: 13px 24px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
+      text-decoration: none;
       white-space: nowrap;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .btn-secondary:hover { border-color: #6d28d9; color: #6d28d9; }
-
-    /* ── AI SEARCH BAR ── */
-    .ai-bar-wrapper {
-      background: #fff;
-      border-top: 1.5px solid #e5e7eb;
-      padding: 28px 48px 32px;
-      display: flex;
-      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid #c4b5fd;
+      border-radius: 8px;
+      padding: 5px 11px;
+      transition: background 0.15s, border-color 0.15s;
     }
 
-    .ai-bar {
+    .gp-view-link:hover { background: #ede9fe; border-color: #a78bfa; }
+
+    .greeting-divider {
+      height: 1px;
+      background: #f3f4f6;
+      margin: 0 0 16px;
+    }
+
+    /* inline ask-row: label + input */
+    .ask-row {
       display: flex;
       align-items: center;
       gap: 14px;
-      max-width: 760px;
-      width: 100%;
     }
 
-    .ai-bar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .ai-bar-logo {
-      width: 38px;
-      height: 38px;
-      background: #7c3aed;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .ai-bar-logo svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .ai-bar-label {
-      font-size: 14px;
+    .ask-label {
+      font-size: 15px;
       font-weight: 600;
-      color: #1f2328;
+      color: #374151;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .ai-bar-input-wrap {
+    .ask-input {
       flex: 1;
-      position: relative;
-    }
-
-    .ai-bar-input {
-      width: 100%;
+      max-width: 560px;
       border: 1.5px solid #d1d5db;
       border-radius: 999px;
-      padding: 12px 20px;
+      padding: 11px 20px;
       font-size: 14px;
       color: #1f2328;
       background: #f9fafb;
       outline: none;
       font-family: inherit;
       transition: border-color 0.15s, box-shadow 0.15s;
+      cursor: pointer;
     }
 
-    .ai-bar-input::placeholder { color: #9ca3af; }
-    .ai-bar-input:focus {
+    .ask-input::placeholder { color: #9ca3af; }
+    .ask-input:focus {
       border-color: #7c3aed;
       box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
       background: #fff;
     }
 
-    .demo-note {
-      font-size: 12px;
-      color: #9ca3af;
-      line-height: 1.55;
-      max-width: 480px;
+    /* ── SUGGESTED QUESTIONS ── */
+    .suggestions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    /* RIGHT COLUMN – feature cards */
-    .hero-right {
+    .suggestion-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #374151;
+      background: #f5f3ff;
+      border: 1.5px solid #ede9fe;
+      border-radius: 999px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .suggestion-chip:hover {
+      background: #ede9fe;
+      border-color: #c4b5fd;
+      color: #6d28d9;
+    }
+
+    .suggestion-chip::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #7c3aed;
       flex-shrink: 0;
-      width: 400px;
+    }
+
+    /* ── AI ASSISTANT MODAL ── */
+    .ai-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .ai-overlay.open { display: flex; }
+
+    .ai-modal {
+      width: 100%;
+      max-width: 760px;
+      height: 82vh;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      padding-top: 4px;
+      overflow: hidden;
+      animation: slideUp 0.25s ease;
+      margin: 0 auto;
     }
 
-    .card {
-      background: #fff;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 22px 24px;
+    .ai-topbar {
       display: flex;
-      align-items: flex-start;
-      gap: 18px;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1.5px solid #e5e7eb;
+      background: #fff;
+      flex-shrink: 0;
     }
 
-    .card-icon {
-      width: 46px;
-      height: 46px;
-      background: #ede9fe;
-      border-radius: 12px;
+    .ai-topbar-icon {
+      width: 32px;
+      height: 32px;
+      background: #7c3aed;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    .card-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke: #7c3aed;
+    .ai-topbar-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: white;
+      stroke: white;
+      stroke-width: 1.8;
+    }
+
+    .ai-topbar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      flex: 1;
+    }
+
+    .ai-topbar-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .ai-close {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #57606a;
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+
+    .ai-close:hover { background: #e5e7eb; }
+
+    .ai-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ai-bubble-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .ai-bubble-wrap.user { flex-direction: row-reverse; }
+
+    .ai-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .ai-avatar.luna {
+      background: #7c3aed;
+      color: #fff;
+    }
+
+    .ai-avatar.user-av {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .ai-bubble {
+      max-width: 72%;
+      padding: 11px 15px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .ai-bubble.luna {
+      background: #f5f3ff;
+      color: #1f2328;
+      border-radius: 4px 14px 14px 14px;
+    }
+
+    .ai-bubble.user {
+      background: #7c3aed;
+      color: #fff;
+      border-radius: 14px 4px 14px 14px;
+    }
+
+    .ai-typing {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 8px 4px;
+    }
+
+    .ai-typing span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #7c3aed;
+      opacity: 0.5;
+      animation: aiDot 1.2s infinite;
+    }
+
+    .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes aiDot {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.9); }
+      40% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .ai-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-top: 1.5px solid #e5e7eb;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .ai-text-input {
+      flex: 1;
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: #1f2328;
+      outline: none;
+      background: #f9fafb;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .ai-text-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+      background: #fff;
+    }
+
+    .ai-send-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: #7c3aed;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .ai-send-btn:hover { background: #6d28d9; }
+
+    .ai-send-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+    }
+
+    /* ── RECOMMENDED ADVISOR ── */
+    .rec-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .rec-advisor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #faf5ff;
+      border: 1.5px solid #ede9fe;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .rec-advisor:hover {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.08);
+    }
+
+    .rec-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rec-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .rec-role {
+      font-size: 12px;
+      color: #7c3aed;
+    }
+
+    /* ── DASHBOARD SECTIONS ── */
+
+    /* Main two-column layout */
+    .row-main {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* Right column stacks panels vertically */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── SHARED PANEL BASE ── */
+    .panel {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .panel-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .panel-icon svg {
+      width: 18px;
+      height: 18px;
       fill: none;
       stroke-width: 1.8;
     }
 
-    .card-title {
+    .panel-icon.purple { background: #ede9fe; }
+    .panel-icon.purple svg { stroke: #7c3aed; }
+    .panel-icon.red    { background: #fee2e2; }
+    .panel-icon.red    svg { stroke: #dc2626; }
+    .panel-icon.green  { background: #d1fae5; }
+    .panel-icon.green  svg { stroke: #059669; }
+    .panel-icon.blue   { background: #dbeafe; }
+    .panel-icon.blue   svg { stroke: #2563eb; }
+    .panel-icon.amber  { background: #fef3c7; }
+    .panel-icon.amber  svg { stroke: #d97706; }
+
+    .panel-title {
       font-size: 15px;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 6px;
     }
 
-    .card-desc {
+    .panel-divider {
+      height: 1px;
+      background: #f3f4f6;
+      margin: 0 0 16px;
+    }
+
+    /* ── PROFILE PANEL ── */
+    .profile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .profile-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      text-decoration: none;
+      color: #1f2328;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .profile-link:hover {
+      border-color: #7c3aed;
+      background: #faf5ff;
+    }
+
+    .profile-link svg {
+      width: 16px;
+      height: 16px;
+      stroke: #7c3aed;
+      fill: none;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    /* ── DEADLINES PANEL ── */
+    .deadline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .deadline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+    }
+
+    .deadline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .dot-red    { background: #ef4444; }
+    .dot-amber  { background: #f59e0b; }
+    .dot-green  { background: #10b981; }
+
+    .deadline-name {
       font-size: 13.5px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .deadline-due {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    .panel-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #7c3aed;
+      text-decoration: none;
+    }
+
+    .panel-link:hover { text-decoration: underline; }
+
+    /* ── PROGRESS PANEL ── */
+    .progress-label {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-wrap {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      width: 35%;
+      transition: width 0.4s;
+    }
+
+    .progress-pct {
+      font-size: 28px;
+      font-weight: 800;
+      color: #7c3aed;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .progress-next-label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    .progress-next-item {
+      font-size: 13.5px;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    /* ── PROGRESS NEXT STEP LINK ── */
+    .progress-next-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 13px;
+      margin-top: 2px;
+      background: #f5f3ff;
+      border: 1.5px solid #ede9fe;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #374151;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: background .15s, border-color .15s;
+    }
+    .progress-next-link:hover {
+      background: #ede9fe;
+      border-color: #c4b5fd;
+    }
+    .progress-next-link svg {
+      width: 14px;
+      height: 14px;
+      stroke: #7c3aed;
+      flex-shrink: 0;
+    }
+    .progress-view-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #7c3aed;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .progress-view-link:hover { text-decoration: underline; }
+
+    /* ── EVENTS PANEL ── */
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 13px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+    }
+
+    .event-date {
+      flex-shrink: 0;
+      text-align: center;
+      background: #ede9fe;
+      border-radius: 8px;
+      padding: 4px 8px;
+      min-width: 36px;
+    }
+
+    .event-month {
+      font-size: 9px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .event-day {
+      font-size: 15px;
+      font-weight: 800;
+      color: #7c3aed;
+      line-height: 1;
+    }
+
+    .event-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .event-sub {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    /* ── HOMEWORK PANEL ── */
+    .hw-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .hw-item {
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .hw-item:hover:not(.done-item) {
+      border-color: #c4b5fd;
+      box-shadow: 0 1px 6px rgba(124,58,237,0.07);
+    }
+
+    .hw-item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hw-item.done-item .hw-item-row { cursor: default; }
+
+    .hw-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1.8px solid #d1d5db;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .hw-check.done {
+      background: #7c3aed;
+      border-color: #7c3aed;
+    }
+
+    .hw-check.done svg {
+      width: 10px;
+      height: 10px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .hw-text { flex: 1; min-width: 0; }
+
+    .hw-name-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .hw-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    /* Assignment type badge */
+    .hw-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 7px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    .hw-badge.type-homework   { background: #ede9fe; color: #6d28d9; }
+    .hw-badge.type-project    { background: #d1fae5; color: #065f46; }
+    .hw-badge.type-quiz       { background: #fef3c7; color: #92400e; }
+    .hw-badge.type-reading    { background: #dbeafe; color: #1e40af; }
+    .hw-badge.type-other      { background: #f3f4f6; color: #374151; }
+
+    .hw-sub {
+      font-size: 11.5px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    .hw-item.done-item .hw-name { color: #9ca3af; text-decoration: line-through; }
+    .hw-item.done-item .hw-badge { opacity: 0.5; }
+
+    /* Expand arrow */
+    .hw-expand-arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      stroke: #9ca3af;
+      fill: none;
+      stroke-width: 2;
+      transition: transform 0.2s, stroke 0.15s;
+    }
+
+    .hw-item.expanded .hw-expand-arrow {
+      transform: rotate(180deg);
+      stroke: #7c3aed;
+    }
+
+    /* Expandable detail drawer */
+    .hw-detail {
+      display: none;
+      padding: 0 13px 13px 41px;
+      border-top: 1px solid #e5e7eb;
+      background: #fff;
+    }
+
+    .hw-item.expanded .hw-detail { display: block; }
+
+    .hw-detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 11px 0 12px;
+    }
+
+    .hw-meta-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #57606a;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+
+    .hw-meta-pill svg {
+      width: 12px;
+      height: 12px;
+      stroke: #9ca3af;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .hw-action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hw-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      font-family: inherit;
+    }
+
+    .hw-btn svg {
+      width: 13px;
+      height: 13px;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .hw-btn.studio {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+
+    .hw-btn.studio:hover { background: #6d28d9; border-color: #6d28d9; }
+
+    .hw-btn.send {
+      background: #fff;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+
+    .hw-btn.send:hover {
+      background: #f5f3ff;
+      border-color: #c4b5fd;
+      color: #6d28d9;
+    }
+
+    /* ── STUDIO MODAL ── */
+    .studio-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .studio-overlay.open { display: flex; }
+
+    .studio-modal {
+      width: 100%;
+      height: 88vh;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(60px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .studio-topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1.5px solid #e5e7eb;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .studio-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      flex: 1;
+    }
+
+    .studio-hw-label {
+      font-size: 12px;
+      color: #7c3aed;
+      font-weight: 500;
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .studio-close {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #57606a;
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .studio-close:hover { background: #e5e7eb; }
+
+    /* Tool tabs */
+    .studio-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 10px 20px;
+      border-bottom: 1.5px solid #e5e7eb;
+      background: #f9fafb;
+      flex-shrink: 0;
+    }
+
+    .studio-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      font-family: inherit;
+    }
+
+    .studio-tab svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke-width: 1.8;
+      stroke: currentColor;
+    }
+
+    .studio-tab:hover { background: #f5f3ff; border-color: #c4b5fd; color: #6d28d9; }
+
+    .studio-tab.active {
+      background: #7c3aed;
+      border-color: #7c3aed;
+      color: #fff;
+    }
+
+    /* Studio panes */
+    .studio-body {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .studio-pane {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+    }
+
+    .studio-pane.active { display: flex; }
+
+    /* ── WHITEBOARD PANE ── */
+    .wb-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .wb-tool-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .wb-tool-btn:hover, .wb-tool-btn.active { background: #ede9fe; border-color: #c4b5fd; }
+
+    .wb-tool-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: #374151;
+      stroke-width: 1.8;
+    }
+
+    .wb-tool-btn.active svg { stroke: #7c3aed; }
+
+    .wb-sep { width: 1px; height: 24px; background: #e5e7eb; margin: 0 2px; }
+
+    .wb-color-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.1s;
+    }
+
+    .wb-color-swatch.active { border-color: #7c3aed; }
+
+    .wb-size-label { font-size: 11px; color: #9ca3af; font-weight: 600; }
+
+    .wb-size-input {
+      width: 44px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 3px 6px;
+      font-size: 12px;
+      text-align: center;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .wb-canvas-wrap {
+      flex: 1;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+
+    #wbCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    /* ── SPREADSHEET PANE ── */
+    .ss-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .ss-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 7px;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+
+    .ss-btn:hover { background: #f5f3ff; border-color: #c4b5fd; color: #6d28d9; }
+
+    .ss-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+    .ss-wrap {
+      flex: 1;
+      overflow: auto;
+      padding: 12px 16px;
+      background: #fff;
+    }
+
+    .ss-table {
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 600px;
+    }
+
+    .ss-table th {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+      min-width: 90px;
+      user-select: none;
+    }
+
+    .ss-table td {
+      border: 1px solid #e5e7eb;
+      padding: 0;
+      min-width: 90px;
+      height: 28px;
+    }
+
+    .ss-table td input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1f2328;
+      background: transparent;
+    }
+
+    .ss-table td input:focus { background: #f5f3ff; }
+
+    .ss-row-num {
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: #9ca3af;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* ── SLIDES PANE ── */
+    .slides-wrap {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .slides-sidebar {
+      width: 130px;
+      flex-shrink: 0;
+      border-right: 1.5px solid #e5e7eb;
+      background: #f9fafb;
+      overflow-y: auto;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slide-thumb {
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #9ca3af;
+      font-weight: 600;
+      transition: border-color 0.15s;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .slide-thumb.active { border-color: #7c3aed; }
+
+    .slides-editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f3f4f6;
+      overflow: hidden;
+    }
+
+    .slides-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .slides-canvas-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .slide-canvas {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      aspect-ratio: 16/9;
+      width: min(100%, 800px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 32px;
+      pointer-events: none;
+    }
+
+    [contenteditable] {
+      outline: none;
+      pointer-events: all;
+    }
+
+    .slide-title-input {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      text-align: center;
+      border: none;
+      background: transparent;
+      width: 100%;
+      cursor: text;
+    }
+
+    .slide-body-input {
+      font-size: 15px;
+      color: #374151;
+      text-align: center;
+      border: none;
+      background: transparent;
+      width: 100%;
+      cursor: text;
       line-height: 1.6;
+    }
+
+    .slide-add-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 7px;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+
+    .slide-add-btn:hover { background: #f5f3ff; border-color: #c4b5fd; color: #6d28d9; }
+    .slide-add-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+    /* ── SUBMIT EMAIL MODAL ── */
+    .email-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-overlay.open { display: flex; }
+
+    .email-modal {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px 30px;
+      width: min(100%, 480px);
+      margin: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .email-modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .email-modal-sub {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 20px;
+    }
+
+    .email-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .email-field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .email-field input,
+    .email-field textarea {
+      border: 1.5px solid #d1d5db;
+      border-radius: 9px;
+      padding: 9px 13px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: #1f2328;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      resize: vertical;
+    }
+
+    .email-field input:focus,
+    .email-field textarea:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+    }
+
+    .email-field textarea { min-height: 90px; }
+
+    .email-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+
+    .email-cancel-btn {
+      padding: 8px 18px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .email-cancel-btn:hover { background: #f3f4f6; }
+
+    .email-send-btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 9px;
+      background: #7c3aed;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+
+    .email-send-btn:hover { background: #6d28d9; }
+
+    .email-send-btn svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; }
+
+    /* ══════════════════════════════════════════
+       PROFESSOR PROFILE MODAL
+    ══════════════════════════════════════════ */
+
+    .prof-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.5);
+      z-index: 300;
+      display: none;
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+    .prof-overlay.open { display: flex; }
+
+    .prof-drawer {
+      background: #fff;
+      width: min(100%, 480px);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -6px 0 40px rgba(0,0,0,0.16);
+      animation: slideInRight 0.25s ease;
+      overflow: hidden;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+
+    .prof-drawer-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 22px 24px 20px;
+      border-bottom: 1.5px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .prof-drawer-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .prof-drawer-info { flex: 1; }
+
+    .prof-drawer-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .prof-drawer-role {
+      font-size: 12.5px;
+      color: #7c3aed;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .prof-drawer-meta {
+      font-size: 12px;
       color: #57606a;
     }
+
+    .prof-drawer-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .prof-drawer-close:hover { background: #e5e7eb; }
+
+    .prof-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── sections inside drawer ── */
+    .prof-section {
+      padding: 20px 24px;
+      border-bottom: 1.5px solid #f0f0f4;
+    }
+    .prof-section:last-child { border-bottom: none; }
+
+    .prof-section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .prof-section-title svg {
+      width: 13px; height: 13px;
+      fill: none; stroke: #9ca3af; stroke-width: 2;
+    }
+
+    /* info chips row */
+    .prof-info-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .prof-chip {
+      background: #f5f3ff;
+      border: 1px solid #ede9fe;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12.5px;
+      color: #4c1d95;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .prof-chip svg { width: 12px; height: 12px; fill: none; stroke: #7c3aed; stroke-width: 2; }
+
+    /* ask-luna section */
+    .prof-luna-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f5f3ff;
+      border: 1.5px solid #ede9fe;
+      border-radius: 12px;
+      padding: 11px 14px;
+      margin-bottom: 12px;
+    }
+    .prof-luna-av {
+      width: 32px; height: 32px;
+      background: #7c3aed;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .prof-luna-banner-text { font-size: 13px; color: #4c1d95; line-height: 1.5; }
+    .prof-luna-banner-text strong { color: #3b0764; }
+
+    .prof-luna-msgs {
+      max-height: 220px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .prof-luna-bubble-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .prof-luna-bubble-wrap.user-side { flex-direction: row-reverse; }
+
+    .prof-luna-av-sm {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .prof-luna-av-sm.luna-sm { background: #7c3aed; color: #fff; }
+    .prof-luna-av-sm.user-sm { background: #e5e7eb; color: #374151; }
+
+    .prof-luna-bubble {
+      max-width: 78%;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .prof-luna-bubble.luna-b { background: #f5f3ff; color: #1f2328; border-radius: 4px 12px 12px 12px; }
+    .prof-luna-bubble.user-b { background: #7c3aed; color: #fff; border-radius: 12px 4px 12px 12px; }
+
+    .prof-luna-typing {
+      display: flex; gap: 4px; align-items: center; padding: 6px 4px;
+    }
+    .prof-luna-typing span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #7c3aed; opacity: 0.5;
+      animation: aiDot 1.2s infinite;
+    }
+    .prof-luna-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .prof-luna-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    .prof-ask-row {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .prof-ask-input {
+      flex: 1;
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #1f2328;
+      outline: none;
+      background: #f9fafb;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .prof-ask-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+      background: #fff;
+    }
+    .prof-ask-send {
+      width: 34px; height: 34px;
+      border: none; background: #7c3aed; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .prof-ask-send:hover { background: #6d28d9; }
+    .prof-ask-send svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; }
+
+    /* email template buttons */
+    .prof-email-templates {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 13px;
+    }
+    .prof-tpl-btn {
+      border: 1.5px solid #d1d5db;
+      background: #f9fafb;
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .prof-tpl-btn:hover { border-color: #7c3aed; background: #f5f3ff; color: #7c3aed; }
+
+    /* ══════════════════════════════════════════
+       SYLLABUS BREAKDOWN PANEL
+    ══════════════════════════════════════════ */
+
+    /* ── Upload zone ── */
+    .sb-upload-zone {
+      border: 2px dashed #c4b5fd;
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #faf5ff;
+      transition: border-color .15s, background .15s;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .sb-upload-zone:hover, .sb-upload-zone.drag-over {
+      border-color: #7c3aed;
+      background: #f5f3ff;
+    }
+    .sb-upload-zone input[type=file] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .sb-upload-icon {
+      width: 32px; height: 32px;
+      background: #ede9fe;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .sb-upload-icon svg { width: 16px; height: 16px; stroke: #7c3aed; fill: none; stroke-width: 2; }
+    .sb-upload-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 3px;
+    }
+    .sb-upload-sub {
+      font-size: 11.5px;
+      color: #9ca3af;
+    }
+    .sb-upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      padding: 6px 14px;
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s;
+      position: relative;
+      z-index: 1;
+    }
+    .sb-upload-btn:hover { background: #6d28d9; }
+    .sb-upload-btn svg { width: 13px; height: 13px; stroke: #fff; fill: none; stroke-width: 2; }
+
+    /* ── Parsed syllabi list ── */
+    .sb-syllabus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .sb-syllabus-item {
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .sb-syllabus-item:hover { border-color: #c4b5fd; background: #fdfcff; }
+    .sb-syllabus-item.active { border-color: #a78bfa; background: #faf5ff; }
+    .sb-syl-course-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sb-syl-info { flex: 1; min-width: 0; }
+    .sb-syl-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sb-syl-meta {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+    .sb-syl-mini-bar { width: 60px; flex-shrink: 0; }
+    .sb-syl-mini-bg {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 5px;
+      overflow: hidden;
+    }
+    .sb-syl-mini-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      transition: width .3s;
+    }
+    .sb-syl-pct {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-align: right;
+      margin-top: 2px;
+    }
+    .sb-syl-status {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .syl-status-parsed   { background: #d1fae5; color: #065f46; }
+    .syl-status-pending  { background: #fef3c7; color: #92400e; }
+
+    /* ── Section divider label ── */
+    .sb-section-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin: 14px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sb-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #f3f4f6;
+    }
+
+    /* ── Weekly milestone blocks ── */
+    .sb-week-block {
+      margin-bottom: 10px;
+    }
+    .sb-week-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .sb-week-badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: #ede9fe;
+      color: #6d28d9;
+      flex-shrink: 0;
+    }
+    .sb-week-badge.week-current { background: #7c3aed; color: #fff; }
+    .sb-week-badge.week-past    { background: #f3f4f6; color: #9ca3af; }
+    .sb-week-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      flex: 1;
+    }
+    .sb-week-count {
+      font-size: 11px;
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+    .sb-week-chevron {
+      width: 14px; height: 14px;
+      stroke: #9ca3af; fill: none; stroke-width: 2.2;
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    .sb-week-block.open .sb-week-chevron { transform: rotate(180deg); }
+
+    /* ── Micro-task items ── */
+    .sb-task-list { display: none; flex-direction: column; gap: 5px; padding-left: 4px; }
+    .sb-week-block.open .sb-task-list { display: flex; }
+    .sb-task {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+    .sb-task:hover { border-color: #c4b5fd; }
+    .sb-task.done  { background: #f0fdf4; border-color: #bbf7d0; }
+    .sb-task-check {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+      border: 1.8px solid #d1d5db;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s;
+    }
+    .sb-task.done .sb-task-check { background: #10b981; border-color: #10b981; }
+    .sb-task.done .sb-task-check::after {
+      content: '';
+      display: block;
+      width: 8px; height: 5px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+    .sb-task-body { flex: 1; min-width: 0; }
+    .sb-task-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+    .sb-task.done .sb-task-name { color: #9ca3af; text-decoration: line-through; }
+    .sb-task-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+      flex-wrap: wrap;
+    }
+    .sb-task-course {
+      font-size: 10.5px;
+      color: #9ca3af;
+    }
+    .sb-task-type {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sb-type-reading  { background: #dbeafe; color: #1e40af; }
+    .sb-type-quiz     { background: #fef3c7; color: #92400e; }
+    .sb-type-homework { background: #ede9fe; color: #6d28d9; }
+    .sb-type-project  { background: #d1fae5; color: #065f46; }
+    .sb-type-milestone{ background: #f3e8ff; color: #7c3aed; }
+    .sb-type-study    { background: #f0fdf4; color: #059669; }
+    .sb-task-due {
+      font-size: 10.5px;
+      color: #ef4444;
+      font-weight: 600;
+    }
+    .sb-task-due.ok { color: #9ca3af; font-weight: 400; }
+    .sb-task-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .sb-task-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s, border-color .15s;
+    }
+    .sb-task-btn svg { width: 11px; height: 11px; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .sb-task-btn.studio { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+    .sb-task-btn.studio:hover { background: #6d28d9; }
+    .sb-task-btn.studio svg { stroke: #fff; }
+    .sb-task-btn.send { background: #fff; color: #374151; border-color: #d1d5db; }
+    .sb-task-btn.send:hover { background: #f5f3ff; border-color: #c4b5fd; color: #6d28d9; }
+    .sb-task-btn.send svg { stroke: currentColor; }
+
+    /* ── Insight strip ── */
+    .sb-insights {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .sb-insight {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 8px 11px;
+      border-radius: 9px;
+      border: 1.5px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 12px;
+      color: #374151;
+      line-height: 1.4;
+    }
+    .sb-insight.warn  { border-color: #fde68a; background: #fffbeb; }
+    .sb-insight.alert { border-color: #fca5a5; background: #fef2f2; }
+    .sb-insight.tip   { border-color: #a7f3d0; background: #f0fdf4; }
+    .sb-insight-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .sb-insight.warn  .sb-insight-dot { background: #f59e0b; }
+    .sb-insight.alert .sb-insight-dot { background: #ef4444; }
+    .sb-insight.tip   .sb-insight-dot { background: #10b981; }
+
+    /* ── Subsection toggle ── */
+    .sb-subsection-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s, border-color .15s;
+    }
+    .sb-subsection-toggle:hover { background: #f5f3ff; border-color: #c4b5fd; }
+    .sb-subsection-toggle-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .sb-subsection-toggle-label svg { width: 14px; height: 14px; fill: none; stroke: #7c3aed; stroke-width: 2; }
+    .sb-subsection-chevron {
+      width: 14px; height: 14px;
+      stroke: #9ca3af; fill: none; stroke-width: 2.2;
+      transition: transform .2s;
+    }
+    .sb-subsection.open .sb-subsection-chevron { transform: rotate(180deg); }
+    .sb-subsection-body { display: none; margin-top: 8px; }
+    .sb-subsection.open .sb-subsection-body { display: block; }
   </style>
 </head>
 <body>
@@ -277,94 +2263,1753 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <!-- crescent moon icon -->
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-      </svg>
+      <img src="LUNA_AGENT.jpg" alt="Luna avatar" />
     </div>
-    <span class="nav-title">Luna Onboarding Assistant</span>
+    <span class="nav-title">Luna Onboarding Agent</span>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
+  <!-- DASHBOARD -->
+  <div class="dashboard">
 
-    <!-- LEFT -->
-    <div class="hero-left">
-      <div class="badge">
-        <!-- shield-check -->
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        For incoming first-year students
+    <!-- GREETING + ASK BAR -->
+    <div class="greeting-block">
+      <div class="greeting-hello">Hello, <span class="name">Rosario</span> 👋</div>
+
+      <!-- INLINE ONBOARDING PROGRESS STRIP -->
+      <div class="greeting-progress-strip">
+        <div class="gp-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <span class="gp-title">Your Onboarding Progress</span>
+        <div class="gp-bar-wrap">
+          <div class="gp-bar-fill"></div>
+        </div>
+        <span class="gp-pct">20%</span>
+        <div class="gp-sep"></div>
+        <span class="gp-next-label">Next step</span>
+        <a href="onboarding-progress.html" class="gp-next-link">
+          Review all course syllabi
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <div class="gp-sep"></div>
+        <a href="onboarding-progress.html" class="gp-view-link">View full progress</a>
       </div>
 
-      <h1 class="hero-heading">Your first semester,<br>organized from day one.</h1>
-
-      <p class="hero-sub">
-        Answer a few questions and get a personal onboarding plan: what is due, who to contact, which courses to consider, and where to get help on campus.
-      </p>
-
-      <div class="btn-group">
-        <a href="profiles.html" style="text-decoration:none;"><button class="btn-primary">Profiles</button></a>
-        <a href="deadlines.html" style="text-decoration:none;"><button class="btn-secondary">Deadlines</button></a>
+      <div class="greeting-divider"></div>
+      <div class="ask-row">
+        <span class="ask-label">How can I assist you?</span>
+        <input class="ask-input" id="askInput" type="text" placeholder="Ask Luna anything about your onboarding…" />
       </div>
-
+      <div class="suggestions-row">
+        <button class="suggestion-chip" onclick="openAI('What do I need to finish this week?')">What do I need to finish this week?</button>
+        <button class="suggestion-chip" onclick="openAI('Who is my academic advisor?')">Who is my academic advisor?</button>
+        <button class="suggestion-chip" onclick="openAI('How do I register for classes?')">How do I register for classes?</button>
+        <button class="suggestion-chip" onclick="openAI('Which professors work in AI?')">Which professors work in AI?</button>
+        <button class="suggestion-chip" onclick="openAI('Where can I find tutoring?')">Where can I find tutoring?</button>
+      </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="hero-right">
+    <!-- MAIN TWO-COLUMN LAYOUT -->
+    <div class="row-main">
 
-      <div class="card">
-        <div class="card-icon">
-          <!-- calendar-clock -->
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="16" cy="16" r="3"/><path d="M16 14.5V16l1 1" stroke-linecap="round"/></svg>
+      <!-- LEFT: SYLLABUS BREAKDOWN -->
+      <div class="panel" id="syllabusBreakdownPanel">
+        <div class="panel-header">
+          <div class="panel-icon amber">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <div>
+            <div class="panel-title">Syllabus Breakdown</div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:1px;">Syllabi → weekly study blocks &amp; micro-deadlines</div>
+          </div>
         </div>
-        <div>
-          <div class="card-title">A personalized deadline plan</div>
-          <div class="card-desc">Required onboarding tasks generated from your student type, housing, and start term.</div>
-        </div>
-      </div>
+        <div class="panel-divider"></div>
 
-      <div class="card">
-        <div class="card-icon">
-          <!-- graduation cap -->
-          <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z" stroke-linejoin="round"/><path d="M6 12v5c0 2.21 2.69 4 6 4s6-1.79 6-4v-5" stroke-linecap="round"/><line x1="22" y1="10" x2="22" y2="16"/></svg>
+        <!-- ① UPLOAD ZONE -->
+        <div class="sb-upload-zone" id="sbUploadZone">
+          <input type="file" accept=".pdf,.doc,.docx,.txt" id="sbFileInput" />
+          <div class="sb-upload-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="sb-upload-title">Upload a syllabus</div>
+          <div class="sb-upload-sub">PDF, Word, or TXT · Luna will extract deadlines, readings &amp; milestones</div>
+          <button class="sb-upload-btn" onclick="sbTriggerUpload(event)">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Parse Syllabus
+          </button>
         </div>
-        <div>
-          <div class="card-title">Faculty and course matches</div>
-          <div class="card-desc">Professors, advisors, and first-year courses ranked by your major and interests, with the reason shown.</div>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="card-icon">
-          <!-- message-check / cite -->
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9 11l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- ② PARSED SYLLABI (sample data) -->
+        <div class="sb-section-label">Parsed Syllabi</div>
+        <div class="sb-syllabus-list" id="sbSyllabusList"></div>
+
+        <!-- ③ WEEKLY MILESTONE TIMELINE -->
+        <div class="sb-section-label">Weekly Study Plan</div>
+        <div id="sbWeeklyPlan"></div>
+
+        <!-- ④ STUDY INSIGHTS -->
+        <div class="sb-section-label">Luna Insights</div>
+        <div class="sb-insights" id="sbInsights"></div>
+
+        <!-- ⑤ COMPLETE HOMEWORK subsection -->
+        <div class="sb-section-label" style="margin-top:16px;">Complete Homework</div>
+        <div class="sb-subsection" id="sbHwSubsection">
+          <div class="sb-subsection-toggle" onclick="sbToggleSubsection()">
+            <span class="sb-subsection-toggle-label">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Pending assignments
+            </span>
+            <span style="display:flex;align-items:center;gap:8px;">
+              <span id="hwPendingCount" style="font-size:11px;font-weight:700;background:#fef3c7;color:#92400e;padding:1px 7px;border-radius:20px;"></span>
+              <svg class="sb-subsection-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </div>
+          <div class="sb-subsection-body">
+            <!-- Enrolled course chips -->
+            <div id="hwCourseChips" style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 10px;"></div>
+            <!-- Homework list -->
+            <div class="hw-list" id="hwList"></div>
+            <a href="deadlines.html" class="panel-link" style="margin-top:12px;">View all assignments →</a>
+          </div>
         </div>
-        <div>
-          <div class="card-title">Cited, honest answers</div>
-          <div class="card-desc">Answers cite the university records they used and say clearly when information is not available.</div>
-        </div>
+
       </div>
+      <!-- end LEFT panel -->
+
+      <!-- RIGHT COLUMN: Deadlines → Professor Connect → Resources & Events -->
+      <div class="right-col">
+
+        <!-- DEADLINES -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-icon red">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <span class="panel-title">Deadlines</span>
+          </div>
+          <div class="panel-divider"></div>
+          <div class="deadline-list">
+            <div class="deadline-item">
+              <span class="deadline-dot dot-red"></span>
+              <div>
+                <div class="deadline-name">Business Communications Essay</div>
+                <div class="deadline-due">Due Nov 18</div>
+              </div>
+            </div>
+            <div class="deadline-item">
+              <span class="deadline-dot dot-amber"></span>
+              <div>
+                <div class="deadline-name">GSA Workshop Registration</div>
+                <div class="deadline-due">Due Nov 19</div>
+              </div>
+            </div>
+            <div class="deadline-item">
+              <span class="deadline-dot dot-green"></span>
+              <div>
+                <div class="deadline-name">Marketing Project</div>
+                <div class="deadline-due">Due Dec 1</div>
+              </div>
+            </div>
+          </div>
+          <a href="deadlines.html" class="panel-link">View all deadlines →</a>
+        </div>
+
+        <!-- PROFESSOR CONNECT -->
+        <div class="panel" id="professorConnectPanel">
+          <div class="panel-header">
+            <div class="panel-icon purple">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <span class="panel-title">Professor Connect</span>
+          </div>
+          <div class="panel-divider"></div>
+          <div class="rec-label">Recommended Professors / Advisors</div>
+          <div class="rec-advisor" style="cursor:pointer;" onclick="openProfDrawer('james')">
+            <div class="rec-avatar">JJ</div>
+            <div>
+              <div class="rec-name">Prof. James Johnson</div>
+              <div class="rec-role">Advisor · Business</div>
+            </div>
+          </div>
+          <div class="panel-divider" style="margin-top:16px;"></div>
+          <div class="profile-links">
+            <a href="professors.html" class="profile-link">
+              <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z" stroke-linejoin="round"/><path d="M6 12v5c0 2.21 2.69 4 6 4s6-1.79 6-4v-5" stroke-linecap="round"/><line x1="22" y1="10" x2="22" y2="16"/></svg>
+              Faculty
+            </a>
+            <a href="subjects.html" class="profile-link">
+              <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Subjects
+            </a>
+          </div>
+        </div>
+
+        <!-- RESOURCES AND EVENTS -->
+        <div class="panel" id="resourcesEventsPanel">
+          <div class="panel-header">
+            <div class="panel-icon blue">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <span class="panel-title">Resources and Events</span>
+          </div>
+          <div class="panel-divider"></div>
+          <div class="event-list">
+            <div class="event-item">
+              <div class="event-date"><div class="event-month">Nov</div><div class="event-day">16</div></div>
+              <div>
+                <div class="event-name">Campus Life Fair</div>
+                <div class="event-sub">Main Quad · 10am–2pm</div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-date"><div class="event-month">Nov</div><div class="event-day">19</div></div>
+              <div>
+                <div class="event-name">GSA Workshop</div>
+                <div class="event-sub">Room 204 · 3pm–5pm</div>
+              </div>
+            </div>
+          </div>
+          <a href="resources-events.html" class="panel-link">Browse all resources &amp; events →</a>
+        </div>
+
+      </div>
+      <!-- end RIGHT COLUMN -->
 
     </div>
-  </section>
+  </div>
 
-  <!-- AI SEARCH BAR -->
-  <div class="ai-bar-wrapper">
-    <div class="ai-bar">
-      <div class="ai-bar-brand">
-        <div class="ai-bar-logo">
-          <!-- crescent moon -->
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-          </svg>
+  <!-- ══ AI ASSISTANT MODAL ══ -->
+  <div class="ai-overlay" id="aiOverlay" onclick="handleAiOverlayClick(event)">
+    <div class="ai-modal">
+      <div class="ai-topbar">
+        <div class="ai-topbar-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </div>
-        <span class="ai-bar-label">How can I assist you?</span>
+        <div>
+          <div class="ai-topbar-title">Luna AI Assistant</div>
+          <div class="ai-topbar-sub">Ask me anything about your onboarding</div>
+        </div>
+        <button class="ai-close" onclick="closeAI()">&#x2715;</button>
       </div>
-      <div class="ai-bar-input-wrap">
-        <input class="ai-bar-input" type="text" placeholder="Ask Luna anything about your onboarding…" />
+      <div class="ai-messages" id="aiMessages"></div>
+      <div class="ai-input-row">
+        <input class="ai-text-input" id="aiTextInput" type="text" placeholder="Type your question…" />
+        <button class="ai-send-btn" onclick="aiSendMessage()">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        </button>
       </div>
     </div>
   </div>
+
+  <!-- ══ STUDIO MODAL ══ -->
+  <div class="studio-overlay" id="studioOverlay" onclick="handleStudioOverlayClick(event)">
+    <div class="studio-modal">
+      <div class="studio-topbar">
+        <div>
+          <div class="studio-title">Homework Studio</div>
+          <div class="studio-hw-label" id="studioHwLabel"></div>
+        </div>
+        <button class="studio-close" onclick="closeStudio()" title="Close">&#x2715;</button>
+      </div>
+      <div class="studio-tabs">
+        <button class="studio-tab active" id="tab-wb" onclick="switchStudioTab('wb')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l3 3 5-5"/></svg>
+          Whiteboard
+        </button>
+        <button class="studio-tab" id="tab-ss" onclick="switchStudioTab('ss')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+          Spreadsheet
+        </button>
+        <button class="studio-tab" id="tab-sl" onclick="switchStudioTab('sl')">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Slides
+        </button>
+      </div>
+      <div class="studio-body">
+
+        <!-- WHITEBOARD PANE -->
+        <div class="studio-pane active" id="pane-wb">
+          <div class="wb-toolbar">
+            <button class="wb-tool-btn active" id="wbt-pen" title="Pen" onclick="setWbTool('pen')">
+              <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+            <button class="wb-tool-btn" id="wbt-line" title="Line" onclick="setWbTool('line')">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+            </button>
+            <button class="wb-tool-btn" id="wbt-rect" title="Rectangle" onclick="setWbTool('rect')">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/></svg>
+            </button>
+            <button class="wb-tool-btn" id="wbt-eraser" title="Eraser" onclick="setWbTool('eraser')">
+              <svg viewBox="0 0 24 24"><path d="M20 20H7L3 16l11-11 6 6-5.5 5.5"/><path d="M6 11L13 18"/></svg>
+            </button>
+            <div class="wb-sep"></div>
+            <div class="wb-color-swatch active" style="background:#1f2328;" onclick="setWbColor(this,'#1f2328')"></div>
+            <div class="wb-color-swatch" style="background:#ef4444;" onclick="setWbColor(this,'#ef4444')"></div>
+            <div class="wb-color-swatch" style="background:#3b82f6;" onclick="setWbColor(this,'#3b82f6')"></div>
+            <div class="wb-color-swatch" style="background:#10b981;" onclick="setWbColor(this,'#10b981')"></div>
+            <div class="wb-color-swatch" style="background:#f59e0b;" onclick="setWbColor(this,'#f59e0b')"></div>
+            <div class="wb-color-swatch" style="background:#7c3aed;" onclick="setWbColor(this,'#7c3aed')"></div>
+            <div class="wb-sep"></div>
+            <span class="wb-size-label">SIZE</span>
+            <input class="wb-size-input" id="wbSize" type="number" value="3" min="1" max="30" oninput="wbState.size=+this.value"/>
+            <div class="wb-sep"></div>
+            <button class="wb-tool-btn" title="Clear" onclick="clearCanvas()">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+          <div class="wb-canvas-wrap">
+            <canvas id="wbCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- SPREADSHEET PANE -->
+        <div class="studio-pane" id="pane-ss">
+          <div class="ss-toolbar">
+            <button class="ss-btn" onclick="ssAddRow()">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Row
+            </button>
+            <button class="ss-btn" onclick="ssAddCol()">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Column
+            </button>
+            <button class="ss-btn" onclick="ssClear()">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+              Clear
+            </button>
+          </div>
+          <div class="ss-wrap">
+            <table class="ss-table" id="ssTable"></table>
+          </div>
+        </div>
+
+        <!-- SLIDES PANE -->
+        <div class="studio-pane" id="pane-sl">
+          <div class="slides-wrap">
+            <div class="slides-sidebar" id="slidesSidebar"></div>
+            <div class="slides-editor">
+              <div class="slides-toolbar">
+                <button class="slide-add-btn" onclick="addSlide()">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  New Slide
+                </button>
+                <button class="slide-add-btn" onclick="deleteCurrentSlide()">
+                  <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                  Delete Slide
+                </button>
+              </div>
+              <div class="slides-canvas-wrap">
+                <div class="slide-canvas" id="slideCanvas">
+                  <div class="slide-bg">
+                    <div class="slide-title-input" contenteditable="true" id="slideTitleInput">Click to edit title</div>
+                    <div class="slide-body-input" contenteditable="true" id="slideBodyInput">Start typing your content here&hellip;</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SEND TO PROFESSOR EMAIL MODAL ══ -->
+  <div class="email-overlay" id="emailOverlay" onclick="handleEmailOverlayClick(event)">
+    <div class="email-modal">
+      <div class="email-modal-title">Send to Professor</div>
+      <div class="email-modal-sub" id="emailModalSub">Submit your assignment directly to your professor.</div>
+      <div class="email-field">
+        <label>To (Professor Email)</label>
+        <input type="email" id="emailTo" value="j.johnson@baruch.cuny.edu" placeholder="professor@baruch.cuny.edu"/>
+      </div>
+      <div class="email-field">
+        <label>Subject</label>
+        <input type="text" id="emailSubject" placeholder="Assignment submission"/>
+      </div>
+      <div class="email-field">
+        <label>Message</label>
+        <textarea id="emailBody" placeholder="Write a short message to your professor&hellip;"></textarea>
+      </div>
+      <div class="email-modal-actions">
+        <button class="email-cancel-btn" onclick="closeEmailModal()">Cancel</button>
+        <button class="email-send-btn" onclick="sendEmail()">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          Send Email
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROFESSOR PROFILE DRAWER ══ -->
+  <div class="prof-overlay" id="profOverlay" onclick="handleProfOverlayClick(event)">
+    <div class="prof-drawer" id="profDrawer">
+
+      <!-- Header: avatar + name + close -->
+      <div class="prof-drawer-header">
+        <div class="prof-drawer-avatar" id="profDrawerAvatar"></div>
+        <div class="prof-drawer-info">
+          <div class="prof-drawer-name" id="profDrawerName"></div>
+          <div class="prof-drawer-role" id="profDrawerRole"></div>
+          <div class="prof-drawer-meta" id="profDrawerMeta"></div>
+        </div>
+        <button class="prof-drawer-close" onclick="closeProfDrawer()">&#x2715;</button>
+      </div>
+
+      <div class="prof-drawer-body">
+
+        <!-- ── SECTION 1: Profile Info ── -->
+        <div class="prof-section">
+          <div class="prof-section-title">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile &amp; Contact
+          </div>
+          <p id="profDrawerAbout" style="font-size:13px;color:#374151;line-height:1.65;margin:0 0 14px;"></p>
+          <div class="prof-info-chips" id="profInfoChips"></div>
+        </div>
+
+        <!-- ── SECTION 2: Send Email ── -->
+        <div class="prof-section">
+          <div class="prof-section-title">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Send Email
+          </div>
+          <!-- Professional email templates -->
+          <div class="prof-email-templates">
+            <button class="prof-tpl-btn" onclick="applyProfTemplate('question')">📝 Ask a question</button>
+            <button class="prof-tpl-btn" onclick="applyProfTemplate('office')">📅 Request office hours</button>
+            <button class="prof-tpl-btn" onclick="applyProfTemplate('feedback')">💬 Ask for feedback</button>
+            <button class="prof-tpl-btn" onclick="applyProfTemplate('extension')">⏰ Request extension</button>
+            <button class="prof-tpl-btn" onclick="applyProfTemplate('intro')">👋 Introduce myself</button>
+          </div>
+          <div class="email-field" style="margin-bottom:10px;">
+            <label>To</label>
+            <input type="email" id="profEmailTo" readonly style="background:#f9fafb;color:#57606a;"/>
+          </div>
+          <div class="email-field" style="margin-bottom:10px;">
+            <label>Subject</label>
+            <input type="text" id="profEmailSubject" placeholder="Your subject…"/>
+          </div>
+          <div class="email-field" style="margin-bottom:12px;">
+            <label>Message</label>
+            <textarea id="profEmailBody" style="min-height:110px;" placeholder="Write your message…"></textarea>
+          </div>
+          <div class="email-modal-actions">
+            <button class="email-cancel-btn" onclick="clearProfEmail()">Clear</button>
+            <button class="email-send-btn" onclick="sendProfEmail()">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+              Send Email
+            </button>
+          </div>
+        </div>
+
+        <!-- ── SECTION 3: Ask Luna ── -->
+        <div class="prof-section">
+          <div class="prof-section-title">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+            Ask Luna
+          </div>
+          <div class="prof-luna-banner">
+            <div class="prof-luna-av">L</div>
+            <div class="prof-luna-banner-text">
+              <strong>Hi! I'm Luna 👋</strong><br>
+              I can help you write professional emails, prepare questions, or get advice on reaching out.
+            </div>
+          </div>
+          <div class="prof-luna-msgs" id="profLunaMsgs"></div>
+          <div class="prof-ask-row">
+            <input class="prof-ask-input" id="profAskInput" type="text" placeholder="Ask Luna how to write a professional email…"/>
+            <button class="prof-ask-send" onclick="profLunaSend()">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ══════════════════════════════════════════════════════
+       STUDENT ENROLLMENT — edit this array to change which
+       courses appear in the homework panel.
+       Course codes must match those in subjects.html.
+    ══════════════════════════════════════════════════════ */
+    var STUDENT_COURSES = [
+      { code: 'MBA 7000', name: 'Business Leadership & Comm',  profEmail: 'j.johnson@baruch.cuny.edu',  profName: 'Prof. James Johnson'  },
+      { code: 'BUS 7000', name: 'Business Statistics',         profEmail: 'b.brooks@baruch.cuny.edu',   profName: 'Prof. B. Brooks'      },
+      { code: 'MKT 7100', name: 'Marketing Management',        profEmail: 'm.martinez@baruch.cuny.edu', profName: 'Prof. M. Martinez'    },
+      { code: 'ACC 7000', name: 'Financial Accounting for MBAs', profEmail: 'a.alvarez@baruch.cuny.edu', profName: 'Prof. A. Alvarez'    },
+    ];
+
+    /* ══════════════════════════════════════════════════════
+       FULL HOMEWORK CATALOG — all assignments across courses.
+       Add new assignments here; they appear automatically
+       when their course is in STUDENT_COURSES above.
+    ══════════════════════════════════════════════════════ */
+    var ALL_HW = [
+      // ── MBA 7000 ──────────────────────────────────────
+      {
+        id: 'hw-syllabus', course: 'MBA 7000',
+        name: 'Read Syllabus', sub: 'All courses',
+        type: 'reading', typeName: 'Reading',
+        due: null, dueLabel: 'Done',
+        status: 'done'
+      },
+      {
+        id: 'hw-reading', course: 'MBA 7000',
+        name: 'Continue reading \u2014 2 pages', sub: 'Ch. 3: The Language of Business',
+        type: 'reading', typeName: 'Reading',
+        due: '2026-11-14', dueLabel: 'Due tonight',
+        status: 'pending'
+      },
+      // ── BUS 7000 ──────────────────────────────────────
+      {
+        id: 'hw-quiz', course: 'BUS 7000',
+        name: 'Math Quiz Prep', sub: 'Chapter 3 practice problems',
+        type: 'quiz', typeName: 'Quiz',
+        due: '2026-11-21', dueLabel: 'Due Nov 21',
+        status: 'pending'
+      },
+    ];
+
+    /* ── build enrolled-course lookup ── */
+    var enrolledCodes = STUDENT_COURSES.map(function(c) { return c.code; });
+    var courseMap = {};
+    STUDENT_COURSES.forEach(function(c) { courseMap[c.code] = c; });
+
+    /* ── SVG icons used in pills ── */
+    var SVG_BOOK   = '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
+    var SVG_CAL    = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+    var SVG_ARROW  = '<svg class="hw-expand-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+    var SVG_STUDIO = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>';
+    var SVG_SEND   = '<svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>';
+    var SVG_CHECK  = '<svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>';
+
+    /* ── type icon SVGs for the detail pill ── */
+    var TYPE_ICONS = {
+      reading : '<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+      homework: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>',
+      quiz    : '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      project : '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      other   : '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    };
+
+    /* ── render enrolled-course chip strip ── */
+    function renderCourseChips() {
+      var chipsEl = document.getElementById('hwCourseChips');
+      if (!chipsEl) return;
+      chipsEl.innerHTML = STUDENT_COURSES.map(function(c) {
+        return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;'
+             + 'background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:8px;padding:3px 10px;color:#374151;">'
+             + '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#7c3aed;flex-shrink:0;"></span>'
+             + c.code
+             + '</span>';
+      }).join('');
+    }
+
+    /* ── render homework list filtered by enrolled courses ── */
+    function renderHW() {
+      var listEl = document.getElementById('hwList');
+      if (!listEl) return;
+
+      var filtered = ALL_HW.filter(function(h) {
+        return enrolledCodes.indexOf(h.course) !== -1;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div style="font-size:13px;color:#9ca3af;padding:12px 2px;">No homework found for your enrolled courses.</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(function(h) {
+        var isDone = h.status === 'done';
+        var c = courseMap[h.course] || {};
+
+        if (isDone) {
+          return '<div class="hw-item done-item">'
+               + '  <div class="hw-item-row">'
+               + '    <div class="hw-check done">' + SVG_CHECK + '</div>'
+               + '    <div class="hw-text">'
+               + '      <div class="hw-name-row">'
+               + '        <span class="hw-name">' + h.name + '</span>'
+               + '        <span class="hw-badge type-' + h.type + '">' + h.typeName + '</span>'
+               + '      </div>'
+               + '      <div class="hw-sub">' + h.course + ' \u00b7 ' + h.dueLabel + '</div>'
+               + '    </div>'
+               + '  </div>'
+               + '</div>';
+        }
+
+        /* pending / upcoming / due-soon / overdue — buttons always visible */
+        var sendCall = "openEmailModal('" + h.id + "')";
+        var studioCall = "openStudio('" + h.name.replace(/'/g, "\\'") + "')";
+        return '<div class="hw-item" id="' + h.id + '">'
+             + '  <div class="hw-item-row" onclick="toggleHW(\'' + h.id + '\')">'
+             + '    <div class="hw-check"></div>'
+             + '    <div class="hw-text">'
+             + '      <div class="hw-name-row">'
+             + '        <span class="hw-name">' + h.name + '</span>'
+             + '        <span class="hw-badge type-' + h.type + '">' + h.typeName + '</span>'
+             + '      </div>'
+             + '      <div class="hw-sub">' + h.course + ' \u00b7 ' + h.dueLabel + '</div>'
+             + '    </div>'
+             + '    ' + SVG_ARROW
+             + '  </div>'
+             + '  <div class="hw-action-row" style="padding:0 13px 11px 41px;gap:7px;">'
+             + '    <button class="hw-btn studio" onclick="' + studioCall + '">'
+             + '      ' + SVG_STUDIO + ' Open Studio'
+             + '    </button>'
+             + '    <button class="hw-btn send" onclick="' + sendCall + '">'
+             + '      ' + SVG_SEND + ' Send to Professor'
+             + '    </button>'
+             + '  </div>'
+             + '  <div class="hw-detail">'
+             + '    <div class="hw-detail-meta" style="padding-top:4px;">'
+             + '      <span class="hw-meta-pill">' + SVG_BOOK + ' ' + (c.name || h.course) + '</span>'
+             + '      <span class="hw-meta-pill">' + SVG_CAL + ' ' + h.dueLabel + '</span>'
+             + '      <span class="hw-meta-pill">' + (TYPE_ICONS[h.type] || TYPE_ICONS.other) + ' ' + h.typeName + '</span>'
+             + '    </div>'
+             + '  </div>'
+             + '</div>';
+      }).join('');
+    }
+
+    /* ════════════════════════════════════════════
+       SYLLABUS BREAKDOWN — data (declared before use)
+    ════════════════════════════════════════════ */
+
+    /* Sample parsed-syllabus data (replace with real parse results) */
+    var SB_SYLLABI = [
+      { id: 'syl-mba',  course: 'MBA 7000', name: 'Business Leadership & Comm',
+        color: '#7c3aed', tasks: 12, done: 5, status: 'parsed' },
+      { id: 'syl-bus',  course: 'BUS 7000', name: 'Business Statistics',
+        color: '#2563eb', tasks: 10, done: 2, status: 'parsed' },
+      { id: 'syl-mkt',  course: 'MKT 7100', name: 'Marketing Management',
+        color: '#059669', tasks: 9,  done: 0, status: 'pending' },
+      { id: 'syl-acc',  course: 'ACC 7000', name: 'Financial Accounting for MBAs',
+        color: '#d97706', tasks: 11, done: 1, status: 'pending' },
+    ];
+
+    /* Weekly micro-task plan (drives the timeline) */
+    var SB_WEEKS = [
+      {
+        id: 'w-past', label: 'Week 1 · Nov 4–8', era: 'past',
+        tasks: [
+          { id: 'st1', name: 'Read all syllabi — note grading weights', course: 'All', type: 'study',     done: true,  due: 'Nov 8'  },
+          { id: 'st2', name: 'Activate Blackboard for each course',     course: 'All', type: 'milestone', done: true,  due: 'Nov 8'  },
+          { id: 'st3', name: 'Add all exam dates to calendar',          course: 'All', type: 'milestone', done: true,  due: 'Nov 8'  },
+        ]
+      },
+      {
+        id: 'w-current', label: 'Week 2 · Nov 11–15  (Current)', era: 'current',
+        tasks: [
+          { id: 'st4', name: 'Read Syllabus — Ch. 1',                   course: 'MBA 7000', type: 'reading',  done: true,  due: 'Nov 11' },
+          { id: 'st5', name: 'Continue reading — Ch. 3 (2 pages)',      course: 'MBA 7000', type: 'reading',  done: false, due: 'Tonight', urgent: true },
+          { id: 'st6', name: 'Math Quiz Prep — Ch. 3 problems',         course: 'BUS 7000', type: 'quiz',     done: false, due: 'Nov 21', urgent: false },
+          { id: 'st7', name: 'Study block — Marketing concepts intro',  course: 'MKT 7100', type: 'study',    done: false, due: 'Nov 15' },
+        ]
+      },
+      {
+        id: 'w-next', label: 'Week 3 · Nov 18–22', era: 'upcoming',
+        tasks: [
+          { id: 'st8',  name: 'Business Communications Essay — draft',  course: 'MBA 7000', type: 'homework',  done: false, due: 'Nov 18', urgent: true },
+          { id: 'st9',  name: 'GSA Workshop registration deadline',      course: 'BUS 7000', type: 'milestone', done: false, due: 'Nov 19', urgent: true },
+          { id: 'st10', name: 'Study block — Statistics Ch. 4 review',  course: 'BUS 7000', type: 'study',     done: false, due: 'Nov 20' },
+          { id: 'st11', name: 'Accounting journal entries practice',    course: 'ACC 7000', type: 'homework',  done: false, due: 'Nov 22' },
+        ]
+      },
+      {
+        id: 'w-far', label: 'Week 4 · Nov 25–29', era: 'upcoming',
+        tasks: [
+          { id: 'st12', name: 'Marketing Project — outline due',        course: 'MKT 7100', type: 'project',   done: false, due: 'Dec 1' },
+          { id: 'st13', name: 'Study block — MBA midterm prep',         course: 'MBA 7000', type: 'study',     done: false, due: 'Nov 29' },
+          { id: 'st14', name: 'Peer review exchange — submit draft',    course: 'MBA 7000', type: 'homework',  done: false, due: 'Nov 29' },
+        ]
+      },
+    ];
+
+    /* Study insights */
+    var SB_INSIGHTS = [
+      { type: 'alert', text: '<strong>Crunch zone detected:</strong> 3 deadlines land between Nov 18–21. Start the Business Comms essay now to avoid overlap.' },
+      { type: 'warn',  text: '<strong>No study block for ACC 7000</strong> scheduled this week. Add 30 min on Thursday before the material accumulates.' },
+      { type: 'tip',   text: '<strong>On track for MBA 7000</strong> — 5 of 12 tasks done. Keep the pace to finish 2 days before the final.' },
+    ];
+
+    /* ── run on load ── */
+    renderCourseChips();
+    renderHW();
+    sbUpdatePendingCount();
+    sbRenderSyllabi();
+    sbRenderWeeklyPlan();
+    sbRenderInsights();
+
+    /* ── render parsed-syllabi list ── */
+    function sbRenderSyllabi() {
+      var el = document.getElementById('sbSyllabusList');
+      if (!el) return;
+      el.innerHTML = SB_SYLLABI.map(function(s) {
+        var pct = Math.round((s.done / s.tasks) * 100);
+        var statusCls = s.status === 'parsed' ? 'syl-status-parsed' : 'syl-status-pending';
+        var statusLabel = s.status === 'parsed' ? 'Parsed' : 'Uploading…';
+        return '<div class="sb-syllabus-item' + (s.status === 'parsed' ? ' active' : '') + '">'
+          + '<span class="sb-syl-course-dot" style="background:' + s.color + '"></span>'
+          + '<div class="sb-syl-info">'
+          + '  <div class="sb-syl-name">' + s.course + ' · ' + s.name + '</div>'
+          + '  <div class="sb-syl-meta">' + s.done + '/' + s.tasks + ' tasks completed</div>'
+          + '</div>'
+          + '<div class="sb-syl-mini-bar">'
+          + '  <div class="sb-syl-mini-bg"><div class="sb-syl-mini-fill" style="width:' + pct + '%"></div></div>'
+          + '  <div class="sb-syl-pct">' + pct + '%</div>'
+          + '</div>'
+          + '<span class="sb-syl-status ' + statusCls + '">' + statusLabel + '</span>'
+          + '</div>';
+      }).join('');
+    }
+
+    /* ── render weekly plan ── */
+    function sbRenderWeeklyPlan() {
+      var el = document.getElementById('sbWeeklyPlan');
+      if (!el) return;
+      el.innerHTML = SB_WEEKS.map(function(w) {
+        var badgeCls = w.era === 'current' ? 'week-current' : w.era === 'past' ? 'week-past' : '';
+        var pendingCount = w.tasks.filter(function(t){ return !t.done; }).length;
+        var isOpen = w.era === 'current' || w.era === 'upcoming';
+        return '<div class="sb-week-block' + (isOpen ? ' open' : '') + '" id="' + w.id + '">'
+          + '<div class="sb-week-header" onclick="sbToggleWeek(\'' + w.id + '\')">'
+          + '  <span class="sb-week-badge ' + badgeCls + '">' + (w.era === 'current' ? 'Now' : w.era === 'past' ? 'Done' : 'Upcoming') + '</span>'
+          + '  <span class="sb-week-title">' + w.label + '</span>'
+          + '  <span class="sb-week-count">' + pendingCount + ' pending</span>'
+          + '  <svg class="sb-week-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>'
+          + '</div>'
+          + '<div class="sb-task-list">'
+          + w.tasks.map(function(t) {
+              var typeCls = 'sb-type-' + t.type;
+              var typeLabel = { reading:'Reading', quiz:'Quiz', homework:'Homework', project:'Project', milestone:'Milestone', study:'Study Block' }[t.type] || t.type;
+              var dueCls = t.urgent ? 'sb-task-due' : 'sb-task-due ok';
+              var studioCall = "openStudio('" + t.name.replace(/'/g,"\\'") + "')";
+              var sendCall   = "openEmailModal('" + t.id + "')";
+              return '<div class="sb-task' + (t.done ? ' done' : '') + '" id="' + t.id + '" onclick="sbToggleTask(\'' + t.id + '\')">'
+                + '<div class="sb-task-check"></div>'
+                + '<div class="sb-task-body">'
+                + '  <div class="sb-task-name">' + t.name + '</div>'
+                + '  <div class="sb-task-meta">'
+                + '    <span class="sb-task-course">' + t.course + '</span>'
+                + '    <span class="sb-task-type ' + typeCls + '">' + typeLabel + '</span>'
+                + '    <span class="' + dueCls + '">' + t.due + '</span>'
+                + '  </div>'
+                + '</div>'
+                + (t.done ? '' :
+                    '<div class="sb-task-actions">'
+                  + '  <button class="sb-task-btn studio" onclick="event.stopPropagation();' + studioCall + '">'
+                  + '    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>Studio'
+                  + '  </button>'
+                  + '  <button class="sb-task-btn send" onclick="event.stopPropagation();' + sendCall + '">'
+                  + '    <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>Send'
+                  + '  </button>'
+                  + '</div>')
+                + '</div>';
+            }).join('')
+          + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
+    /* ── render insights ── */
+    function sbRenderInsights() {
+      var el = document.getElementById('sbInsights');
+      if (!el) return;
+      el.innerHTML = SB_INSIGHTS.map(function(i) {
+        return '<div class="sb-insight ' + i.type + '"><span class="sb-insight-dot"></span><span>' + i.text + '</span></div>';
+      }).join('');
+    }
+
+    /* ── toggle week open/closed ── */
+    function sbToggleWeek(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('open');
+    }
+
+    /* ── toggle individual micro-task done ── */
+    function sbToggleTask(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('done');
+    }
+
+    /* ── toggle Complete Homework subsection ── */
+    function sbToggleSubsection() {
+      var el = document.getElementById('sbHwSubsection');
+      if (el) el.classList.toggle('open');
+    }
+
+    /* ── pending count badge ── */
+    function sbUpdatePendingCount() {
+      var badge = document.getElementById('hwPendingCount');
+      if (!badge) return;
+      var pending = ALL_HW.filter(function(h) {
+        return enrolledCodes.indexOf(h.course) !== -1 && h.status !== 'done';
+      }).length;
+      badge.textContent = pending + ' pending';
+    }
+
+    /* ── upload zone — drag/drop visual ── */
+    (function() {
+      var zone = document.getElementById('sbUploadZone');
+      if (!zone) return;
+      zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+      zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
+      zone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        var file = e.dataTransfer && e.dataTransfer.files[0];
+        if (file) sbHandleFile(file);
+      });
+      document.getElementById('sbFileInput').addEventListener('change', function() {
+        if (this.files[0]) sbHandleFile(this.files[0]);
+      });
+    })();
+
+    function sbTriggerUpload(e) {
+      e.stopPropagation();
+      document.getElementById('sbFileInput').click();
+    }
+
+    function sbHandleFile(file) {
+      /* ── Show "Parsing…" state immediately ── */
+      var uploadZone = document.getElementById('sbUploadZone');
+      if (uploadZone) {
+        uploadZone.style.borderColor = '#7c3aed';
+        uploadZone.querySelector('.sb-upload-title').textContent = 'Parsing syllabus…';
+        uploadZone.querySelector('.sb-upload-sub').textContent = file.name;
+      }
+
+      /* ── After 1.8 s simulate a full parse of COMM3206 ── */
+      setTimeout(function() {
+
+        /* ════ PARSED SYLLABUS ENTRY ════ */
+        var parsedEntry = {
+          id: 'syl-comm3206',
+          course: 'COMM 3206',
+          name: 'Investment & Money Management',
+          color: '#7c3aed',
+          tasks: 42,
+          done: 0,
+          status: 'parsed'
+        };
+        /* Replace placeholder entries with this real one */
+        SB_SYLLABI = [parsedEntry];
+
+        /* ════ WEEKLY STUDY PLAN — 14 weeks from syllabus ════ */
+        SB_WEEKS = [
+          {
+            id: 'wk1', label: 'Week 1 · Sep 7–10', era: 'past',
+            tasks: [
+              { id: 'c1t1', name: 'Browse Elton & Gruber Chs. 1–3 (security market basics)', course: 'COMM 3206', type: 'reading',   done: false, due: 'Sep 10' },
+              { id: 'c1t2', name: 'Watch Introduction video on Brightspace',                  course: 'COMM 3206', type: 'study',     done: false, due: 'Sep 10' },
+              { id: 'c1t3', name: 'Complete Week 1 exercise on Brightspace',                  course: 'COMM 3206', type: 'homework',  done: false, due: 'Sep 10' },
+              { id: 'c1t4', name: 'Watch videos: Securitization, Margin Trading, Short Selling', course: 'COMM 3206', type: 'study', done: false, due: 'Sep 10' },
+            ]
+          },
+          {
+            id: 'wk2', label: 'Week 2 · Sep 13–17', era: 'past',
+            tasks: [
+              { id: 'c2t1', name: 'Form your 4-person project team (DEADLINE: Sep 17)',       course: 'COMM 3206', type: 'milestone', done: false, due: 'Sep 17', urgent: true },
+              { id: 'c2t2', name: 'Browse Elton & Gruber Chs. 4–5 (Investment under uncertainty)', course: 'COMM 3206', type: 'reading', done: false, due: 'Sep 17' },
+              { id: 'c2t3', name: 'Complete capital allocation exercise on Brightspace',       course: 'COMM 3206', type: 'homework',  done: false, due: 'Sep 17' },
+              { id: 'c2t4', name: 'Complete Week 2 exercises on Brightspace',                 course: 'COMM 3206', type: 'homework',  done: false, due: 'Sep 17' },
+              { id: 'c2t5', name: 'Watch videos: Diversification, Historical Investment Tools', course: 'COMM 3206', type: 'study',  done: false, due: 'Sep 17' },
+              { id: 'c2t6', name: 'Last day to add/drop without record (Sep 17)',              course: 'COMM 3206', type: 'milestone', done: false, due: 'Sep 17', urgent: true },
+            ]
+          },
+          {
+            id: 'wk3', label: 'Week 3 · Sep 20–24', era: 'past',
+            tasks: [
+              { id: 'c3t1', name: 'Read Elton & Gruber Ch. 6 (Mean-Variance approach)',       course: 'COMM 3206', type: 'reading',  done: false, due: 'Sep 24' },
+              { id: 'c3t2', name: 'Watch video: What is a Matrix (Matrix Algebra)',            course: 'COMM 3206', type: 'study',    done: false, due: 'Sep 24' },
+              { id: 'c3t3', name: 'Complete Week 3 exercise on Brightspace',                   course: 'COMM 3206', type: 'homework', done: false, due: 'Sep 24' },
+              { id: 'c3t4', name: 'Watch video: Optimum Portfolio',                            course: 'COMM 3206', type: 'study',    done: false, due: 'Sep 24' },
+            ]
+          },
+          {
+            id: 'wk4', label: 'Week 4 · Sep 27–Oct 1', era: 'past',
+            tasks: [
+              { id: 'c4t1', name: 'Assessment 1 DUE — Sep 26 (TSX data analysis)',            course: 'COMM 3206', type: 'project',  done: false, due: 'Sep 26', urgent: true },
+              { id: 'c4t2', name: 'Read Elton & Gruber Ch. 7 & Ch. 9 (pp. 1–189)',            course: 'COMM 3206', type: 'reading',  done: false, due: 'Oct 1' },
+              { id: 'c4t3', name: 'Complete Week 4 exercise on Brightspace',                   course: 'COMM 3206', type: 'homework', done: false, due: 'Oct 1' },
+              { id: 'c4t4', name: 'Watch videos: Single Index Model features & application',   course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 1' },
+              { id: 'c4t5', name: 'Last day to drop without "W" on transcript (Oct 1)',        course: 'COMM 3206', type: 'milestone', done: false, due: 'Oct 1', urgent: true },
+            ]
+          },
+          {
+            id: 'wk5', label: 'Week 5 · Oct 4–8', era: 'current',
+            tasks: [
+              { id: 'c5t1', name: 'Read Elton & Gruber Ch. 9 (p.189–end), Ch. 13 (pp.1–298), Ch. 14 (pp.1–318)', course: 'COMM 3206', type: 'reading', done: false, due: 'Oct 8' },
+              { id: 'c5t2', name: 'Complete Week 5 exercise on Brightspace',                   course: 'COMM 3206', type: 'homework', done: false, due: 'Oct 8' },
+              { id: 'c5t3', name: 'Watch video: Constant Correlation Model',                   course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 8' },
+              { id: 'c5t4', name: 'Watch video: Capital Asset Pricing Model (CAPM)',            course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 8' },
+              { id: 'c5t5', name: 'Assessment 2 DUE — Oct 10 (TSX portfolio analysis)',        course: 'COMM 3206', type: 'project',  done: false, due: 'Oct 10', urgent: true },
+            ]
+          },
+          {
+            id: 'wk6', label: 'Week 6 · Oct 12–15', era: 'upcoming',
+            tasks: [
+              { id: 'c6t1', name: 'Read Elton & Gruber Ch. 8 (pp.1–159) & Ch. 16 (pp.1–369)',  course: 'COMM 3206', type: 'reading',  done: false, due: 'Oct 15' },
+              { id: 'c6t2', name: 'Complete Week 6 exercise on Brightspace',                     course: 'COMM 3206', type: 'homework', done: false, due: 'Oct 15' },
+              { id: 'c6t3', name: 'Watch video: Multi-index Model and APT',                      course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 15' },
+              { id: 'c6t4', name: '⚠ MIDTERM EXAM — Saturday Oct 16, 10am–12pm',               course: 'COMM 3206', type: 'milestone', done: false, due: 'Oct 16', urgent: true },
+            ]
+          },
+          {
+            id: 'wk7', label: 'Week 7 · Oct 18–22 (Post-Midterm)', era: 'upcoming',
+            tasks: [
+              { id: 'c7t1', name: 'Browse Elton & Gruber Ch. 17 (Efficient Market Hypothesis)', course: 'COMM 3206', type: 'reading',  done: false, due: 'Oct 22' },
+              { id: 'c7t2', name: 'Read Elton & Gruber Ch. 18 (Equity Valuation)',              course: 'COMM 3206', type: 'reading',  done: false, due: 'Oct 22' },
+              { id: 'c7t3', name: 'Complete Week 7 exercise on Brightspace',                     course: 'COMM 3206', type: 'homework', done: false, due: 'Oct 22' },
+              { id: 'c7t4', name: 'Watch videos: EMH overview, Equity Valuation',               course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 22' },
+            ]
+          },
+          {
+            id: 'wk8', label: 'Week 8 · Oct 25–29', era: 'upcoming',
+            tasks: [
+              { id: 'c8t1', name: 'Read Elton & Gruber Ch. 21 (Bond Pricing & Characteristics)', course: 'COMM 3206', type: 'reading', done: false, due: 'Oct 29' },
+              { id: 'c8t2', name: 'Complete Week 8 exercise on Brightspace',                     course: 'COMM 3206', type: 'homework', done: false, due: 'Oct 29' },
+              { id: 'c8t3', name: 'Watch video: Bond Prices and Yield',                          course: 'COMM 3206', type: 'study',    done: false, due: 'Oct 29' },
+              { id: 'c8t4', name: 'Assessment 3 DUE — Oct 30 (TSX fixed income analysis)',       course: 'COMM 3206', type: 'project',  done: false, due: 'Oct 30', urgent: true },
+            ]
+          },
+          {
+            id: 'wk9', label: 'Week 9 · Nov 1–5', era: 'upcoming',
+            tasks: [
+              { id: 'c9t1', name: 'Read Elton & Gruber Ch. 22 (pp. 1–565, Term Structure)',     course: 'COMM 3206', type: 'reading',  done: false, due: 'Nov 3' },
+              { id: 'c9t2', name: 'Complete Week 9 exercise on Brightspace',                     course: 'COMM 3206', type: 'homework', done: false, due: 'Nov 3' },
+              { id: 'c9t3', name: 'Watch video: Term Structure of Interest Rates',               course: 'COMM 3206', type: 'study',    done: false, due: 'Nov 3' },
+              { id: 'c9t4', name: 'Last day to drop with "W" on transcript (Nov 1)',             course: 'COMM 3206', type: 'milestone', done: false, due: 'Nov 1', urgent: true },
+            ]
+          },
+          {
+            id: 'wk10', label: 'Week 10 · Nov 8–12 — 🏖 Study Break', era: 'upcoming',
+            tasks: [
+              { id: 'c10t1', name: 'NO CLASS this week — use time to review Chs. 21–22',        course: 'COMM 3206', type: 'study',    done: false, due: 'Nov 12' },
+              { id: 'c10t2', name: 'Catch up on any outstanding Brightspace exercises',          course: 'COMM 3206', type: 'homework', done: false, due: 'Nov 12' },
+              { id: 'c10t3', name: 'Work on team Assignment 4 draft (due Nov 30)',               course: 'COMM 3206', type: 'project',  done: false, due: 'Nov 12' },
+            ]
+          },
+          {
+            id: 'wk11', label: 'Week 11 · Nov 15–19', era: 'upcoming',
+            tasks: [
+              { id: 'c11t1', name: 'Read Elton & Gruber Ch. 22 (p.565–end, Bond Portfolio Mgmt)', course: 'COMM 3206', type: 'reading', done: false, due: 'Nov 19' },
+              { id: 'c11t2', name: 'Complete Week 11 exercise on Brightspace',                   course: 'COMM 3206', type: 'homework', done: false, due: 'Nov 19' },
+              { id: 'c11t3', name: 'Watch videos: Bond Portfolio Management Parts 1 & 2',        course: 'COMM 3206', type: 'study',    done: false, due: 'Nov 19' },
+            ]
+          },
+          {
+            id: 'wk12', label: 'Week 12 · Nov 22–26', era: 'upcoming',
+            tasks: [
+              { id: 'c12t1', name: 'Read Elton & Gruber Ch. 12 (International Diversification)',  course: 'COMM 3206', type: 'reading', done: false, due: 'Nov 26' },
+              { id: 'c12t2', name: 'Complete Week 12 exercise on Brightspace',                    course: 'COMM 3206', type: 'homework', done: false, due: 'Nov 26' },
+              { id: 'c12t3', name: 'Watch video: International Diversification',                  course: 'COMM 3206', type: 'study',    done: false, due: 'Nov 26' },
+            ]
+          },
+          {
+            id: 'wk13', label: 'Week 13 · Nov 29–Dec 3', era: 'upcoming',
+            tasks: [
+              { id: 'c13t1', name: 'Read Elton & Gruber Ch. 26 (Performance Measurement)',       course: 'COMM 3206', type: 'reading',  done: false, due: 'Dec 3' },
+              { id: 'c13t2', name: 'Complete Week 13 exercise on Brightspace',                    course: 'COMM 3206', type: 'homework', done: false, due: 'Dec 3' },
+              { id: 'c13t3', name: 'Watch video: Portfolio Performance Evaluation',               course: 'COMM 3206', type: 'study',    done: false, due: 'Dec 3' },
+              { id: 'c13t4', name: '⚠ Assessment 4 DUE — Nov 30 (Final TSX report + peer eval)', course: 'COMM 3206', type: 'project',  done: false, due: 'Nov 30', urgent: true },
+            ]
+          },
+          {
+            id: 'wk14', label: 'Week 14 · Dec 1–8 (Final Week)', era: 'upcoming',
+            tasks: [
+              { id: 'c14t1', name: 'Read Elton & Gruber Ch. 28 (Industry links & review)',       course: 'COMM 3206', type: 'reading',  done: false, due: 'Dec 8' },
+              { id: 'c14t2', name: 'Read supplementary materials mounted on Brightspace',         course: 'COMM 3206', type: 'reading',  done: false, due: 'Dec 8' },
+              { id: 'c14t3', name: 'Review sessions — attend optional Mon Dec 8 recap class',     course: 'COMM 3206', type: 'study',    done: false, due: 'Dec 8' },
+              { id: 'c14t4', name: '⚠ FINAL EXAM — Dec 9–19 (date set by Registrar)',            course: 'COMM 3206', type: 'milestone', done: false, due: 'Dec 9–19', urgent: true },
+            ]
+          },
+        ];
+
+        /* ════ LUNA INSIGHTS from syllabus ════ */
+        SB_INSIGHTS = [
+          { type: 'alert', text: '<strong>4 graded assessments</strong> build on each other (Sep 26 → Oct 10 → Oct 30 → Nov 30). Missing one hurts the final report — start each at least 10 days early.' },
+          { type: 'alert', text: '<strong>Midterm is Saturday Oct 16</strong> — covers weeks 1–6. Book a study block by Oct 12 and visit Dr. Fooladi\'s office hours (Wed 2:30–4pm) for clarification.' },
+          { type: 'warn',  text: '<strong>Week 5 is a crunch zone:</strong> Assessment 2 (Oct 10) + 3 heavy reading chapters due. Start the TSX analysis by Oct 4 to avoid a rush.' },
+          { type: 'warn',  text: '<strong>Add/drop deadline is Sep 17.</strong> If prerequisites COMM 2202 & 2203 are not met, speak to your advisor before that date.' },
+          { type: 'tip',   text: '<strong>Dr. Fooladi emphasises notes over text</strong> for Chs. 4–6 and 13–14. Attend live lectures and record key points — videos on Brightspace are your best study tool.' },
+          { type: 'tip',   text: '<strong>Participation = 5% of your grade.</strong> Ask one question per class during live sessions — this is easy GPA points.' },
+        ];
+
+        /* ════ ADD COMM3206 to homework list ════ */
+        ALL_HW.push(
+          { id: 'hw-a1', course: 'COMM 3206', name: 'Assessment 1 — TSX Portfolio Analysis',   sub: 'COMM 3206 · Team of 4', type: 'project',  typeName: 'Project',  due: '2021-09-26', dueLabel: 'Due Sep 26', status: 'pending' },
+          { id: 'hw-a2', course: 'COMM 3206', name: 'Assessment 2 — Index Model Analysis',      sub: 'COMM 3206 · Team of 4', type: 'project',  typeName: 'Project',  due: '2021-10-10', dueLabel: 'Due Oct 10', status: 'pending' },
+          { id: 'hw-a3', course: 'COMM 3206', name: 'Assessment 3 — Fixed Income Report',       sub: 'COMM 3206 · Team of 4', type: 'project',  typeName: 'Project',  due: '2021-10-30', dueLabel: 'Due Oct 30', status: 'pending' },
+          { id: 'hw-a4', course: 'COMM 3206', name: 'Assessment 4 — Final Portfolio Report',    sub: 'COMM 3206 · Team of 4', type: 'project',  typeName: 'Project',  due: '2021-11-30', dueLabel: 'Due Nov 30', status: 'pending' },
+          { id: 'hw-mid', course: 'COMM 3206', name: 'Midterm Exam Prep',                        sub: 'Covers weeks 1–6',      type: 'quiz',     typeName: 'Exam',     due: '2021-10-16', dueLabel: 'Oct 16 (Sat)', status: 'pending' }
+        );
+        STUDENT_COURSES.push({ code: 'COMM 3206', name: 'Investment & Money Management', profEmail: 'iraj.fooladi@dal.ca', profName: 'Dr. Iraj Fooladi' });
+        enrolledCodes.push('COMM 3206');
+
+        /* ════ RE-RENDER ALL THREE PANELS ════ */
+        sbRenderSyllabi();
+        sbRenderWeeklyPlan();
+        sbRenderInsights();
+        renderCourseChips();
+        renderHW();
+        sbUpdatePendingCount();
+
+        /* ════ UPDATE PROFESSOR CONNECT ════ */
+        var pcPanel = document.getElementById('professorConnectPanel');
+        if (pcPanel) {
+          pcPanel.innerHTML = [
+            '<div class="panel-header">',
+            '  <div class="panel-icon purple">',
+            '    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+            '  </div>',
+            '  <div>',
+            '    <div class="panel-title">Professor Connect</div>',
+            '    <div style="font-size:11px;color:#9ca3af;margin-top:1px;">COMM 3206 contacts &amp; support</div>',
+            '  </div>',
+            '</div>',
+            '<div class="panel-divider"></div>',
+
+            '<div class="rec-label">Course Instructor</div>',
+            '<div class="rec-advisor" style="cursor:pointer;" onclick="openProfDrawer(\'iraj\')">',
+            '  <div class="rec-avatar" style="background:#7c3aed">IF</div>',
+            '  <div>',
+            '    <div class="rec-name">Dr. Iraj Fooladi</div>',
+            '    <div class="rec-role">COMM 3206 · Investment &amp; Money Management</div>',
+            '    <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Office hrs: Wed 2:30–4pm · iraj.fooladi@dal.ca</div>',
+            '  </div>',
+            '</div>',
+
+            '<div class="rec-label" style="margin-top:14px;">Teaching Assistant</div>',
+            '<div class="rec-advisor" style="cursor:pointer;margin-bottom:12px;" onclick="openProfDrawer(\'kieren\')">',
+            '  <div class="rec-avatar" style="background:#2563eb">KY</div>',
+            '  <div>',
+            '    <div class="rec-name">Kieren Yu</div>',
+            '    <div class="rec-role">TA · COMM 3206</div>',
+            '    <div style="font-size:11px;color:#9ca3af;margin-top:2px;">Office hrs: Wed 4–5pm · kieren.yu@dal.ca</div>',
+            '  </div>',
+            '</div>',
+
+            '<div class="panel-divider" style="margin-top:4px;"></div>',
+
+            '<div class="rec-label" style="margin-top:12px;">Reach out for…</div>',
+            '<div class="profile-links">',
+            '  <a href="#" onclick="openProfDrawer(\'iraj\');return false;" class="profile-link">',
+            '    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+            '    Assignment feedback (Dr. Fooladi)',
+            '  </a>',
+            '  <a href="#" onclick="openProfDrawer(\'kieren\');return false;" class="profile-link">',
+            '    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+            '    Exercise help &amp; Brightspace (TA Kieren)',
+            '  </a>',
+            '  <a href="mailto:uao@dal.ca" class="profile-link">',
+            '    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+            '    Academic advising (uao@dal.ca)',
+            '  </a>',
+            '</div>',
+          ].join('');
+        }
+
+        /* ════ UPDATE RESOURCES & EVENTS ════ */
+        var rePanel = document.getElementById('resourcesEventsPanel');
+        if (rePanel) {
+          rePanel.innerHTML = [
+            '<div class="panel-header">',
+            '  <div class="panel-icon blue">',
+            '    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+            '  </div>',
+            '  <div>',
+            '    <div class="panel-title">Resources &amp; Events</div>',
+            '    <div style="font-size:11px;color:#9ca3af;margin-top:1px;">Recommended for COMM 3206</div>',
+            '  </div>',
+            '</div>',
+            '<div class="panel-divider"></div>',
+
+            /* Key dates strip */
+            '<div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;margin-bottom:8px;">Key Dates</div>',
+            sbDateRow('Sep 17', 'Team formation + add/drop deadline', '#ef4444'),
+            sbDateRow('Sep 26', 'Assessment 1 due', '#f59e0b'),
+            sbDateRow('Oct 1',  'Last day to drop without W', '#f59e0b'),
+            sbDateRow('Oct 10', 'Assessment 2 due', '#f59e0b'),
+            sbDateRow('Oct 16', 'MIDTERM EXAM — 10am–12pm', '#ef4444'),
+            sbDateRow('Oct 30', 'Assessment 3 due', '#f59e0b'),
+            sbDateRow('Nov 1',  'Last day to drop with W', '#f59e0b'),
+            sbDateRow('Nov 30', 'Assessment 4 + peer eval due', '#ef4444'),
+            sbDateRow('Dec 9–19', 'FINAL EXAM (Registrar date)', '#ef4444'),
+
+            /* Upcoming events strip */
+            '<div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;margin-bottom:8px;">Upcoming Events</div>',
+            sbEventRow('Oct 7',  'Investment Club Strategy Session', 'Thu · 5:00–6:30 pm · No conflict', '#d1fae5', '#065f46'),
+            sbEventRow('Oct 14', 'Alumni Panel — Careers in Investment', 'Thu · 5:30–7:30 pm · Refreshments', '#ede9fe', '#5b21b6'),
+            sbEventRow('Nov 10', 'Networking Night — Finance Professionals', 'Wed · 5:00–8:00 pm · Study break week', '#dbeafe', '#1d4ed8'),
+
+            /* Resources list */
+            '<div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;margin:14px 0 8px;">Resources for Assignments</div>',
+            sbResourceRow('📘', 'Elton & Gruber Textbook', 'Modern Portfolio Theory & Investment Analysis, 9e', '#ede9fe', '#6d28d9', 'resources-events.html#tab-resources'),
+            sbResourceRow('💻', 'Brightspace LMS', 'Exercises, videos, discussion board, grades', '#dbeafe', '#1d4ed8', 'https://dal.brightspace.com'),
+            sbResourceRow('🏦', 'TSX Data Bank', 'Toronto Stock Exchange data for all 4 assessments', '#d1fae5', '#065f46', 'resources-events.html#tab-resources'),
+            sbResourceRow('✍️', 'Writing Centre', 'Book a 1-on-1 session · writing.centre@dal.ca', '#fef3c7', '#92400e', 'resources-events.html?res=writing'),
+            sbResourceRow('📊', 'Peer Tutoring — COMM 3206', 'Drop-in Tue 1–3 pm · Portfolio theory & assessments', '#f3f4f6', '#374151', 'resources-events.html?res=tutoring'),
+            sbResourceRow('📚', 'Dalhousie Libraries', 'Bloomberg, TSX data, academic databases', '#ede9fe', '#6d28d9', 'resources-events.html#tab-resources'),
+            sbResourceRow('🎓', 'Undergraduate Advising', 'Registration issues, drop/W questions (uao@dal.ca)', '#d1fae5', '#065f46', 'resources-events.html#tab-resources'),
+
+            '<a href="resources-events.html" class="panel-link" style="margin-top:14px;">Browse all resources &amp; events →</a>',
+          ].join('');
+        }
+
+        /* ── Reset upload zone ── */
+        if (uploadZone) {
+          uploadZone.style.borderColor = '';
+          uploadZone.querySelector('.sb-upload-title').textContent = '✅ Syllabus parsed — COMM 3206';
+          uploadZone.querySelector('.sb-upload-sub').textContent = 'All 14 weeks loaded · 42 tasks generated';
+          uploadZone.style.borderColor = '#10b981';
+          uploadZone.style.background = '#f0fdf4';
+        }
+
+      }, 1800); /* end setTimeout */
+    } /* end sbHandleFile */
+
+    /* ── Helper: date row for Resources panel ── */
+    function sbDateRow(date, label, color) {
+      return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f3f4f6;">'
+        + '<span style="font-size:10px;font-weight:800;color:' + color + ';white-space:nowrap;min-width:52px;">' + date + '</span>'
+        + '<span style="font-size:12px;color:#374151;">' + label + '</span>'
+        + '</div>';
+    }
+
+    /* ── Helper: resource row for Resources panel ── */
+    function sbResourceRow(icon, title, sub, bg, color, href) {
+      var tag = href ? 'a' : 'div';
+      var attrs = href ? ' href="' + href + '" target="_blank" rel="noopener" style="text-decoration:none;"' : '';
+      return '<' + tag + attrs + ' style="display:flex;align-items:flex-start;gap:9px;padding:7px 10px;background:' + bg + ';border-radius:9px;margin-bottom:5px;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">'
+        + '<span style="font-size:16px;line-height:1;flex-shrink:0;">' + icon + '</span>'
+        + '<div>'
+        + '  <div style="font-size:12px;font-weight:700;color:' + color + ';">' + title + '</div>'
+        + '  <div style="font-size:11px;color:#57606a;margin-top:1px;">' + sub + '</div>'
+        + '</div>'
+        + '</' + tag + '>';
+    }
+
+    /* ── Helper: event row for Resources panel ── */
+    function sbEventRow(date, name, meta, bg, color) {
+      return '<a href="resources-events.html" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:7px 10px;background:' + bg + ';border-radius:9px;margin-bottom:5px;text-decoration:none;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">'
+        + '<span style="font-size:10.5px;font-weight:800;color:' + color + ';white-space:nowrap;min-width:42px;">' + date + '</span>'
+        + '<div>'
+        + '  <div style="font-size:12px;font-weight:700;color:' + color + ';">' + name + '</div>'
+        + '  <div style="font-size:11px;color:#57606a;margin-top:1px;">' + meta + '</div>'
+        + '</div>'
+        + '</a>';
+    }
+
+    /* ── HOMEWORK EXPAND/COLLAPSE ── */
+    function toggleHW(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('expanded');
+    }
+
+    /* ── STUDIO MODAL ── */
+    function openStudio(hwName) {
+      document.getElementById('studioHwLabel').textContent = hwName;
+      document.getElementById('studioOverlay').classList.add('open');
+      setTimeout(initCanvas, 50);
+    }
+
+    function closeStudio() {
+      document.getElementById('studioOverlay').classList.remove('open');
+    }
+
+    function handleStudioOverlayClick(e) {
+      if (e.target === document.getElementById('studioOverlay')) closeStudio();
+    }
+
+    function switchStudioTab(tab) {
+      ['wb','ss','sl'].forEach(function(t) {
+        document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('pane-' + t).classList.toggle('active', t === tab);
+      });
+      if (tab === 'wb') setTimeout(initCanvas, 30);
+      if (tab === 'ss') initSpreadsheet();
+      if (tab === 'sl') initSlides();
+    }
+
+    /* ── WHITEBOARD ── */
+    var wbState = { tool: 'pen', color: '#1f2328', size: 3, drawing: false, lastX: 0, lastY: 0, startX: 0, startY: 0, snapshot: null };
+    var wbCtx = null, wbCanvasEl = null, wbInited = false;
+
+    function initCanvas() {
+      if (wbInited) return;
+      wbCanvasEl = document.getElementById('wbCanvas');
+      var wrap = wbCanvasEl.parentElement;
+      wbCanvasEl.width  = wrap.clientWidth  || 800;
+      wbCanvasEl.height = wrap.clientHeight || 500;
+      wbCtx = wbCanvasEl.getContext('2d');
+      wbCtx.lineCap = 'round';
+      wbCtx.lineJoin = 'round';
+      wbCanvasEl.addEventListener('pointerdown', wbDown);
+      wbCanvasEl.addEventListener('pointermove', wbMove);
+      wbCanvasEl.addEventListener('pointerup',   wbUp);
+      wbCanvasEl.addEventListener('pointerleave', wbUp);
+      wbInited = true;
+    }
+
+    function wbPos(e) {
+      var r = wbCanvasEl.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    function wbDown(e) {
+      wbState.drawing = true;
+      var p = wbPos(e);
+      wbState.lastX = wbState.startX = p.x;
+      wbState.lastY = wbState.startY = p.y;
+      if (wbState.tool === 'pen' || wbState.tool === 'eraser') {
+        wbCtx.beginPath();
+        wbCtx.moveTo(p.x, p.y);
+      }
+      wbState.snapshot = wbCtx.getImageData(0, 0, wbCanvasEl.width, wbCanvasEl.height);
+    }
+
+    function wbMove(e) {
+      if (!wbState.drawing) return;
+      var p = wbPos(e);
+      wbCtx.lineWidth = wbState.size;
+      if (wbState.tool === 'pen') {
+        wbCtx.strokeStyle = wbState.color;
+        wbCtx.globalCompositeOperation = 'source-over';
+        wbCtx.lineTo(p.x, p.y);
+        wbCtx.stroke();
+      } else if (wbState.tool === 'eraser') {
+        wbCtx.globalCompositeOperation = 'destination-out';
+        wbCtx.lineWidth = wbState.size * 4;
+        wbCtx.lineTo(p.x, p.y);
+        wbCtx.stroke();
+      } else {
+        wbCtx.putImageData(wbState.snapshot, 0, 0);
+        wbCtx.strokeStyle = wbState.color;
+        wbCtx.globalCompositeOperation = 'source-over';
+        wbCtx.beginPath();
+        if (wbState.tool === 'line') {
+          wbCtx.moveTo(wbState.startX, wbState.startY);
+          wbCtx.lineTo(p.x, p.y);
+        } else if (wbState.tool === 'rect') {
+          wbCtx.rect(wbState.startX, wbState.startY, p.x - wbState.startX, p.y - wbState.startY);
+        }
+        wbCtx.stroke();
+      }
+      wbState.lastX = p.x;
+      wbState.lastY = p.y;
+    }
+
+    function wbUp() { wbState.drawing = false; }
+
+    function setWbTool(tool) {
+      wbState.tool = tool;
+      document.querySelectorAll('.wb-tool-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('wbt-' + tool).classList.add('active');
+      wbCanvasEl.style.cursor = tool === 'eraser' ? 'cell' : 'crosshair';
+    }
+
+    function setWbColor(el, color) {
+      wbState.color = color;
+      document.querySelectorAll('.wb-color-swatch').forEach(function(s) { s.classList.remove('active'); });
+      el.classList.add('active');
+    }
+
+    function clearCanvas() {
+      if (wbCtx) wbCtx.clearRect(0, 0, wbCanvasEl.width, wbCanvasEl.height);
+    }
+
+    /* ── SPREADSHEET ── */
+    var ssRows = 10, ssCols = 6, ssInited = false;
+
+    function initSpreadsheet() {
+      if (ssInited) return;
+      buildSS();
+      ssInited = true;
+    }
+
+    function buildSS() {
+      var tbl = document.getElementById('ssTable');
+      var colLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var html = '<thead><tr><th></th>';
+      for (var c = 0; c < ssCols; c++) html += '<th>' + colLetters[c] + '</th>';
+      html += '</tr></thead><tbody>';
+      for (var r = 0; r < ssRows; r++) {
+        html += '<tr><td class="ss-row-num">' + (r + 1) + '</td>';
+        for (var cc = 0; cc < ssCols; cc++) html += '<td><input type="text" /></td>';
+        html += '</tr>';
+      }
+      html += '</tbody>';
+      tbl.innerHTML = html;
+    }
+
+    function ssAddRow() { ssRows++; buildSS(); }
+    function ssAddCol() { ssCols++; buildSS(); }
+    function ssClear()  { document.querySelectorAll('#ssTable input').forEach(function(i) { i.value = ''; }); }
+
+    /* ── SLIDES ── */
+    var slides = [], currentSlide = 0, slidesInited = false;
+
+    function initSlides() {
+      if (slidesInited) { renderSlidesSidebar(); return; }
+      slides = [{ title: 'Slide 1 Title', body: 'Add your content here\u2026' }];
+      currentSlide = 0;
+      renderSlidesSidebar();
+      loadSlide(0);
+      slidesInited = true;
+    }
+
+    function renderSlidesSidebar() {
+      var sb = document.getElementById('slidesSidebar');
+      sb.innerHTML = slides.map(function(s, i) {
+        return '<div class="slide-thumb ' + (i === currentSlide ? 'active' : '') + '" onclick="selectSlide(' + i + ')">'
+             + '<span style="font-size:9px;color:#9ca3af;text-align:center;padding:4px;">Slide ' + (i + 1) + '</span>'
+             + '</div>';
+      }).join('');
+    }
+
+    function saveCurrentSlide() {
+      if (!slidesInited) return;
+      slides[currentSlide].title = document.getElementById('slideTitleInput').innerText;
+      slides[currentSlide].body  = document.getElementById('slideBodyInput').innerText;
+    }
+
+    function loadSlide(i) {
+      document.getElementById('slideTitleInput').innerText = slides[i].title;
+      document.getElementById('slideBodyInput').innerText  = slides[i].body;
+    }
+
+    function selectSlide(i) {
+      saveCurrentSlide();
+      currentSlide = i;
+      loadSlide(i);
+      renderSlidesSidebar();
+    }
+
+    function addSlide() {
+      saveCurrentSlide();
+      slides.push({ title: 'Slide ' + (slides.length + 1) + ' Title', body: 'Add your content here\u2026' });
+      currentSlide = slides.length - 1;
+      loadSlide(currentSlide);
+      renderSlidesSidebar();
+    }
+
+    function deleteCurrentSlide() {
+      if (slides.length <= 1) return;
+      slides.splice(currentSlide, 1);
+      currentSlide = Math.max(0, currentSlide - 1);
+      loadSlide(currentSlide);
+      renderSlidesSidebar();
+    }
+
+    /* ── SEND TO PROFESSOR EMAIL MODAL ── */
+    /* Accepts a homework ID; looks up course + professor from STUDENT_COURSES automatically */
+    function openEmailModal(hwId) {
+      var hw = null;
+      for (var i = 0; i < ALL_HW.length; i++) { if (ALL_HW[i].id === hwId) { hw = ALL_HW[i]; break; } }
+      if (!hw) return;
+      var c = courseMap[hw.course] || {};
+      var profEmail = c.profEmail || '';
+      var profName  = c.profName  || 'Professor';
+      var courseName = c.name || hw.course;
+      document.getElementById('emailModalSub').textContent = 'Submitting: \u201c' + hw.name + '\u201d \u2014 ' + hw.course;
+      document.getElementById('emailTo').value      = profEmail;
+      document.getElementById('emailSubject').value = '[' + hw.course + '] Submission: ' + hw.name;
+      document.getElementById('emailBody').value    = 'Dear ' + profName + ',\n\nPlease find attached my work for \u201c' + hw.name + '\u201d (' + courseName + ').\n\nBest regards,\nRosario';
+      document.getElementById('emailOverlay').classList.add('open');
+    }
+
+    function closeEmailModal() {
+      document.getElementById('emailOverlay').classList.remove('open');
+    }
+
+    function handleEmailOverlayClick(e) {
+      if (e.target === document.getElementById('emailOverlay')) closeEmailModal();
+    }
+
+    function sendEmail() {
+      var to      = document.getElementById('emailTo').value.trim();
+      var subject = document.getElementById('emailSubject').value.trim();
+      var body    = document.getElementById('emailBody').value.trim();
+      if (!to) { alert('Please enter a professor email address.'); return; }
+      window.location.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      closeEmailModal();
+    }
+
+    /* ── AI ASSISTANT ── */
+    var AI_RESPONSES = {
+      'What do I need to finish this week?':
+        'Based on your schedule, here\'s what\'s due this week:\n\n• <strong>Business Communications Essay</strong> — Due Nov 18 (red priority)\n• <strong>GSA Workshop Registration</strong> — Due Nov 19\n• <strong>Continue reading — 2 pages</strong> (MBA 7000) — Due tonight\n\nWould you like help drafting your essay or setting a study schedule?',
+      'Who is my academic advisor?':
+        'Your assigned academic advisor is <strong>Prof. James Johnson</strong>, advisor for the Business department.\n\nYou can reach him at <strong>j.johnson@baruch.cuny.edu</strong>. He\'s available for advising appointments on Tuesdays and Thursdays.\n\nWould you like me to draft an appointment request email?',
+      'How do I register for classes?':
+        'To register for classes at Baruch:\n\n1. Log in to <strong>CUNYfirst</strong> (cunyfirst.cuny.edu)\n2. Navigate to <em>Student Center → Enrollment → Add Classes</em>\n3. Enter the course number or search by subject\n4. Confirm your time slot doesn\'t conflict with existing courses\n5. Click <strong>Enroll</strong>\n\nRegistration for Spring opens on <strong>Nov 25</strong>. Want me to remind you?',
+      'Which professors work in AI?':
+        'Based on our faculty directory, here are professors working in AI and related areas:\n\n• <strong>Prof. Sarah Chen</strong> — Machine Learning, NLP (CS Dept)\n• <strong>Prof. Michael Rivera</strong> — Data Science & AI Ethics (Business Analytics)\n• <strong>Prof. Aisha Patel</strong> — Computer Vision, Deep Learning (CS Dept)\n\nWould you like to view their full profiles or find courses they teach?',
+      'Where can I find tutoring?':
+        'Tutoring resources available to you:\n\n• <strong>Writing Center</strong> — NVC 8-185, Mon–Fri 9am–6pm (essay and writing help)\n• <strong>Math Tutoring Lab</strong> — NVC 7-108, drop-in or by appointment\n• <strong>Peer Tutoring Program</strong> — Schedule via the Student Affairs portal\n• <strong>Online Tutoring</strong> — Available 24/7 through Brainfuse (login with your CUNY ID)\n\nNeed help booking an appointment?'
+    };
+
+    function openAI(question) {
+      var overlay = document.getElementById('aiOverlay');
+      var messagesEl = document.getElementById('aiMessages');
+      messagesEl.innerHTML = '';
+      overlay.classList.add('open');
+
+      /* show user message */
+      appendAIMessage('user', question);
+
+      /* show typing indicator then answer */
+      var typingId = showAITyping();
+      setTimeout(function() {
+        removeAITyping(typingId);
+        var answer = AI_RESPONSES[question] ||
+          'Thanks for your question! Luna is looking into <em>"' + question + '"</em> for you. Please check back shortly or contact your advisor for immediate help.';
+        appendAIMessage('luna', answer);
+      }, 1200);
+
+      /* also focus the bottom input */
+      setTimeout(function() {
+        document.getElementById('aiTextInput').focus();
+      }, 300);
+    }
+
+    function closeAI() {
+      document.getElementById('aiOverlay').classList.remove('open');
+    }
+
+    function handleAiOverlayClick(e) {
+      if (e.target === document.getElementById('aiOverlay')) closeAI();
+    }
+
+    function appendAIMessage(role, html) {
+      var messagesEl = document.getElementById('aiMessages');
+      var wrap = document.createElement('div');
+      wrap.className = 'ai-bubble-wrap' + (role === 'user' ? ' user' : '');
+
+      var avatarEl = document.createElement('div');
+      avatarEl.className = 'ai-avatar ' + (role === 'user' ? 'user-av' : 'luna');
+      avatarEl.textContent = role === 'user' ? 'R' : 'L';
+
+      var bubble = document.createElement('div');
+      bubble.className = 'ai-bubble ' + role;
+      bubble.innerHTML = html.replace(/\n/g, '<br>');
+
+      wrap.appendChild(avatarEl);
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function showAITyping() {
+      var messagesEl = document.getElementById('aiMessages');
+      var wrap = document.createElement('div');
+      wrap.className = 'ai-bubble-wrap';
+      var id = 'ai-typing-' + Date.now();
+      wrap.id = id;
+
+      var avatarEl = document.createElement('div');
+      avatarEl.className = 'ai-avatar luna';
+      avatarEl.textContent = 'L';
+
+      var typing = document.createElement('div');
+      typing.className = 'ai-typing';
+      typing.innerHTML = '<span></span><span></span><span></span>';
+
+      wrap.appendChild(avatarEl);
+      wrap.appendChild(typing);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return id;
+    }
+
+    function removeAITyping(id) {
+      var el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function aiSendMessage() {
+      var input = document.getElementById('aiTextInput');
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      appendAIMessage('user', text);
+      var typingId = showAITyping();
+      setTimeout(function() {
+        removeAITyping(typingId);
+        var answer = AI_RESPONSES[text] ||
+          'Great question! Luna is working on a personalized answer for <em>"' + text + '"</em>. For urgent matters, please contact your advisor Prof. James Johnson at j.johnson@baruch.cuny.edu.';
+        appendAIMessage('luna', answer);
+      }, 1200);
+    }
+
+    /* allow pressing Enter in AI text input */
+    document.getElementById('aiTextInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') aiSendMessage();
+    });
+
+    /* allow pressing Enter in the main ask input to open AI */
+    document.getElementById('askInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        openAI(this.value.trim());
+        this.value = '';
+      }
+    });
+
+    /* clicking the main ask input opens AI with empty state ready */
+    document.getElementById('askInput').addEventListener('click', function() {
+      if (!this.value.trim()) {
+        openAI('How can I help you today?');
+      }
+    });
+
+    /* ════════════════════════════════════════════════
+       PROFESSOR PROFILE DRAWER
+    ════════════════════════════════════════════════ */
+
+    var _profCurrent = null; // currently shown professor data
+
+    var PROF_DATA = {
+      'iraj': {
+        initials: 'IF',
+        color: '#7c3aed',
+        name: 'Dr. Iraj Fooladi',
+        role: 'Course Instructor · COMM 3206',
+        course: 'Investment & Money Management',
+        email: 'iraj.fooladi@dal.ca',
+        office: 'Office hrs: Wed 2:30–4pm (also Fri 11:35–12:55 tutorial)',
+        about: 'Dr. Fooladi is the instructor for COMM 3206 — Investment & Money Management (Fall 2021) at Dalhousie University, Faculty of Management. His teaching philosophy emphasises understanding over memorisation, with a focus on problem-solving and analytical tools. Lectures are synchronous and interactive — students are expected to come prepared and actively participate. He checks the Brightspace discussion board every weekday and responds by 5 pm (Halifax time). Emails are answered between 3–4 pm Atlantic time each weekday.',
+        chips: [
+          { icon: 'mail', text: 'iraj.fooladi@dal.ca' },
+          { icon: 'clock', text: 'Office hrs: Wed 2:30–4pm · also by appointment' },
+          { icon: 'clock', text: 'Tutorial / office hrs: Fri 11:35–12:55 (Collaborate Ultra)' },
+          { icon: 'clock', text: 'Email replies: Mon–Fri 3–4 pm Atlantic time' },
+          { icon: 'book', text: 'COMM 3206 · Section 1 (MW 11:35–12:55) & Section 2 (MW 13:05–14:25)' },
+          { icon: 'book', text: 'Textbook: Elton & Gruber — Modern Portfolio Theory, 9th ed.' },
+          { icon: 'map', text: 'Dalhousie University · Faculty of Management' },
+          { icon: 'map', text: 'Office: Collaborate Ultra via Brightspace (online)' }
+        ]
+      },
+      'kieren': {
+        initials: 'KY',
+        color: '#2563eb',
+        name: 'Kieren Yu',
+        role: 'Teaching Assistant · COMM 3206',
+        course: 'Investment & Money Management',
+        email: 'kieren.yu@dal.ca',
+        office: 'Office hrs: Wed 4–5pm',
+        about: 'Kieren Yu is the Teaching Assistant for COMM 3206 — Investment & Money Management at Dalhousie University. He holds office hours on Wednesdays 4–5 pm via Collaborate Ultra on Brightspace. Reach out to Kieren for help with weekly Brightspace exercises, practice problems, quantitative methods support, and anything related to the course platform.',
+        chips: [
+          { icon: 'mail', text: 'kieren.yu@dal.ca' },
+          { icon: 'clock', text: 'Office hrs: Wed 4–5pm (Collaborate Ultra / Brightspace)' },
+          { icon: 'book', text: 'COMM 3206 · Teaching Assistant' },
+          { icon: 'map', text: 'Dalhousie University · Faculty of Management' }
+        ]
+      },
+      'james': {
+        initials: 'JJ',
+        color: '#7c3aed',
+        name: 'Prof. James Johnson',
+        role: 'Advisor · Business',
+        course: 'Business Leadership & Comm',
+        email: 'j.johnson@baruch.cuny.edu',
+        office: 'Available Tue & Thu',
+        about: 'Prof. James Johnson is your academic advisor for the Business department. He teaches MBA 7000 — Business Leadership & Communication.',
+        chips: [
+          { icon: 'mail', text: 'j.johnson@baruch.cuny.edu' },
+          { icon: 'clock', text: 'Available Tue & Thu' },
+          { icon: 'book', text: 'MBA 7000 · Business Leadership & Comm' },
+          { icon: 'map', text: 'Baruch College, CUNY' }
+        ]
+      }
+    };
+
+    var CHIP_ICONS = {
+      mail:  '<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+      clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      book:  '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+      map:   '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+    };
+
+    function openProfDrawer(profKey) {
+      var p = PROF_DATA[profKey];
+      if (!p) return;
+      _profCurrent = p;
+
+      /* header */
+      var av = document.getElementById('profDrawerAvatar');
+      av.textContent = p.initials;
+      av.style.background = p.color;
+      document.getElementById('profDrawerName').textContent = p.name;
+      document.getElementById('profDrawerRole').textContent = p.role;
+      document.getElementById('profDrawerMeta').textContent = p.office + '  ·  ' + p.email;
+
+      /* about */
+      var aboutEl = document.getElementById('profDrawerAbout');
+      if (aboutEl) aboutEl.textContent = p.about || '';
+
+      /* chips */
+      var chipsEl = document.getElementById('profInfoChips');
+      chipsEl.innerHTML = p.chips.map(function(c) {
+        return '<div class="prof-chip">' + (CHIP_ICONS[c.icon] || '') + c.text + '</div>';
+      }).join('');
+
+      /* pre-fill email to */
+      document.getElementById('profEmailTo').value = p.email;
+      document.getElementById('profEmailSubject').value = '';
+      document.getElementById('profEmailBody').value = '';
+
+      /* clear Luna chat */
+      var msgs = document.getElementById('profLunaMsgs');
+      msgs.innerHTML = '';
+      /* Luna greeting */
+      profLunaAppend('luna', 'Hi! I\'m Luna 👋 I see you\'re looking at <strong>' + p.name + '</strong>\'s profile.<br>How can I help? I can help you write a professional email, suggest questions to ask, or give tips for office hours!');
+
+      document.getElementById('profOverlay').classList.add('open');
+    }
+
+    function closeProfDrawer() {
+      document.getElementById('profOverlay').classList.remove('open');
+    }
+
+    function handleProfOverlayClick(e) {
+      if (e.target === document.getElementById('profOverlay')) closeProfDrawer();
+    }
+
+    /* ── email composer inside drawer ── */
+    function applyProfTemplate(type) {
+      if (!_profCurrent) return;
+      var p = _profCurrent;
+      var firstName = p.name.replace(/^(Dr\.|Prof\.)\s+/i, '').split(' ')[0];
+      var salutation = p.role.toLowerCase().indexOf('assistant') !== -1 ? firstName : p.name.split(' ').slice(-1)[0];
+      var greeting = p.role.toLowerCase().indexOf('assistant') !== -1
+        ? 'Hi ' + firstName + ','
+        : 'Dear ' + (p.name.indexOf('Dr.') !== -1 ? 'Dr. ' : 'Prof. ') + salutation + ',';
+
+      var subjects = {
+        question:  '[COMM 3206] Question about course material',
+        office:    '[COMM 3206] Office Hours Appointment Request',
+        feedback:  '[COMM 3206] Request for Feedback on Assignment',
+        extension: '[COMM 3206] Extension Request',
+        intro:     '[COMM 3206] Introduction — Rosario'
+      };
+      var bodies = {
+        question: greeting + '\n\nI hope this email finds you well. I am a student in ' + p.course + ' and I had a question regarding [specific topic or assignment].\n\n[Describe your question clearly and concisely here.]\n\nThank you for your time, and I look forward to hearing from you.\n\nBest regards,\nRosario',
+        office: greeting + '\n\nI hope you are doing well. I would like to schedule a meeting during your office hours to discuss [topic/concern].\n\nMy availability is [your available times]. Please let me know if any of these times work for you.\n\nThank you very much.\n\nBest regards,\nRosario',
+        feedback: greeting + '\n\nI recently submitted [assignment name] and I would greatly appreciate your feedback on my work. I am eager to understand how I can improve my performance going forward.\n\nWould it be possible to share any comments at your convenience?\n\nThank you for your guidance.\n\nBest regards,\nRosario',
+        extension: greeting + '\n\nI am writing to respectfully request an extension for [assignment name], originally due on [due date]. Due to [brief, honest reason], I have been unable to complete the work to the standard I would like.\n\nI would greatly appreciate an extension until [proposed new date]. I assure you this will not become a habit and I am committed to submitting quality work.\n\nThank you for your understanding.\n\nBest regards,\nRosario',
+        intro: greeting + '\n\nMy name is Rosario, and I am a student in your ' + p.course + ' course. I am very much looking forward to this semester and learning from you.\n\nI wanted to briefly introduce myself and let you know I am excited about the material we will be covering. Please feel free to reach out if there is anything I should know to succeed in this course.\n\nThank you, and I look forward to a great semester!\n\nBest regards,\nRosario'
+      };
+      document.getElementById('profEmailSubject').value = subjects[type] || '';
+      document.getElementById('profEmailBody').value = bodies[type] || '';
+    }
+
+    function clearProfEmail() {
+      document.getElementById('profEmailSubject').value = '';
+      document.getElementById('profEmailBody').value = '';
+    }
+
+    function sendProfEmail() {
+      var to      = document.getElementById('profEmailTo').value.trim();
+      var subject = document.getElementById('profEmailSubject').value.trim();
+      var body    = document.getElementById('profEmailBody').value.trim();
+      if (!to) return;
+      window.location.href = 'mailto:' + encodeURIComponent(to) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body='    + encodeURIComponent(body);
+    }
+
+    /* ── Luna inside drawer ── */
+    var PROF_LUNA_RESPONSES = {
+      'professional email': 'Here are tips for writing a professional email to your COMM 3206 instructor:\n\n1. <strong>Subject line</strong> — start with [COMM 3206] and your topic (e.g. "[COMM 3206] Question on Assessment 2").\n2. <strong>Greeting</strong> — "Dear Dr. Fooladi," for the professor, "Hi Kieren," is fine for the TA.\n3. <strong>Be concise</strong> — 2–3 sentences max per point.\n4. <strong>Be specific</strong> — name the chapter, assignment, or slide number.\n5. <strong>Close professionally</strong> — "Best regards, [Your Name], COMM 3206."\n\nTip: Dr. Fooladi reads emails Mon–Fri between 3–4 pm Atlantic time. For non-personal questions, post on the <strong>Brightspace discussion board</strong> first — it helps everyone!\n\nUse a template above to get started!',
+      'office hours': 'For COMM 3206:\n\n<strong>Dr. Fooladi\'s office hours:</strong>\n• Wednesdays 2:30–4:00 pm (or by appointment)\n• Fridays 11:35–12:55 pm — tutorial/discussion sessions (attendance sometimes mandatory when guest speakers from industry visit)\n• All sessions via <strong>Collaborate Ultra on Brightspace</strong>\n\n<strong>Kieren Yu (TA) office hours:</strong>\n• Wednesdays 4–5 pm via Collaborate Ultra\n\nTips:\n• Come with specific questions written down\n• Bring your work and show what you\'ve tried\n• If speakers are invited to the Friday session, attendance is mandatory — check Brightspace for announcements\n\nWant me to draft an office hours request email?',
+      'brightspace': 'Brightspace is the main hub for COMM 3206. Dr. Fooladi opens access to <strong>3 weeks of materials at a time</strong> so students don\'t jump ahead. Each week\'s content includes:\n• Lecture videos\n• Weekly exercises (Brightspace exercises count toward your grade)\n• Discussion board — post course-related questions here first!\n• Extra industry readings\n\nFor technical Brightspace issues, contact Kieren Yu (kieren.yu@dal.ca).',
+      'assessment': 'COMM 3206 has 4 group assessments worth 35% of your grade:\n\n• <strong>Assessment 1</strong> — Sep 26 (60/430 marks)\n• <strong>Assessment 2</strong> — Oct 10 (80/430)\n• <strong>Assessment 3</strong> — Oct 30 (90/430)\n• <strong>Assessment 4</strong> — Nov 30 (200/430) — includes peer evaluation\n\nAll assessments analyse real Toronto Stock Exchange (TSX) data. Teams of 4 — form your team by <strong>September 17</strong>!\n\nNeed help drafting an email to ask Dr. Fooladi about an assessment? Use the "Ask a question" template above.',
+      'grade': 'Grade breakdown for COMM 3206:\n\n• Class Participation — 5%\n• Assignment Reports (4 assessments) — 35%\n• Midterm Exam — 25%\n• Final Exam — 35%\n\n<strong>Important:</strong> You must pass the average of the midterm + final to pass the course.\n\nMidterm: Saturday October 16, 10 am–12 pm.\nFinal: December 9–19 (date set by Registrar).',
+      'question': 'When asking Dr. Fooladi or Kieren a question:\n\n• <strong>Post on Brightspace first</strong> — Dr. Fooladi checks the board every weekday and replies by 5 pm. It helps everyone with the same question!\n• If it\'s personal, email directly (he replies 3–4 pm Atlantic time, Mon–Fri)\n• Be specific — mention the chapter, page number, or assignment name\n• Show what you\'ve already tried\n\nThis shows initiative and gets you much better answers!',
+      'extension': 'Requesting an extension professionally:\n\n1. Ask <strong>early</strong> — before the deadline, not after\n2. Be <strong>honest and brief</strong> about the reason\n3. Propose a <strong>specific new date</strong>\n4. Note: late assignments up to 3 days are accepted with a <strong>10% penalty per day</strong>\n\nIf you miss a group assignment, all team members receive a zero — so communicate early!\n\nUse the "Request extension" template above.',
+      'feedback': 'Asking Dr. Fooladi for feedback on COMM 3206 work:\n\n• Name the assignment clearly (e.g. "Assessment 2 — Index Model Analysis")\n• Ask a specific question: "Could you clarify what I could improve in my portfolio analysis?"\n• Thank him for his time\n\nFor general exercise questions, Kieren Yu (TA) is a great first contact.\n\nUse the "Ask for feedback" template above to get started!'
+    };
+
+    function profLunaAppend(role, html) {
+      var msgs = document.getElementById('profLunaMsgs');
+      var wrap = document.createElement('div');
+      wrap.className = 'prof-luna-bubble-wrap' + (role === 'user' ? ' user-side' : '');
+
+      var av = document.createElement('div');
+      av.className = 'prof-luna-av-sm ' + (role === 'user' ? 'user-sm' : 'luna-sm');
+      av.textContent = role === 'user' ? 'R' : 'L';
+
+      var bubble = document.createElement('div');
+      bubble.className = 'prof-luna-bubble ' + (role === 'user' ? 'user-b' : 'luna-b');
+      bubble.innerHTML = html.replace(/\n/g, '<br>');
+
+      wrap.appendChild(av);
+      wrap.appendChild(bubble);
+      msgs.appendChild(wrap);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function profLunaShowTyping() {
+      var msgs = document.getElementById('profLunaMsgs');
+      var wrap = document.createElement('div');
+      wrap.className = 'prof-luna-bubble-wrap';
+      var id = 'plt-' + Date.now();
+      wrap.id = id;
+      var av = document.createElement('div');
+      av.className = 'prof-luna-av-sm luna-sm';
+      av.textContent = 'L';
+      var t = document.createElement('div');
+      t.className = 'prof-luna-bubble luna-b';
+      t.innerHTML = '<div class="prof-luna-typing"><span></span><span></span><span></span></div>';
+      wrap.appendChild(av);
+      wrap.appendChild(t);
+      msgs.appendChild(wrap);
+      msgs.scrollTop = msgs.scrollHeight;
+      return id;
+    }
+
+    function profLunaSend() {
+      var input = document.getElementById('profAskInput');
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      profLunaAppend('user', text);
+      var tid = profLunaShowTyping();
+      setTimeout(function() {
+        var el = document.getElementById(tid);
+        if (el) el.remove();
+        /* find matching response */
+        var lower = text.toLowerCase();
+        var answer = null;
+        var keys = Object.keys(PROF_LUNA_RESPONSES);
+        for (var i = 0; i < keys.length; i++) {
+          if (lower.indexOf(keys[i]) !== -1) { answer = PROF_LUNA_RESPONSES[keys[i]]; break; }
+        }
+        if (!answer && _profCurrent) {
+          var p = _profCurrent;
+          if (p.email === 'iraj.fooladi@dal.ca') {
+            answer = 'For <strong>Dr. Fooladi</strong>, the best way to reach out depends on your question:\n\n• <strong>Course-related questions</strong> — post on the Brightspace discussion board first (he responds by 5 pm weekdays)\n• <strong>Personal matters</strong> — email iraj.fooladi@dal.ca (he replies 3–4 pm Atlantic time)\n• <strong>Office hours</strong> — Wed 2:30–4 pm or Fri 11:35–12:55 via Collaborate Ultra\n\nUse one of the email templates above to draft your message!';
+          } else if (p.email === 'kieren.yu@dal.ca') {
+            answer = 'For <strong>Kieren Yu (TA)</strong>, the best approach is:\n\n• Email kieren.yu@dal.ca for exercise help or Brightspace questions\n• Drop into office hours: <strong>Wed 4–5 pm</strong> via Collaborate Ultra on Brightspace\n\nKieren is especially helpful for weekly exercises and quantitative practice problems.\n\nUse one of the email templates above to draft your message!';
+          } else {
+            answer = 'Great question! For reaching out to <strong>' + p.name + '</strong>, I\'d suggest being clear and concise, using a professional greeting, and mentioning the course. Try one of the email templates above — they\'ll get you started right away!';
+          }
+        }
+        profLunaAppend('luna', answer || 'I\'m here to help! Try asking me about writing professional emails, office hours tips, or how to ask a good question.');
+      }, 1100);
+    }
+
+    /* Enter key in prof ask input */
+    document.getElementById('profAskInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') profLunaSend();
+    });
+
+  </script>
 
 </body>
 </html>

@@ -17,6 +17,7 @@
     nav {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       padding: 18px 48px;
       background: #f3f4f6;
@@ -25,18 +26,19 @@
     .nav-logo {
       width: 40px;
       height: 40px;
-      background: #7c3aed;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       text-decoration: none;
+      overflow: hidden;
     }
 
-    .nav-logo svg {
-      width: 20px;
-      height: 20px;
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
     }
 
     .nav-title {
@@ -47,7 +49,8 @@
     }
 
     .back-link {
-      margin-left: auto;
+      position: absolute;
+      right: 48px;
       font-size: 13px;
       color: #7c3aed;
       text-decoration: none;
@@ -142,9 +145,7 @@
 
   <nav>
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-      </svg>
+      <img src="LUNA_AGENT.jpg" alt="Luna avatar" />
     </a>
     <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
     <a href="index.html" class="back-link">← Back to home</a>
@@ -163,16 +164,6 @@
         </div>
         <div class="option-title">Professors</div>
         <div class="option-desc">Browse faculty by name. Find professors, advisors, and department contacts.</div>
-        <span class="option-arrow">→</span>
-      </a>
-
-      <a href="subjects.html" class="option-card">
-        <div class="option-icon">
-          <!-- book -->
-          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        </div>
-        <div class="option-title">Subjects</div>
-        <div class="option-desc">Explore courses and subjects offered for first-year students by department.</div>
         <span class="option-arrow">→</span>
       </a>
 

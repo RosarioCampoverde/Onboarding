@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subjects — Luna Onboarding Assistant</title>
+  <title>Course Discovery — Luna Onboarding Assistant</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,382 +14,1545 @@
       min-height: 100vh;
     }
 
+    /* ── NAV ── */
     nav {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 48px;
-      background: #f3f4f6;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 16px 48px;
+      background: #fff;
+      border-bottom: 1.5px solid #e5e7eb;
+      position: sticky; top: 0; z-index: 50;
     }
-
     .nav-logo {
-      width: 40px; height: 40px;
-      background: #7c3aed;
-      border-radius: 10px;
+      width: 38px; height: 38px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; text-decoration: none;
+      flex-shrink: 0; text-decoration: none; overflow: hidden;
     }
-    .nav-logo svg { width: 20px; height: 20px; }
-
-    .nav-title {
-      font-size: 15px; font-weight: 600; color: #1f2328; text-decoration: none;
-    }
-
-    .back-link {
-      margin-left: auto; font-size: 13px; color: #7c3aed;
-      text-decoration: none; font-weight: 500;
-    }
+    .nav-logo img { width: 38px; height: 38px; object-fit: cover; }
+    .nav-title { font-size: 15px; font-weight: 700; color: #1f2328; text-decoration: none; letter-spacing: -0.1px; }
+    .back-link { position: absolute; right: 48px; font-size: 13px; color: #7c3aed; text-decoration: none; font-weight: 500; }
     .back-link:hover { text-decoration: underline; }
 
-    /* PAGE */
-    .page-content {
-      max-width: 960px;
-      margin: 48px auto 80px;
-      padding: 0 48px;
+    /* ── SAMPLE BANNER ── */
+    .sample-banner {
+      background: #fef3c7; border-bottom: 1.5px solid #fde68a;
+      padding: 10px 48px; font-size: 13px; color: #92400e;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sample-banner strong { font-weight: 700; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap {
+      max-width: 1180px; margin: 0 auto; padding: 36px 48px 80px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 28px;
+      align-items: start;
     }
 
-    .breadcrumb {
-      font-size: 13px; color: #9ca3af; margin-bottom: 20px;
+    /* ── LEFT SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 18px; position: sticky; top: 72px; }
+
+    .sidebar-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 16px; padding: 20px;
     }
+
+    .sidebar-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 14px;
+    }
+
+    /* search */
+    .search-wrap { position: relative; }
+    .search-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 15px; height: 15px; stroke: #9ca3af; fill: none; stroke-width: 2;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%; border: 1.5px solid #d1d5db; border-radius: 10px;
+      padding: 9px 12px 9px 36px;
+      font-size: 13.5px; font-family: inherit; color: #1f2328;
+      background: #f9fafb; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.1); background: #fff; }
+    .search-input::placeholder { color: #9ca3af; }
+
+    /* filter group */
+    .filter-group { display: flex; flex-direction: column; gap: 8px; }
+
+    .filter-label {
+      font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 2px;
+    }
+
+    .filter-select {
+      width: 100%; border: 1.5px solid #d1d5db; border-radius: 9px;
+      padding: 7px 10px; font-size: 13px; font-family: inherit;
+      color: #1f2328; background: #fff; outline: none; cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .filter-select:focus { border-color: #7c3aed; }
+
+    .credits-row { display: flex; gap: 8px; }
+    .credits-row .filter-select { flex: 1; }
+
+    .clear-filters-btn {
+      width: 100%; padding: 7px; border: 1.5px solid #e5e7eb; border-radius: 9px;
+      background: #fff; font-size: 12.5px; font-weight: 600; color: #57606a;
+      cursor: pointer; font-family: inherit; transition: background 0.15s, color 0.15s;
+      margin-top: 4px;
+    }
+    .clear-filters-btn:hover { background: #f5f3ff; color: #7c3aed; border-color: #c4b5fd; }
+
+    /* student profile card */
+    .profile-row { display: flex; flex-direction: column; gap: 10px; }
+    .profile-field { display: flex; flex-direction: column; gap: 4px; }
+    .profile-field label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .06em; }
+    .profile-field select {
+      border: 1.5px solid #d1d5db; border-radius: 9px; padding: 6px 10px;
+      font-size: 13px; font-family: inherit; color: #1f2328; background: #fff;
+      outline: none; cursor: pointer; transition: border-color .15s;
+    }
+    .profile-field select:focus { border-color: #7c3aed; }
+
+    .suggest-btn {
+      width: 100%; padding: 9px; border: none; border-radius: 10px;
+      background: #7c3aed; color: #fff; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background .15s;
+      margin-top: 4px;
+    }
+    .suggest-btn:hover { background: #6d28d9; }
+
+    /* ── MAIN CONTENT ── */
+    .main-col { min-width: 0; }
+
+    /* page header */
+    .page-header { margin-bottom: 24px; }
+    .breadcrumb { font-size: 13px; color: #9ca3af; margin-bottom: 14px; }
     .breadcrumb a { color: #7c3aed; text-decoration: none; }
     .breadcrumb a:hover { text-decoration: underline; }
+    .page-title { font-size: 28px; font-weight: 800; color: #0f172a; letter-spacing: -.3px; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: #57606a; }
 
-    .page-title {
-      font-size: 34px; font-weight: 800; color: #0f172a; margin-bottom: 6px;
-    }
-    .page-sub {
-      font-size: 15px; color: #57606a; margin-bottom: 8px;
-    }
     .college-tag {
-      display: inline-block;
-      background: #ede9fe;
-      color: #7c3aed;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 999px;
-      padding: 4px 12px;
-      margin-bottom: 32px;
+      display: inline-block; background: #ede9fe; color: #7c3aed;
+      font-size: 12px; font-weight: 600; border-radius: 999px;
+      padding: 4px 12px; margin-top: 8px;
     }
 
-    /* ALPHABET BAR */
-    .alpha-bar {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 36px;
-    }
+    /* alpha bar */
+    .alpha-bar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
     .alpha-btn {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      border: 1.5px solid #e5e7eb;
-      background: #fff;
-      color: #374151;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.12s, border-color 0.12s, color 0.12s;
-      font-family: inherit;
+      width: 34px; height: 34px; border-radius: 8px; border: 1.5px solid #e5e7eb;
+      background: #fff; color: #374151; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .12s, border-color .12s, color .12s; font-family: inherit;
     }
     .alpha-btn:hover { border-color: #7c3aed; color: #7c3aed; }
     .alpha-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
-    .alpha-btn.empty { opacity: 0.35; cursor: default; }
-    .alpha-btn.empty:hover { border-color: #e5e7eb; color: #374151; }
+    .alpha-btn.empty { opacity: .3; cursor: default; pointer-events: none; }
 
-    .results-header {
-      font-size: 13px; color: #9ca3af; margin-bottom: 24px;
+    /* results meta */
+    .results-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+    }
+    .results-count { font-size: 13px; color: #9ca3af; }
+    .sort-select {
+      border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 5px 10px;
+      font-size: 13px; font-family: inherit; color: #374151; background: #fff;
+      outline: none; cursor: pointer;
+    }
+    .sort-select:focus { border-color: #7c3aed; }
+
+    /* ── SUGGESTIONS SECTION ── */
+    .suggest-section {
+      background: linear-gradient(135deg, #faf5ff 0%, #f0fdf4 100%);
+      border: 1.5px solid #e5e7eb; border-radius: 16px;
+      padding: 20px 22px; margin-bottom: 24px; display: none;
+    }
+    .suggest-section.visible { display: block; }
+    .suggest-section-title {
+      font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .suggest-section-sub { font-size: 12.5px; color: #57606a; margin-bottom: 16px; }
+
+    .suggest-disclaimer {
+      font-size: 11.5px; color: #92400e; background: #fef3c7;
+      border: 1px solid #fde68a; border-radius: 8px; padding: 8px 12px;
+      margin-bottom: 14px; line-height: 1.5;
     }
 
-    /* FACULTY GROUP */
-    .faculty-group { margin-bottom: 40px; }
-
-    .faculty-header {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    .suggest-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
     }
+
+    /* ── COURSE CARDS ── */
+    .faculty-group { margin-bottom: 36px; }
+    .faculty-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
     .faculty-letter {
-      width: 40px; height: 40px;
-      background: #7c3aed; color: #fff;
-      border-radius: 10px;
-      font-size: 20px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 38px; height: 38px; background: #7c3aed; color: #fff;
+      border-radius: 10px; font-size: 18px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .faculty-name-wrap {}
-    .faculty-name {
-      font-size: 17px; font-weight: 700; color: #0f172a;
-    }
-    .faculty-count {
-      font-size: 13px; color: #9ca3af;
-    }
+    .faculty-name { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .faculty-count { font-size: 12px; color: #9ca3af; }
 
-    /* SUBJECT CARDS */
     .subject-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-      margin-left: 52px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+      margin-left: 50px;
     }
 
     .subject-card {
-      background: #fff;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 16px 18px;
-      transition: border-color 0.12s;
-      cursor: default;
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+      padding: 15px 17px; cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+      position: relative;
     }
-    .subject-card:hover { border-color: #7c3aed; }
+    .subject-card:hover { border-color: #c4b5fd; box-shadow: 0 2px 10px rgba(124,58,237,.08); }
+
+    .card-status-badge {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+      padding: 2px 8px; border-radius: 999px;
+    }
+    .badge-required  { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .badge-suggested { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-advisor   { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-elective  { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
 
     .subject-code {
-      font-size: 11px; font-weight: 700;
-      color: #7c3aed;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
+      font-size: 10.5px; font-weight: 700; color: #7c3aed;
+      letter-spacing: .5px; text-transform: uppercase; margin-bottom: 4px;
+      padding-right: 60px; /* avoid overlap with status badge */
     }
-    .subject-name {
-      font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px;
-    }
-    .subject-credits {
-      font-size: 12px; color: #9ca3af;
-    }
-    .subject-tags {
-      display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px;
-    }
+    .subject-name { font-size: 13.5px; font-weight: 600; color: #0f172a; margin-bottom: 3px; line-height: 1.3; }
+    .subject-dept { font-size: 11.5px; color: #9ca3af; margin-bottom: 4px; }
+    .subject-credits { font-size: 12px; color: #57606a; font-weight: 500; }
+
+    .subject-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
     .subject-tag {
-      font-size: 11px; font-weight: 500;
-      background: #f3f4f6; color: #57606a;
-      border-radius: 999px; padding: 2px 9px;
+      font-size: 10.5px; font-weight: 500; background: #f3f4f6; color: #57606a;
+      border-radius: 999px; padding: 2px 8px;
     }
-    .subject-tag.core {
-      background: #ede9fe; color: #7c3aed;
+    .subject-tag.core { background: #ede9fe; color: #7c3aed; }
+    .subject-tag.term { background: #dbeafe; color: #1d4ed8; }
+
+    /* suggested card variant */
+    .suggest-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px;
+      padding: 13px 15px; cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
     }
+    .suggest-card:hover { border-color: #c4b5fd; box-shadow: 0 2px 8px rgba(124,58,237,.07); }
+    .suggest-reason { font-size: 11px; color: #57606a; margin-top: 6px; font-style: italic; }
 
     .empty-state {
       display: none; text-align: center;
       padding: 60px 20px; color: #9ca3af; font-size: 15px;
     }
+
+    /* ── COURSE DETAIL MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,23,42,.45);
+      z-index: 200; display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #fff; border-radius: 20px;
+      width: min(100%, 640px); max-height: 90vh;
+      margin: 16px; display: flex; flex-direction: column;
+      box-shadow: 0 12px 48px rgba(0,0,0,.18);
+      animation: fadeUp .22s ease;
+      overflow: hidden;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      padding: 24px 28px 18px;
+      border-bottom: 1.5px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+    .modal-code { font-size: 11px; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -.2px; margin-bottom: 4px; }
+    .modal-dept { font-size: 13px; color: #57606a; }
+    .modal-close {
+      position: absolute; top: 18px; right: 20px;
+      width: 32px; height: 32px; border: none; background: #f3f4f6;
+      border-radius: 8px; cursor: pointer; font-size: 18px; color: #57606a;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .modal-close:hover { background: #e5e7eb; }
+
+    .modal-body { padding: 22px 28px; overflow-y: auto; flex: 1; }
+
+    .modal-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .modal-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600;
+      padding: 5px 12px; border-radius: 999px;
+    }
+    .chip-credits  { background: #ede9fe; color: #6d28d9; }
+    .chip-term     { background: #dbeafe; color: #1d4ed8; }
+    .chip-status   { background: #fef2f2; color: #dc2626; }
+    .chip-elective { background: #f3f4f6; color: #374151; }
+    .chip-advisor  { background: #fff7ed; color: #c2410c; }
+
+    .modal-section { margin-bottom: 20px; }
+    .modal-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: #9ca3af; margin-bottom: 8px;
+    }
+    .modal-section p { font-size: 14px; color: #374151; line-height: 1.65; }
+    .modal-section ul { padding-left: 18px; }
+    .modal-section ul li { font-size: 13.5px; color: #374151; margin-bottom: 4px; line-height: 1.5; }
+    .modal-section .none-text { font-size: 13.5px; color: #9ca3af; font-style: italic; }
+
+    .modal-prereq-pill {
+      display: inline-block; background: #fef3c7; color: #92400e;
+      border: 1px solid #fde68a; border-radius: 8px;
+      font-size: 12px; font-weight: 600; padding: 3px 10px; margin: 2px 3px 2px 0;
+    }
+
+    .modal-prof-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 13px; background: #f9fafb;
+      border: 1.5px solid #e5e7eb; border-radius: 11px; margin-bottom: 8px;
+    }
+    .prof-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #7c3aed; color: #fff; font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .prof-name { font-size: 13px; font-weight: 600; color: #0f172a; }
+    .prof-email { font-size: 11.5px; color: #7c3aed; }
+
+    .modal-link-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; padding: 8px 16px;
+      border: 1.5px solid #d1d5db; border-radius: 9px;
+      background: #fff; color: #374151; text-decoration: none;
+      transition: background .15s, border-color .15s, color .15s;
+      margin: 3px 4px 3px 0;
+    }
+    .modal-link-btn:hover { background: #f5f3ff; border-color: #c4b5fd; color: #6d28d9; }
+    .modal-link-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; flex-shrink: 0; }
+    .modal-link-btn.primary { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .modal-link-btn.primary:hover { background: #6d28d9; border-color: #6d28d9; }
+
+    .registration-note {
+      background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px;
+      padding: 12px 14px; font-size: 13px; color: #166534; line-height: 1.55;
+      margin-top: 10px;
+    }
+    .registration-note strong { font-weight: 700; }
+
+    .advisor-note {
+      background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px;
+      padding: 12px 14px; font-size: 13px; color: #9a3412; line-height: 1.55;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-      </svg>
+      <img src="LUNA_AGENT.jpg" alt="Luna avatar" />
     </a>
     <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
-    <a href="profiles.html" class="back-link">← Back to Profiles</a>
+    <a href="index.html" class="back-link">&#8592; Back to Dashboard</a>
   </nav>
 
-  <div class="page-content">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="profiles.html">Profiles</a> / Subjects
-    </div>
-    <h1 class="page-title">Subjects</h1>
-    <p class="page-sub">First-year graduate courses by school and department.</p>
-    <span class="college-tag">Baruch College — CUNY · New York City</span>
+  <!-- SAMPLE DATA BANNER -->
+  <div class="sample-banner">
+    <strong>&#9888; Sample data.</strong>
+    Course descriptions, prerequisites, and professor assignments are illustrative only.
+    Always verify with the <a href="https://www.baruch.cuny.edu/registrar/" target="_blank" style="color:#92400e;font-weight:700;">Baruch Registrar</a> and your academic advisor before registering.
+  </div>
 
-    <div class="alpha-bar" id="alphaBar"></div>
-    <div class="results-header" id="resultsHeader"></div>
-    <div id="subjectGroups"></div>
-    <div class="empty-state" id="emptyState">No subjects found for this letter.</div>
+  <!-- COURSE DETAIL MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleModalOverlayClick(event)">
+    <div class="modal-box" style="position:relative;">
+      <button class="modal-close" onclick="closeModal()" title="Close">&#x2715;</button>
+      <div class="modal-header">
+        <div class="modal-code" id="mCode"></div>
+        <div class="modal-title" id="mTitle"></div>
+        <div class="modal-dept" id="mDept"></div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-chips" id="mChips"></div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Description</div>
+          <p id="mDesc"></p>
+        </div>
+
+        <div class="modal-section" id="mPrereqSection">
+          <div class="modal-section-title">Prerequisites</div>
+          <div id="mPrereqs"></div>
+        </div>
+
+        <div class="modal-section" id="mProfSection">
+          <div class="modal-section-title">Related Professors</div>
+          <div id="mProfs"></div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Registration Guidance</div>
+          <div class="registration-note" id="mRegNote"></div>
+          <div class="advisor-note" id="mAdvisorNote" style="display:none;"></div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">Relevant Links</div>
+          <div id="mLinks"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-wrap">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+
+      <!-- Search -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Search</div>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="searchInput" type="text" placeholder="Course name or code&#8230;" oninput="applyFilters()"/>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Filters</div>
+        <div class="filter-group">
+          <div>
+            <div class="filter-label">Department</div>
+            <select class="filter-select" id="filterDept" onchange="applyFilters()">
+              <option value="">All departments</option>
+            </select>
+          </div>
+          <div>
+            <div class="filter-label">Academic Interest</div>
+            <select class="filter-select" id="filterInterest" onchange="applyFilters()">
+              <option value="">All interests</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Management">Management</option>
+              <option value="Tech">Technology</option>
+              <option value="Analytics">Analytics</option>
+              <option value="Methods">Quantitative Methods</option>
+              <option value="Communication">Communication</option>
+              <option value="Policy">Public Policy</option>
+              <option value="Operations">Operations</option>
+              <option value="Strategy">Strategy</option>
+              <option value="International">International Business</option>
+            </select>
+          </div>
+          <div>
+            <div class="filter-label">Credit Hours</div>
+            <div class="credits-row">
+              <select class="filter-select" id="filterCredits" onchange="applyFilters()">
+                <option value="">Any</option>
+                <option value="1">1 cr</option>
+                <option value="2">2 cr</option>
+                <option value="3">3 cr</option>
+                <option value="4">4 cr</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="filter-label">Status</div>
+            <select class="filter-select" id="filterStatus" onchange="applyFilters()">
+              <option value="">All</option>
+              <option value="required">Required</option>
+              <option value="suggested">Suggested</option>
+              <option value="advisor">Needs Advisor Approval</option>
+              <option value="elective">Elective</option>
+            </select>
+          </div>
+          <button class="clear-filters-btn" onclick="clearFilters()">Clear all filters</button>
+        </div>
+      </div>
+
+      <!-- Personalized suggestions -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Personalized Suggestions</div>
+        <div class="profile-row">
+          <div class="profile-field">
+            <label>Major / Program</label>
+            <select id="pMajor">
+              <option value="mba">MBA (General)</option>
+              <option value="mba-finance">MBA — Finance Track</option>
+              <option value="mba-marketing">MBA — Marketing Track</option>
+              <option value="mba-tech">MBA — Technology Track</option>
+              <option value="mpa">MPA (Public Administration)</option>
+              <option value="ms-finance">MS Finance</option>
+              <option value="ms-data">MS Data Analytics</option>
+            </select>
+          </div>
+          <div class="profile-field">
+            <label>Academic Interests</label>
+            <select id="pInterest">
+              <option value="finance">Finance &amp; Accounting</option>
+              <option value="marketing">Marketing &amp; Brand</option>
+              <option value="tech">Technology &amp; Data</option>
+              <option value="strategy">Strategy &amp; Leadership</option>
+              <option value="policy">Public Policy</option>
+              <option value="operations">Operations &amp; Supply Chain</option>
+            </select>
+          </div>
+          <div class="profile-field">
+            <label>Year / Semester</label>
+            <select id="pYear">
+              <option value="1">1st Year — Fall Semester</option>
+              <option value="2">1st Year — Spring Semester</option>
+              <option value="3">2nd Year — Fall Semester</option>
+              <option value="4">2nd Year — Spring Semester</option>
+            </select>
+          </div>
+          <button class="suggest-btn" onclick="runSuggestions()">Get Suggestions</button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── MAIN COLUMN ── -->
+    <main class="main-col">
+
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> / <a href="index.html">Profiles</a> / Course Discovery
+        </div>
+        <h1 class="page-title">Course Discovery</h1>
+        <p class="page-sub">Browse, search, and filter all graduate courses. Click any course for full details.</p>
+        <span class="college-tag">Baruch College &mdash; CUNY &middot; New York City</span>
+      </div>
+
+      <!-- Alpha bar -->
+      <div class="alpha-bar" id="alphaBar"></div>
+
+      <!-- Personalized suggestions panel -->
+      <div class="suggest-section" id="suggestSection">
+        <div class="suggest-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Suggested for you
+        </div>
+        <p class="suggest-section-sub" id="suggestSub"></p>
+        <div class="suggest-disclaimer">
+          &#9888; <strong>Not a degree audit.</strong> Suggestions are based on your selected interests and are not a verified substitution for official degree requirements. Confirm all course requirements with your academic advisor and the Baruch Registrar.
+        </div>
+        <div class="suggest-grid" id="suggestGrid"></div>
+      </div>
+
+      <!-- Results bar -->
+      <div class="results-bar">
+        <div class="results-count" id="resultsCount"></div>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="dept">Sort: Department</option>
+          <option value="code">Sort: Course Code</option>
+          <option value="name">Sort: Course Name</option>
+          <option value="credits">Sort: Credits</option>
+        </select>
+      </div>
+
+      <div id="courseGroups"></div>
+      <div class="empty-state" id="emptyState">No courses match your search or filters. Try adjusting your criteria.</div>
+
+    </main>
   </div>
 
   <script>
-    // Data keyed by first letter of school/faculty name
-    // Each entry: { faculty, subjects: [{code, name, credits, tags}] }
-    const data = [
+    /* ══════════════════════════════════════════════════
+       COURSE DATA
+       status: "required" | "suggested" | "advisor" | "elective"
+       term: academic term string when known
+       prereqs: array of course codes
+       professors: array of { initials, name, email }
+       interests: array of interest tags used for filtering/suggestions
+    ══════════════════════════════════════════════════ */
+    var COURSES = [
+      // ── Baruch School of Business (Zicklin) ──────────────────────────────
       {
-        letter: "A",
-        faculty: "Marxe School of Public and International Affairs",
-        subjects: [
-          { code: "PAF 9100", name: "Public Affairs and Administration", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "PAF 9120", name: "Quantitative Methods for Public Affairs", credits: 3, tags: ["Core", "Methods"] },
-          { code: "PAF 9130", name: "Economics for Public Policy", credits: 3, tags: ["Core", "Policy"] },
-          { code: "PAF 9140", name: "Public Policy Analysis", credits: 3, tags: ["Core", "Policy"] },
-        ]
+        code: "MBA 7000", name: "Business Leadership and Communication",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Management", "Communication", "Strategy"],
+        term: "Fall / Spring",
+        desc: "Develops foundational competencies in leadership, professional communication, and organizational effectiveness. Topics include written and oral communication, team leadership, and ethical decision-making in business contexts.",
+        prereqs: [],
+        professors: [
+          { initials: "JJ", name: "Prof. James Johnson", email: "j.johnson@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" },
+          { label: "Zicklin Course Catalog", url: "https://zicklin.baruch.cuny.edu/academic-programs/graduate/" }
+        ],
+        regGuidance: "Automatically enrolled for all incoming MBA students in the first semester. Contact the Zicklin Graduate Advising office if you need a section change.",
+        advisorApproval: false
       },
       {
-        letter: "B",
-        faculty: "Baruch School of Business (Zicklin)",
-        subjects: [
-          { code: "MBA 7000", name: "Business Leadership and Communication", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "ACC 7000", name: "Financial Accounting for MBAs", credits: 3, tags: ["Core", "Finance"] },
-          { code: "BUS 7000", name: "Business Statistics", credits: 3, tags: ["Core", "Methods"] },
-          { code: "MGT 7100", name: "Organizational Behavior", credits: 3, tags: ["Core", "Management"] },
-          { code: "FIN 7100", name: "Corporate Finance", credits: 3, tags: ["Elective", "Finance"] },
-          { code: "MKT 7100", name: "Marketing Management", credits: 3, tags: ["Elective", "Marketing"] },
-        ]
+        code: "ACC 7000", name: "Financial Accounting for MBAs",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "required",
+        tags: ["Core", "Finance"],
+        interests: ["Finance"],
+        term: "Fall / Spring",
+        desc: "Introduces financial accounting concepts for MBA students without an accounting background. Covers the preparation and analysis of financial statements, including income statements, balance sheets, and cash flow statements.",
+        prereqs: [],
+        professors: [
+          { initials: "AA", name: "Prof. A. Alvarez", email: "a.alvarez@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" },
+          { label: "Registrar — Add/Drop", url: "https://www.baruch.cuny.edu/registrar/registration.html" }
+        ],
+        regGuidance: "Required for all MBA students who have not completed an equivalent undergraduate accounting course. A waiver exam is available — contact the Zicklin advising office.",
+        advisorApproval: false
       },
       {
-        letter: "C",
-        faculty: "Department of Computer Information Systems",
-        subjects: [
-          { code: "CIS 9001", name: "Foundations of Information Systems", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "CIS 9010", name: "Database Management Systems", credits: 3, tags: ["Core", "Tech"] },
-          { code: "CIS 9020", name: "Systems Analysis and Design", credits: 3, tags: ["Core", "Tech"] },
-          { code: "CIS 9490", name: "Data Analytics for Business", credits: 3, tags: ["Elective", "Analytics"] },
-        ]
+        code: "BUS 7000", name: "Business Statistics",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "required",
+        tags: ["Core", "Methods"],
+        interests: ["Methods", "Analytics"],
+        term: "Fall / Spring",
+        desc: "Provides a rigorous introduction to statistical methods used in business decision-making. Topics include descriptive statistics, probability distributions, hypothesis testing, regression analysis, and data interpretation using statistical software.",
+        prereqs: [],
+        professors: [
+          { initials: "BB", name: "Prof. B. Brooks", email: "b.brooks@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Required core course. A statistics waiver exam is available for students with strong quantitative backgrounds. Speak with your advisor before attempting the waiver.",
+        advisorApproval: false
       },
       {
-        letter: "E",
-        faculty: "Department of Economics and Finance",
-        subjects: [
-          { code: "ECO 9710", name: "Microeconomic Theory", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "ECO 9720", name: "Macroeconomic Theory", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "FIN 9770", name: "Financial Markets and Institutions", credits: 3, tags: ["Elective", "Finance"] },
-          { code: "FIN 9780", name: "Investment Analysis", credits: 3, tags: ["Elective", "Finance"] },
-          { code: "ECO 9800", name: "Econometrics", credits: 3, tags: ["Elective", "Methods"] },
-        ]
+        code: "MGT 7100", name: "Organizational Behavior",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "required",
+        tags: ["Core", "Management"],
+        interests: ["Management", "Strategy"],
+        term: "Fall / Spring",
+        desc: "Examines individual, group, and organizational dynamics in workplace settings. Topics include motivation, leadership styles, organizational culture, power, conflict resolution, and change management.",
+        prereqs: [],
+        professors: [
+          { initials: "SS", name: "Prof. S. Singh", email: "s.singh@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Required core course for all MBA students. Enroll via CUNYfirst during the standard registration window.",
+        advisorApproval: false
       },
       {
-        letter: "H",
-        faculty: "Weissman School of Arts and Sciences — Humanities",
-        subjects: [
-          { code: "ENG 7001", name: "Graduate Writing Seminar", credits: 3, tags: ["Core", "Writing"] },
-          { code: "COM 9100", name: "Corporate Communication", credits: 3, tags: ["Core", "Communication"] },
-          { code: "COM 9110", name: "Intercultural Communication", credits: 3, tags: ["Elective", "Communication"] },
-        ]
+        code: "FIN 7100", name: "Corporate Finance",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Finance"],
+        interests: ["Finance"],
+        term: "Fall / Spring",
+        desc: "Covers capital budgeting, cost of capital, capital structure, dividend policy, and mergers and acquisitions. Students use quantitative models to evaluate corporate investment and financing decisions.",
+        prereqs: ["ACC 7000", "BUS 7000"],
+        professors: [
+          { initials: "TT", name: "Prof. T. Thompson", email: "t.thompson@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Elective. Requires completion of ACC 7000 and BUS 7000 before enrollment. Recommended for Finance Track students.",
+        advisorApproval: false
       },
       {
-        letter: "M",
-        faculty: "Department of Management",
-        subjects: [
-          { code: "MGT 9100", name: "Leadership and Team Dynamics", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "MGT 9200", name: "Strategic Management", credits: 3, tags: ["Core", "Strategy"] },
-          { code: "MGT 9300", name: "Entrepreneurship and Innovation", credits: 3, tags: ["Elective", "Business"] },
-          { code: "MGT 9410", name: "Human Resource Management", credits: 3, tags: ["Elective", "HR"] },
-          { code: "MGT 9420", name: "Negotiations", credits: 3, tags: ["Elective", "Management"] },
-        ]
+        code: "MKT 7100", name: "Marketing Management",
+        dept: "Baruch School of Business (Zicklin)", credits: 3,
+        status: "required",
+        tags: ["Core", "Marketing"],
+        interests: ["Marketing"],
+        term: "Fall / Spring",
+        desc: "Introduces core marketing concepts including market segmentation, targeting, positioning, and the marketing mix (product, price, place, promotion). Students apply frameworks to real business cases and develop a strategic marketing plan.",
+        prereqs: [],
+        professors: [
+          { initials: "MM", name: "Prof. M. Martinez", email: "m.martinez@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" },
+          { label: "AMA Resources", url: "https://www.ama.org" }
+        ],
+        regGuidance: "Required for MBA — Marketing Track students. Strongly recommended as a first-semester elective for all MBA students. Register via CUNYfirst.",
+        advisorApproval: false
+      },
+
+      // ── Department of Computer Information Systems ────────────────────────
+      {
+        code: "CIS 9001", name: "Foundations of Information Systems",
+        dept: "Department of Computer Information Systems", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Tech", "Analytics"],
+        term: "Fall",
+        desc: "Introduces the role of information systems in modern organizations. Topics include data management, enterprise systems, cybersecurity fundamentals, and the strategic use of IT to support business operations.",
+        prereqs: [],
+        professors: [
+          { initials: "WW", name: "Prof. W. Walsh", email: "w.walsh@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "CIS Department", url: "https://zicklin.baruch.cuny.edu/faculty-research/academic-departments/computer-information-systems/" }
+        ],
+        regGuidance: "Required core for MS Data Analytics and MBA — Technology Track. Open as an elective to all graduate students.",
+        advisorApproval: false
       },
       {
-        letter: "O",
-        faculty: "Department of Operations Management",
-        subjects: [
-          { code: "OPM 9100", name: "Operations Management", credits: 3, tags: ["Core", "Graduate"] },
-          { code: "OPM 9200", name: "Supply Chain Management", credits: 3, tags: ["Elective", "Operations"] },
-          { code: "OPM 9300", name: "Project Management", credits: 3, tags: ["Elective", "Operations"] },
-        ]
+        code: "CIS 9010", name: "Database Management Systems",
+        dept: "Department of Computer Information Systems", credits: 3,
+        status: "elective",
+        tags: ["Core", "Tech"],
+        interests: ["Tech", "Analytics"],
+        term: "Fall / Spring",
+        desc: "Covers relational database design, SQL programming, data modeling (ER diagrams), normalization, and database administration. Students build and query relational databases using industry-standard tools.",
+        prereqs: ["CIS 9001"],
+        professors: [
+          { initials: "WW", name: "Prof. W. Walsh", email: "w.walsh@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Requires CIS 9001. Enroll via CUNYfirst. Strongly recommended for students pursuing data or technology roles.",
+        advisorApproval: false
       },
       {
-        letter: "P",
-        faculty: "Department of Marketing and International Business",
-        subjects: [
-          { code: "MKT 9100", name: "Consumer Behavior", credits: 3, tags: ["Core", "Marketing"] },
-          { code: "MKT 9200", name: "Marketing Research", credits: 3, tags: ["Elective", "Methods"] },
-          { code: "IBS 9100", name: "International Business Strategy", credits: 3, tags: ["Elective", "International"] },
-          { code: "MKT 9300", name: "Digital Marketing", credits: 3, tags: ["Elective", "Marketing"] },
-        ]
+        code: "CIS 9020", name: "Systems Analysis and Design",
+        dept: "Department of Computer Information Systems", credits: 3,
+        status: "elective",
+        tags: ["Core", "Tech"],
+        interests: ["Tech"],
+        term: "Spring",
+        desc: "Examines methods for analyzing business requirements and designing information systems solutions. Topics include requirements gathering, process modeling, UML diagrams, agile methodologies, and system implementation planning.",
+        prereqs: ["CIS 9001"],
+        professors: [],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Requires CIS 9001. Available in Spring semester. Contact the CIS department for section availability.",
+        advisorApproval: false
       },
       {
-        letter: "S",
-        faculty: "Weissman School of Arts and Sciences — Social Sciences",
-        subjects: [
-          { code: "SOC 9100", name: "Sociology of Organizations", credits: 3, tags: ["Elective", "Social Science"] },
-          { code: "PSY 9100", name: "Industrial-Organizational Psychology", credits: 3, tags: ["Elective", "Psychology"] },
-          { code: "POL 9100", name: "Urban Politics and Policy", credits: 3, tags: ["Elective", "Policy"] },
-        ]
+        code: "CIS 9490", name: "Data Analytics for Business",
+        dept: "Department of Computer Information Systems", credits: 3,
+        status: "suggested",
+        tags: ["Elective", "Analytics"],
+        interests: ["Analytics", "Methods", "Tech"],
+        term: "Fall / Spring",
+        desc: "Applies statistical and machine learning methods to business analytics problems. Topics include predictive modeling, data visualization, classification, clustering, and communicating analytical findings to non-technical stakeholders.",
+        prereqs: ["BUS 7000"],
+        professors: [
+          { initials: "SS", name: "Prof. S. Scott", email: "s.scott@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Course Blackboard", url: "https://bbhosted.cuny.edu" }
+        ],
+        regGuidance: "Requires BUS 7000. Highly recommended for Analytics and Tech track students. Register via CUNYfirst.",
+        advisorApproval: false
+      },
+
+      // ── Department of Economics and Finance ──────────────────────────────
+      {
+        code: "ECO 9710", name: "Microeconomic Theory",
+        dept: "Department of Economics and Finance", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Finance", "Policy", "Methods"],
+        term: "Fall",
+        desc: "Advanced treatment of microeconomic theory including consumer choice, production theory, market structures, game theory, and welfare economics. Mathematical tools including calculus and optimization are used extensively.",
+        prereqs: [],
+        professors: [
+          { initials: "JJ", name: "Prof. J. Jensen", email: "j.jensen@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Econ Department", url: "https://zicklin.baruch.cuny.edu/faculty-research/academic-departments/economics-finance/" }
+        ],
+        regGuidance: "Required for MS Finance and MPA students. Available as an elective for MBA students. Offered in Fall only.",
+        advisorApproval: false
       },
       {
-        letter: "T",
-        faculty: "Department of Technology and Innovation",
-        subjects: [
-          { code: "TEC 9100", name: "Emerging Technologies in Business", credits: 3, tags: ["Elective", "Tech"] },
-          { code: "TEC 9200", name: "Cybersecurity for Managers", credits: 3, tags: ["Elective", "Tech"] },
-          { code: "TEC 9300", name: "Business Intelligence and Data Visualization", credits: 3, tags: ["Elective", "Analytics"] },
-        ]
+        code: "ECO 9720", name: "Macroeconomic Theory",
+        dept: "Department of Economics and Finance", credits: 3,
+        status: "elective",
+        tags: ["Core", "Graduate"],
+        interests: ["Finance", "Policy"],
+        term: "Spring",
+        desc: "Examines macroeconomic models of output, employment, inflation, and economic growth. Covers IS-LM, AD-AS models, monetary and fiscal policy, international trade, and contemporary macroeconomic debates.",
+        prereqs: ["ECO 9710"],
+        professors: [
+          { initials: "JJ", name: "Prof. J. Jensen", email: "j.jensen@baruch.cuny.edu" }
+        ],
+        links: [],
+        regGuidance: "Requires ECO 9710. Offered in Spring. Recommended for finance and public policy students.",
+        advisorApproval: false
+      },
+      {
+        code: "FIN 9770", name: "Financial Markets and Institutions",
+        dept: "Department of Economics and Finance", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Finance"],
+        interests: ["Finance"],
+        term: "Fall / Spring",
+        desc: "Analyzes the structure and function of financial markets and institutions. Topics include money markets, capital markets, commercial banking, central banking, the Federal Reserve, and international financial systems.",
+        prereqs: ["ACC 7000"],
+        professors: [],
+        links: [
+          { label: "Federal Reserve — Education", url: "https://www.federalreserve.gov/education.htm" }
+        ],
+        regGuidance: "Requires ACC 7000. Elective open to all graduate students. Strongly recommended for Finance Track.",
+        advisorApproval: false
+      },
+      {
+        code: "FIN 9780", name: "Investment Analysis",
+        dept: "Department of Economics and Finance", credits: 3,
+        status: "advisor",
+        tags: ["Elective", "Finance"],
+        interests: ["Finance"],
+        term: "Spring",
+        desc: "Covers portfolio theory, asset pricing models (CAPM, APT), equity valuation, fixed income analysis, derivatives, and performance measurement. Students apply Bloomberg Terminal and Excel-based financial modeling.",
+        prereqs: ["FIN 7100", "BUS 7000"],
+        professors: [
+          { initials: "TT", name: "Prof. T. Thompson", email: "t.thompson@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Bloomberg Terminal — Baruch", url: "https://library.baruch.cuny.edu/resources/bloomberg/" }
+        ],
+        regGuidance: "Requires FIN 7100 and BUS 7000. Advisor approval required for first-year students. Contact the Economics & Finance department before registering.",
+        advisorApproval: true
+      },
+      {
+        code: "ECO 9800", name: "Econometrics",
+        dept: "Department of Economics and Finance", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Methods"],
+        interests: ["Methods", "Analytics", "Finance"],
+        term: "Spring",
+        desc: "Applies econometric methods to test economic theories and forecast outcomes. Topics include ordinary least squares, instrumental variables, panel data, time series analysis, and limited dependent variables using Stata or R.",
+        prereqs: ["BUS 7000", "ECO 9710"],
+        professors: [],
+        links: [],
+        regGuidance: "Requires BUS 7000 and ECO 9710. Offered in Spring. Suitable for research-oriented students.",
+        advisorApproval: false
+      },
+
+      // ── Weissman — Humanities ─────────────────────────────────────────────
+      {
+        code: "ENG 7001", name: "Graduate Writing Seminar",
+        dept: "Weissman School of Arts and Sciences — Humanities", credits: 3,
+        status: "required",
+        tags: ["Core", "Writing"],
+        interests: ["Communication"],
+        term: "Fall",
+        desc: "Develops advanced academic and professional writing skills for graduate students. Emphasizes clarity, argumentation, citation, and genre-specific writing including research papers, policy briefs, and professional reports.",
+        prereqs: [],
+        professors: [
+          { initials: "AA", name: "Prof. A. Adesanya", email: "a.adesanya@baruch.cuny.edu" }
+        ],
+        links: [
+          { label: "Baruch Writing Center", url: "https://www.baruch.cuny.edu/writingcenter/" }
+        ],
+        regGuidance: "Required for MPA students and recommended for all first-year graduate students. Offered in Fall only.",
+        advisorApproval: false
+      },
+      {
+        code: "COM 9100", name: "Corporate Communication",
+        dept: "Weissman School of Arts and Sciences — Humanities", credits: 3,
+        status: "elective",
+        tags: ["Core", "Communication"],
+        interests: ["Communication", "Management"],
+        term: "Fall / Spring",
+        desc: "Examines strategic communication within corporations, covering internal communications, public relations, crisis communication, media relations, and corporate social responsibility messaging.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective for all graduate students. Recommended for MBA students in Management or Marketing tracks.",
+        advisorApproval: false
+      },
+      {
+        code: "COM 9110", name: "Intercultural Communication",
+        dept: "Weissman School of Arts and Sciences — Humanities", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Communication"],
+        interests: ["Communication", "International"],
+        term: "Spring",
+        desc: "Explores communication across cultures in global business settings. Topics include cultural dimensions (Hofstede), cross-cultural negotiation, language barriers, and managing diverse international teams.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective. Particularly relevant for International Business and Management students. Available in Spring.",
+        advisorApproval: false
+      },
+
+      // ── Department of Management ──────────────────────────────────────────
+      {
+        code: "MGT 9100", name: "Leadership and Team Dynamics",
+        dept: "Department of Management", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Management", "Strategy"],
+        term: "Fall",
+        desc: "Integrates leadership theory with practical team management skills. Students examine leadership models, group dynamics, conflict resolution, team performance, and their own leadership strengths using 360-degree feedback assessments.",
+        prereqs: ["MGT 7100"],
+        professors: [
+          { initials: "MM", name: "Prof. M. Moore", email: "m.moore@baruch.cuny.edu" }
+        ],
+        links: [],
+        regGuidance: "Required for MBA — Management Track. Requires MGT 7100. Available in Fall.",
+        advisorApproval: false
+      },
+      {
+        code: "MGT 9200", name: "Strategic Management",
+        dept: "Department of Management", credits: 3,
+        status: "required",
+        tags: ["Core", "Strategy"],
+        interests: ["Strategy", "Management"],
+        term: "Fall / Spring",
+        desc: "Capstone course examining firm-level strategy, competitive dynamics, and strategic decision-making. Students conduct industry analyses, build competitive strategy frameworks, and present strategic recommendations for real companies.",
+        prereqs: ["MGT 7100", "MBA 7000"],
+        professors: [
+          { initials: "MM", name: "Prof. M. Moore", email: "m.moore@baruch.cuny.edu" }
+        ],
+        links: [],
+        regGuidance: "Required capstone for MBA students. Typically taken in the final year. Requires MGT 7100 and MBA 7000.",
+        advisorApproval: false
+      },
+      {
+        code: "MGT 9300", name: "Entrepreneurship and Innovation",
+        dept: "Department of Management", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Business"],
+        interests: ["Strategy", "Management"],
+        term: "Spring",
+        desc: "Covers the entrepreneurial process from opportunity identification to venture creation and scaling. Topics include lean startup methodology, business model canvas, venture financing, pitching, and managing innovation in established firms.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "Baruch Entrepreneurship Center", url: "https://zicklin.baruch.cuny.edu/centers/entrepreneurship/" }
+        ],
+        regGuidance: "Open elective. Available in Spring. No prerequisites — suitable for first-year students.",
+        advisorApproval: false
+      },
+      {
+        code: "MGT 9410", name: "Human Resource Management",
+        dept: "Department of Management", credits: 3,
+        status: "elective",
+        tags: ["Elective", "HR"],
+        interests: ["Management"],
+        term: "Fall / Spring",
+        desc: "Examines strategic and operational HR management including talent acquisition, performance management, compensation design, employment law, training and development, and diversity and inclusion practices.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective for all graduate students. Useful for Management, Strategy, and Public Administration students.",
+        advisorApproval: false
+      },
+      {
+        code: "MGT 9420", name: "Negotiations",
+        dept: "Department of Management", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Management"],
+        interests: ["Management", "Strategy"],
+        term: "Spring",
+        desc: "Develops negotiation theory and practical skills through simulations and role-play exercises. Covers distributive and integrative bargaining, multi-party negotiations, cross-cultural negotiations, and ethical dimensions of negotiation.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective. Offered in Spring. No prerequisites. Highly practical — recommended for all students.",
+        advisorApproval: false
+      },
+
+      // ── Department of Operations Management ──────────────────────────────
+      {
+        code: "OPM 9100", name: "Operations Management",
+        dept: "Department of Operations Management", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Operations"],
+        term: "Fall",
+        desc: "Introduces operations management concepts including process analysis, capacity planning, inventory management, quality management, lean operations, and service operations. Students apply quantitative tools to optimize business processes.",
+        prereqs: ["BUS 7000"],
+        professors: [
+          { initials: "BB", name: "Prof. B. Bennett", email: "b.bennett@baruch.cuny.edu" }
+        ],
+        links: [],
+        regGuidance: "Required for MBA students. Requires BUS 7000. Offered in Fall.",
+        advisorApproval: false
+      },
+      {
+        code: "OPM 9200", name: "Supply Chain Management",
+        dept: "Department of Operations Management", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Operations"],
+        interests: ["Operations"],
+        term: "Spring",
+        desc: "Covers the design and management of supply chains from procurement through distribution. Topics include supplier relationships, logistics, demand forecasting, risk management, sustainability, and global supply chain strategies.",
+        prereqs: ["OPM 9100"],
+        professors: [],
+        links: [],
+        regGuidance: "Requires OPM 9100. Offered in Spring. Recommended for Operations and Strategy track students.",
+        advisorApproval: false
+      },
+      {
+        code: "OPM 9300", name: "Project Management",
+        dept: "Department of Operations Management", credits: 3,
+        status: "suggested",
+        tags: ["Elective", "Operations"],
+        interests: ["Operations", "Management"],
+        term: "Fall / Spring",
+        desc: "Develops skills in planning, executing, and controlling projects. Topics include project scope, scheduling (Gantt, CPM/PERT), resource allocation, risk management, stakeholder communication, and agile project management.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "PMI Resources", url: "https://www.pmi.org" }
+        ],
+        regGuidance: "Open elective. No prerequisites. Useful across all business disciplines and highly recommended by employers.",
+        advisorApproval: false
+      },
+
+      // ── Department of Marketing and International Business ────────────────
+      {
+        code: "MKT 9100", name: "Consumer Behavior",
+        dept: "Department of Marketing and International Business", credits: 3,
+        status: "required",
+        tags: ["Core", "Marketing"],
+        interests: ["Marketing"],
+        term: "Fall",
+        desc: "Examines psychological, social, and cultural factors that influence consumer decision-making. Topics include perception, motivation, attitude formation, group influence, and applications to marketing strategy and brand management.",
+        prereqs: ["MKT 7100"],
+        professors: [
+          { initials: "CC", name: "Prof. C. Chen", email: "c.chen@baruch.cuny.edu" }
+        ],
+        links: [],
+        regGuidance: "Required for MBA — Marketing Track. Requires MKT 7100. Offered in Fall.",
+        advisorApproval: false
+      },
+      {
+        code: "MKT 9200", name: "Marketing Research",
+        dept: "Department of Marketing and International Business", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Methods"],
+        interests: ["Marketing", "Methods"],
+        term: "Spring",
+        desc: "Introduces quantitative and qualitative marketing research methods including surveys, focus groups, conjoint analysis, and A/B testing. Students design and execute a research project using real consumer data.",
+        prereqs: ["MKT 7100", "BUS 7000"],
+        professors: [],
+        links: [],
+        regGuidance: "Requires MKT 7100 and BUS 7000. Offered in Spring. Essential for Marketing Research and Brand Management roles.",
+        advisorApproval: false
+      },
+      {
+        code: "IBS 9100", name: "International Business Strategy",
+        dept: "Department of Marketing and International Business", credits: 3,
+        status: "elective",
+        tags: ["Elective", "International"],
+        interests: ["International", "Strategy"],
+        term: "Fall / Spring",
+        desc: "Examines strategic challenges and opportunities in global markets. Topics include foreign market entry modes, multinational strategy, global value chains, emerging markets, trade policy, and managing cross-border operations.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "World Bank — Open Data", url: "https://data.worldbank.org" }
+        ],
+        regGuidance: "Open elective. No prerequisites. Recommended for students with international career interests.",
+        advisorApproval: false
+      },
+      {
+        code: "MKT 9300", name: "Digital Marketing",
+        dept: "Department of Marketing and International Business", credits: 3,
+        status: "suggested",
+        tags: ["Elective", "Marketing"],
+        interests: ["Marketing", "Tech", "Analytics"],
+        term: "Spring",
+        desc: "Covers digital marketing strategy including SEO/SEM, social media marketing, email marketing, content strategy, paid advertising (Google Ads, Meta), and analytics-driven campaign optimization.",
+        prereqs: ["MKT 7100"],
+        professors: [],
+        links: [
+          { label: "Google Digital Garage", url: "https://learndigital.withgoogle.com" }
+        ],
+        regGuidance: "Requires MKT 7100. Offered in Spring. Highly practical — recommended for Marketing and Analytics track students.",
+        advisorApproval: false
+      },
+
+      // ── Weissman — Social Sciences ────────────────────────────────────────
+      {
+        code: "SOC 9100", name: "Sociology of Organizations",
+        dept: "Weissman School of Arts and Sciences — Social Sciences", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Social Science"],
+        interests: ["Management", "Policy"],
+        term: "Fall",
+        desc: "Examines organizations as social systems. Topics include organizational theory, bureaucracy, power and politics, institutional theory, organizational culture, and the sociology of professions.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective for all graduate students. Offered in Fall.",
+        advisorApproval: false
+      },
+      {
+        code: "PSY 9100", name: "Industrial-Organizational Psychology",
+        dept: "Weissman School of Arts and Sciences — Social Sciences", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Psychology"],
+        interests: ["Management"],
+        term: "Spring",
+        desc: "Applies psychological principles to workplace behavior. Topics include employee selection and assessment, job performance, motivation theories, organizational commitment, workplace stress, and evidence-based HR practices.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective. Offered in Spring. Pairs well with Human Resource Management.",
+        advisorApproval: false
+      },
+      {
+        code: "POL 9100", name: "Urban Politics and Policy",
+        dept: "Weissman School of Arts and Sciences — Social Sciences", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Policy"],
+        interests: ["Policy"],
+        term: "Fall",
+        desc: "Analyzes political dynamics and policy-making in urban environments. Topics include city governance, municipal budgets, housing policy, urban economic development, and community engagement.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "NYC Open Data", url: "https://opendata.cityofnewyork.us" }
+        ],
+        regGuidance: "Open elective. Primarily recommended for MPA and Public Policy students. Offered in Fall.",
+        advisorApproval: false
+      },
+
+      // ── Department of Technology and Innovation ───────────────────────────
+      {
+        code: "TEC 9100", name: "Emerging Technologies in Business",
+        dept: "Department of Technology and Innovation", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Tech"],
+        interests: ["Tech", "Strategy"],
+        term: "Fall",
+        desc: "Surveys disruptive technologies shaping business — including AI, blockchain, cloud computing, IoT, and robotics — and their strategic implications for industries, competition, and business model innovation.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Open elective. No prerequisites. Recommended for students in Technology and Strategy tracks.",
+        advisorApproval: false
+      },
+      {
+        code: "TEC 9200", name: "Cybersecurity for Managers",
+        dept: "Department of Technology and Innovation", credits: 3,
+        status: "elective",
+        tags: ["Elective", "Tech"],
+        interests: ["Tech", "Management"],
+        term: "Spring",
+        desc: "Equips business managers with cybersecurity literacy to make informed risk management decisions. Topics include threat landscape, data privacy regulations, incident response, vendor risk, and cybersecurity governance frameworks.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework" }
+        ],
+        regGuidance: "Open elective. No prerequisites. Offered in Spring. Valuable for all management-track students.",
+        advisorApproval: false
+      },
+      {
+        code: "TEC 9300", name: "Business Intelligence and Data Visualization",
+        dept: "Department of Technology and Innovation", credits: 3,
+        status: "suggested",
+        tags: ["Elective", "Analytics"],
+        interests: ["Analytics", "Tech", "Methods"],
+        term: "Fall / Spring",
+        desc: "Covers the full BI pipeline from data extraction to dashboard design. Students use Tableau, Power BI, or similar tools to design interactive dashboards, perform exploratory analysis, and communicate insights to business stakeholders.",
+        prereqs: ["BUS 7000"],
+        professors: [],
+        links: [
+          { label: "Tableau Public", url: "https://public.tableau.com" }
+        ],
+        regGuidance: "Requires BUS 7000. Offered Fall and Spring. Highly recommended for Analytics and Technology track students.",
+        advisorApproval: false
+      },
+
+      // ── Marxe School of Public and International Affairs ──────────────────
+      {
+        code: "PAF 9100", name: "Public Affairs and Administration",
+        dept: "Marxe School of Public and International Affairs", credits: 3,
+        status: "required",
+        tags: ["Core", "Graduate"],
+        interests: ["Policy"],
+        term: "Fall",
+        desc: "Foundational MPA course surveying public administration theory, government institutions, policy processes, and the role of non-profit and public sector organizations. Students examine classic and contemporary frameworks in public management.",
+        prereqs: [],
+        professors: [],
+        links: [
+          { label: "Marxe School", url: "https://www.baruch.cuny.edu/spa/" }
+        ],
+        regGuidance: "Required for all MPA students. Automatically enrolled in Fall semester. Contact the Marxe advising office for questions.",
+        advisorApproval: false
+      },
+      {
+        code: "PAF 9120", name: "Quantitative Methods for Public Affairs",
+        dept: "Marxe School of Public and International Affairs", credits: 3,
+        status: "required",
+        tags: ["Core", "Methods"],
+        interests: ["Methods", "Policy"],
+        term: "Fall",
+        desc: "Introduces statistical and quantitative methods used in public policy analysis. Topics include data collection, descriptive statistics, regression analysis, program evaluation, and presenting quantitative findings to non-technical audiences.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Required for MPA students. Offered in Fall. Contact Marxe advising for waiver options if you have prior quantitative coursework.",
+        advisorApproval: false
+      },
+      {
+        code: "PAF 9130", name: "Economics for Public Policy",
+        dept: "Marxe School of Public and International Affairs", credits: 3,
+        status: "required",
+        tags: ["Core", "Policy"],
+        interests: ["Policy", "Finance"],
+        term: "Spring",
+        desc: "Applies microeconomic and macroeconomic analysis to public policy problems. Topics include market failures, externalities, public goods, cost-benefit analysis, taxation, and the economics of social programs.",
+        prereqs: [],
+        professors: [],
+        links: [],
+        regGuidance: "Required for MPA students. Offered in Spring. Recommended for all students interested in policy or public sector careers.",
+        advisorApproval: false
+      },
+      {
+        code: "PAF 9140", name: "Public Policy Analysis",
+        dept: "Marxe School of Public and International Affairs", credits: 3,
+        status: "required",
+        tags: ["Core", "Policy"],
+        interests: ["Policy"],
+        term: "Spring",
+        desc: "Develops skills in identifying policy problems, formulating and evaluating alternatives, and recommending policy solutions. Students produce a policy brief on a current urban or national policy issue.",
+        prereqs: ["PAF 9100"],
+        professors: [],
+        links: [
+          { label: "NYC Government", url: "https://www.nyc.gov" }
+        ],
+        regGuidance: "Requires PAF 9100. Required for MPA students. Offered in Spring.",
+        advisorApproval: false
       },
     ];
 
-    // Build lookup by letter
-    const byLetter = {};
-    data.forEach(d => { byLetter[d.letter] = d; });
+    /* ════════════════════════════════════════════════════
+       SUGGESTION RULES
+       Maps major+interest combos → recommended course codes + reason
+    ════════════════════════════════════════════════════ */
+    var SUGGESTION_RULES = {
+      "mba-finance":   { codes: ["FIN 7100","ECO 9710","FIN 9770","BUS 7000","ACC 7000"],        reason: "Recommended for MBA — Finance Track" },
+      "mba-marketing": { codes: ["MKT 9100","MKT 9300","CIS 9490","MKT 9200","TEC 9300"],        reason: "Recommended for MBA — Marketing Track" },
+      "mba-tech":      { codes: ["CIS 9001","CIS 9490","TEC 9100","TEC 9300","BUS 7000"],         reason: "Recommended for MBA — Technology Track" },
+      "mba":           { codes: ["MGT 7100","OPM 9100","MGT 9200","MKT 7100","ACC 7000"],         reason: "Core foundation for MBA (General)" },
+      "mpa":           { codes: ["PAF 9100","PAF 9120","PAF 9130","ENG 7001","ECO 9710"],          reason: "Core MPA requirements" },
+      "ms-finance":    { codes: ["ECO 9710","FIN 7100","FIN 9770","FIN 9780","ECO 9800"],         reason: "MS Finance program requirements" },
+      "ms-data":       { codes: ["CIS 9490","TEC 9300","BUS 7000","CIS 9010","ECO 9800"],         reason: "MS Data Analytics program requirements" },
+    };
 
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    let activeLetter = null;
+    var INTEREST_EXTRAS = {
+      "finance":    ["FIN 9770","FIN 7100","ECO 9710","ACC 7000"],
+      "marketing":  ["MKT 9100","MKT 9300","MKT 9200","IBS 9100"],
+      "tech":       ["CIS 9490","TEC 9100","TEC 9300","CIS 9001"],
+      "strategy":   ["MGT 9200","MGT 9300","IBS 9100","TEC 9100"],
+      "policy":     ["PAF 9100","PAF 9140","POL 9100","ECO 9710"],
+      "operations": ["OPM 9100","OPM 9300","OPM 9200","TEC 9300"],
+    };
 
-    const alphaBar      = document.getElementById("alphaBar");
-    const groupsEl      = document.getElementById("subjectGroups");
-    const emptyState    = document.getElementById("emptyState");
-    const resultsHeader = document.getElementById("resultsHeader");
+    /* ── build lookups ── */
+    var courseByCode = {};
+    COURSES.forEach(function(c) { courseByCode[c.code] = c; });
 
-    // Build alphabet buttons
-    alphabet.forEach(letter => {
-      const btn = document.createElement("button");
-      btn.className = "alpha-btn" + (byLetter[letter] ? "" : " empty");
-      btn.textContent = letter;
-      btn.dataset.letter = letter;
-      if (byLetter[letter]) {
-        btn.addEventListener("click", () => selectLetter(letter));
-      }
+    /* ── unique department list for filter ── */
+    var depts = [];
+    COURSES.forEach(function(c) { if (depts.indexOf(c.dept) === -1) depts.push(c.dept); });
+    depts.sort();
+    var deptSel = document.getElementById("filterDept");
+    depts.forEach(function(d) {
+      var o = document.createElement("option"); o.value = d; o.textContent = d; deptSel.appendChild(o);
+    });
+
+    /* ── alpha-bar: derive letters from dept initials ── */
+    var deptLetters = {};
+    COURSES.forEach(function(c) { deptLetters[c.dept.charAt(0).toUpperCase()] = true; });
+
+    var alphaBar = document.getElementById("alphaBar");
+    var activeLetter = null;
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(function(l) {
+      var btn = document.createElement("button");
+      btn.className = "alpha-btn" + (deptLetters[l] ? "" : " empty");
+      btn.textContent = l; btn.dataset.letter = l;
+      if (deptLetters[l]) btn.addEventListener("click", function() { toggleLetter(l); });
       alphaBar.appendChild(btn);
     });
 
-    function selectLetter(letter) {
-      if (activeLetter === letter) {
+    function toggleLetter(l) {
+      if (activeLetter === l) {
         activeLetter = null;
-        document.querySelectorAll(".alpha-btn").forEach(b => b.classList.remove("active"));
-        renderAll();
-        return;
+        document.querySelectorAll(".alpha-btn").forEach(function(b) { b.classList.remove("active"); });
+      } else {
+        activeLetter = l;
+        document.querySelectorAll(".alpha-btn").forEach(function(b) {
+          b.classList.toggle("active", b.dataset.letter === l);
+        });
       }
-      activeLetter = letter;
-      document.querySelectorAll(".alpha-btn").forEach(b => {
-        b.classList.toggle("active", b.dataset.letter === letter);
+      applyFilters();
+    }
+
+    /* ═══════════════════════════════════════════
+       FILTER + RENDER
+    ═══════════════════════════════════════════ */
+    function applyFilters() {
+      var q       = document.getElementById("searchInput").value.toLowerCase().trim();
+      var dept    = document.getElementById("filterDept").value;
+      var interest= document.getElementById("filterInterest").value;
+      var credits = document.getElementById("filterCredits").value;
+      var status  = document.getElementById("filterStatus").value;
+      var sort    = document.getElementById("sortSelect").value;
+
+      var filtered = COURSES.filter(function(c) {
+        if (q && !(c.code.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.dept.toLowerCase().includes(q))) return false;
+        if (dept && c.dept !== dept) return false;
+        if (interest && c.interests.indexOf(interest) === -1) return false;
+        if (credits && String(c.credits) !== credits) return false;
+        if (status && c.status !== status) return false;
+        if (activeLetter && c.dept.charAt(0).toUpperCase() !== activeLetter) return false;
+        return true;
       });
-      renderFiltered(letter);
+
+      if (sort === "code")    filtered.sort(function(a,b) { return a.code.localeCompare(b.code); });
+      else if (sort === "name")filtered.sort(function(a,b) { return a.name.localeCompare(b.name); });
+      else if (sort === "credits") filtered.sort(function(a,b) { return b.credits - a.credits; });
+      else filtered.sort(function(a,b) { return a.dept.localeCompare(b.dept) || a.code.localeCompare(b.code); });
+
+      renderCourses(filtered);
     }
 
-    function buildSubjectCard(s) {
-      const isCore = s.tags.includes("Core");
-      const tagsHtml = s.tags.map(t =>
-        `<span class="subject-tag${t === "Core" ? " core" : ""}">${t}</span>`
-      ).join("");
-      return `
-        <div class="subject-card">
-          <div class="subject-code">${s.code}</div>
-          <div class="subject-name">${s.name}</div>
-          <div class="subject-credits">${s.credits} credits</div>
-          <div class="subject-tags">${tagsHtml}</div>
-        </div>`;
+    function clearFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("filterDept").value = "";
+      document.getElementById("filterInterest").value = "";
+      document.getElementById("filterCredits").value = "";
+      document.getElementById("filterStatus").value = "";
+      activeLetter = null;
+      document.querySelectorAll(".alpha-btn").forEach(function(b) { b.classList.remove("active"); });
+      applyFilters();
     }
 
-    function buildGroup(entry) {
-      const count = entry.subjects.length;
-      return `
-        <div class="faculty-group" id="group-${entry.letter}">
-          <div class="faculty-header">
-            <div class="faculty-letter">${entry.letter}</div>
-            <div class="faculty-name-wrap">
-              <div class="faculty-name">${entry.faculty}</div>
-              <div class="faculty-count">${count} subject${count !== 1 ? "s" : ""}</div>
-            </div>
-          </div>
-          <div class="subject-list">
-            ${entry.subjects.map(buildSubjectCard).join("")}
-          </div>
-        </div>`;
-    }
+    function renderCourses(list) {
+      var groupsEl = document.getElementById("courseGroups");
+      var emptyEl  = document.getElementById("emptyState");
+      var countEl  = document.getElementById("resultsCount");
 
-    function renderAll() {
-      const total = data.reduce((s, d) => s + d.subjects.length, 0);
-      resultsHeader.textContent = `Showing all ${total} subjects across ${data.length} schools & departments`;
-      groupsEl.innerHTML = data.map(buildGroup).join("");
-      emptyState.style.display = "none";
-    }
+      countEl.textContent = list.length + " course" + (list.length !== 1 ? "s" : "") + " found";
 
-    function renderFiltered(letter) {
-      const entry = byLetter[letter];
-      if (!entry) {
+      if (list.length === 0) {
         groupsEl.innerHTML = "";
-        emptyState.style.display = "block";
-        resultsHeader.textContent = "";
+        emptyEl.style.display = "block";
         return;
       }
-      const count = entry.subjects.length;
-      resultsHeader.textContent = `${count} subject${count !== 1 ? "s" : ""} found under "${entry.faculty}"`;
-      groupsEl.innerHTML = buildGroup(entry);
-      emptyState.style.display = "none";
+      emptyEl.style.display = "none";
+
+      /* group by dept */
+      var groups = {};
+      var groupOrder = [];
+      list.forEach(function(c) {
+        if (!groups[c.dept]) { groups[c.dept] = []; groupOrder.push(c.dept); }
+        groups[c.dept].push(c);
+      });
+
+      groupsEl.innerHTML = groupOrder.map(function(dept) {
+        var courses = groups[dept];
+        var letter  = dept.charAt(0).toUpperCase();
+        var cardsHtml = courses.map(function(c) { return buildCard(c); }).join("");
+        return '<div class="faculty-group">'
+             + '  <div class="faculty-header">'
+             + '    <div class="faculty-letter">' + letter + '</div>'
+             + '    <div>'
+             + '      <div class="faculty-name">' + dept + '</div>'
+             + '      <div class="faculty-count">' + courses.length + ' course' + (courses.length !== 1 ? 's' : '') + '</div>'
+             + '    </div>'
+             + '  </div>'
+             + '  <div class="subject-list">' + cardsHtml + '</div>'
+             + '</div>';
+      }).join("");
     }
 
-    renderAll();
+    var STATUS_LABEL  = { required: "Required",  suggested: "Suggested",    advisor: "Advisor Approval", elective: "Elective" };
+    var STATUS_CLASS  = { required: "badge-required", suggested: "badge-suggested", advisor: "badge-advisor", elective: "badge-elective" };
+
+    function buildCard(c) {
+      var tagsHtml = c.tags.map(function(t) {
+        return '<span class="subject-tag' + (t === "Core" ? " core" : "") + '">' + t + '</span>';
+      }).join("");
+      if (c.term) tagsHtml += '<span class="subject-tag term">' + c.term + '</span>';
+
+      var badgeHtml = '<span class="card-status-badge ' + (STATUS_CLASS[c.status] || "badge-elective") + '">'
+                   + (STATUS_LABEL[c.status] || "Elective") + '</span>';
+
+      return '<div class="subject-card" onclick="openModal(\'' + c.code.replace(/'/g,"\\'") + '\')">'
+           + badgeHtml
+           + '  <div class="subject-code">' + c.code + '</div>'
+           + '  <div class="subject-name">' + c.name + '</div>'
+           + '  <div class="subject-dept">' + c.dept.split(' — ')[0] + '</div>'
+           + '  <div class="subject-credits">' + c.credits + ' credit' + (c.credits !== 1 ? 's' : '') + '</div>'
+           + '  <div class="subject-tags">' + tagsHtml + '</div>'
+           + '</div>';
+    }
+
+    /* ═══════════════════════════════════════════
+       SUGGESTIONS
+    ═══════════════════════════════════════════ */
+    function runSuggestions() {
+      var major    = document.getElementById("pMajor").value;
+      var interest = document.getElementById("pInterest").value;
+      var year     = parseInt(document.getElementById("pYear").value);
+
+      var rule = SUGGESTION_RULES[major] || SUGGESTION_RULES["mba"];
+      var extra = INTEREST_EXTRAS[interest] || [];
+
+      /* Merge, deduplicate, limit to 6 */
+      var seen = {};
+      var codes = [];
+      rule.codes.concat(extra).forEach(function(code) {
+        if (!seen[code]) { seen[code] = true; codes.push(code); }
+      });
+      codes = codes.slice(0, 6);
+
+      var sec   = document.getElementById("suggestSection");
+      var sub   = document.getElementById("suggestSub");
+      var grid  = document.getElementById("suggestGrid");
+
+      sub.textContent = rule.reason + " \u00b7 Based on your interest in " + document.getElementById("pInterest").options[document.getElementById("pInterest").selectedIndex].text;
+
+      var cardsHtml = codes.map(function(code) {
+        var c = courseByCode[code];
+        if (!c) return "";
+        var prereqNote = c.prereqs.length ? "Prereq: " + c.prereqs.join(", ") : "No prerequisites";
+        return '<div class="suggest-card" onclick="openModal(\'' + c.code.replace(/'/g,"\\'") + '\')">'
+             + '  <div class="subject-code">' + c.code + '</div>'
+             + '  <div class="subject-name">' + c.name + '</div>'
+             + '  <div class="subject-credits">' + c.credits + ' cr \u00b7 ' + (c.term || "See schedule") + '</div>'
+             + '  <div class="suggest-reason">' + prereqNote + '</div>'
+             + '</div>';
+      }).join("");
+
+      grid.innerHTML = cardsHtml;
+      sec.classList.add("visible");
+      sec.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    /* ═══════════════════════════════════════════
+       COURSE DETAIL MODAL
+    ═══════════════════════════════════════════ */
+    function openModal(code) {
+      var c = courseByCode[code];
+      if (!c) return;
+
+      document.getElementById("mCode").textContent  = c.code;
+      document.getElementById("mTitle").textContent = c.name;
+      document.getElementById("mDept").textContent  = c.dept;
+
+      /* chips */
+      var chipClass = { required:"chip-status", suggested:"chip-status", advisor:"chip-advisor", elective:"chip-elective" };
+      var chips =
+        '<span class="modal-chip chip-credits">' + c.credits + ' credit' + (c.credits !== 1 ? 's' : '') + '</span>'
+        + (c.term ? '<span class="modal-chip chip-term">' + c.term + '</span>' : '')
+        + '<span class="modal-chip ' + (chipClass[c.status]||"chip-elective") + '">'
+        + (STATUS_LABEL[c.status]||"Elective") + '</span>';
+      document.getElementById("mChips").innerHTML = chips;
+
+      /* description */
+      document.getElementById("mDesc").textContent = c.desc;
+
+      /* prerequisites */
+      var prereqEl = document.getElementById("mPrereqs");
+      if (c.prereqs.length === 0) {
+        prereqEl.innerHTML = '<span class="none-text">No prerequisites required.</span>';
+      } else {
+        prereqEl.innerHTML = c.prereqs.map(function(p) {
+          var pc = courseByCode[p];
+          return '<span class="modal-prereq-pill">' + p + (pc ? ": " + pc.name : "") + '</span>';
+        }).join("");
+      }
+
+      /* professors */
+      var profEl = document.getElementById("mProfs");
+      var profSec = document.getElementById("mProfSection");
+      if (!c.professors || c.professors.length === 0) {
+        profEl.innerHTML = '<span class="none-text">Section assignments not yet published. Check CUNYfirst or contact the department.</span>';
+      } else {
+        profEl.innerHTML = c.professors.map(function(p) {
+          return '<div class="modal-prof-row">'
+               + '  <div class="prof-avatar">' + p.initials + '</div>'
+               + '  <div>'
+               + '    <div class="prof-name">' + p.name + '</div>'
+               + '    <div class="prof-email"><a href="mailto:' + p.email + '" style="color:#7c3aed;text-decoration:none;">' + p.email + '</a></div>'
+               + '  </div>'
+               + '</div>';
+        }).join("");
+      }
+
+      /* registration guidance */
+      document.getElementById("mRegNote").innerHTML = '<strong>Registration guidance:</strong> ' + c.regGuidance;
+
+      var advEl = document.getElementById("mAdvisorNote");
+      if (c.advisorApproval) {
+        advEl.style.display = "block";
+        advEl.innerHTML = "&#9888; <strong>Advisor approval required.</strong> You must obtain written permission from your academic advisor before registering for this course. Contact the department office or your assigned advisor.";
+      } else {
+        advEl.style.display = "none";
+      }
+
+      /* links */
+      var linksHtml = '<a href="https://cunyfirst.cuny.edu" target="_blank" class="modal-link-btn primary">'
+        + '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+        + ' Register on CUNYfirst</a>'
+        + '<a href="https://www.baruch.cuny.edu/registrar/registration.html" target="_blank" class="modal-link-btn">'
+        + '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+        + ' Baruch Registrar</a>';
+      if (c.links && c.links.length) {
+        c.links.forEach(function(l) {
+          linksHtml += '<a href="' + l.url + '" target="_blank" class="modal-link-btn">'
+            + '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+            + ' ' + l.label + '</a>';
+        });
+      }
+      document.getElementById("mLinks").innerHTML = linksHtml;
+
+      document.getElementById("modalOverlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      document.getElementById("modalOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target === document.getElementById("modalOverlay")) closeModal();
+    }
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeModal();
+    });
+
+    /* ── initial render ── */
+    applyFilters();
   </script>
 
 </body>

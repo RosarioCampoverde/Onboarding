@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Professors — Luna Onboarding Assistant</title>
+  <title>Faculty Directory — Luna Onboarding Agent</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,451 +14,876 @@
       min-height: 100vh;
     }
 
+    /* ── NAV ── */
     nav {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 18px 48px;
-      background: #f3f4f6;
-    }
-
-    .nav-logo {
-      width: 40px;
-      height: 40px;
-      background: #7c3aed;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      text-decoration: none;
+      gap: 12px;
+      padding: 16px 48px;
+      background: #fff;
+      border-bottom: 1.5px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-
-    .nav-logo svg { width: 20px; height: 20px; }
-
-    .nav-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #1f2328;
-      text-decoration: none;
+    .nav-logo {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; text-decoration: none; overflow: hidden;
     }
-
-    .back-link {
-      margin-left: auto;
-      font-size: 13px;
-      color: #7c3aed;
-      text-decoration: none;
-      font-weight: 500;
-    }
+    .nav-logo img { width: 38px; height: 38px; object-fit: cover; }
+    .nav-title { font-size: 15px; font-weight: 700; color: #1f2328; text-decoration: none; letter-spacing: -0.1px; }
+    .back-link { position: absolute; right: 48px; font-size: 13px; color: #7c3aed; text-decoration: none; font-weight: 500; }
     .back-link:hover { text-decoration: underline; }
 
-    /* ── MAIN CONTENT ── */
+    /* ── SAMPLE DATA BANNER ── */
+    .sample-banner {
+      background: #fef3c7;
+      border-bottom: 1.5px solid #fde68a;
+      padding: 10px 48px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sample-banner strong { font-weight: 700; }
+    .sample-banner a { color: #92400e; font-weight: 600; }
+    .sample-banner a:hover { text-decoration: underline; }
+
+    /* ── PAGE CONTENT ── */
     .page-content {
-      max-width: 900px;
-      margin: 48px auto 80px;
-      padding: 0 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 48px 80px;
     }
 
-    .breadcrumb {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 20px;
-    }
+    .breadcrumb { font-size: 13px; color: #9ca3af; margin-bottom: 20px; }
     .breadcrumb a { color: #7c3aed; text-decoration: none; }
     .breadcrumb a:hover { text-decoration: underline; }
 
-    .page-title {
-      font-size: 34px;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
+    .page-title { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.4px; }
+    .page-sub   { font-size: 15px; color: #57606a; margin-bottom: 28px; }
 
-    .page-sub {
-      font-size: 15px;
-      color: #57606a;
-      margin-bottom: 36px;
-    }
-
-    /* ── ALPHABET BAR ── */
-    .alpha-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 40px;
-    }
-
-    .alpha-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      border: 1.5px solid #e5e7eb;
+    /* ── SEARCH + FILTERS ── */
+    .search-bar-wrap {
       background: #fff;
-      color: #374151;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.12s, border-color 0.12s, color 0.12s;
-      font-family: inherit;
-    }
-
-    .alpha-btn:hover {
-      border-color: #7c3aed;
-      color: #7c3aed;
-    }
-
-    .alpha-btn.active {
-      background: #7c3aed;
-      border-color: #7c3aed;
-      color: #fff;
-    }
-
-    .alpha-btn.empty {
-      opacity: 0.35;
-      cursor: default;
-    }
-    .alpha-btn.empty:hover {
-      border-color: #e5e7eb;
-      color: #374151;
-    }
-
-    /* ── PROFESSOR LIST ── */
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .section-letter {
-      width: 40px;
-      height: 40px;
-      background: #7c3aed;
-      color: #fff;
-      border-radius: 10px;
-      font-size: 20px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .section-count {
-      font-size: 13px;
-      color: #9ca3af;
-    }
-
-    .professor-group {
-      margin-bottom: 36px;
-    }
-
-    .professor-list {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
       display: flex;
       flex-direction: column;
+      gap: 14px;
+    }
+
+    .search-row {
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
 
-    .professor-card {
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+    .search-input-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      stroke: #9ca3af; fill: none; stroke-width: 2;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 10px 16px 10px 38px;
+      font-size: 14px;
+      color: #1f2328;
+      background: #f9fafb;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input::placeholder { color: #9ca3af; }
+    .search-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+      background: #fff;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-select {
+      border: 1.5px solid #d1d5db;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      color: #374151;
+      background: #f9fafb;
+      outline: none;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .filter-select:focus { border-color: #7c3aed; }
+
+    .clear-btn {
+      background: none;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      color: #9ca3af;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .clear-btn:hover { border-color: #7c3aed; color: #7c3aed; }
+
+    /* ── RESULTS HEADER ── */
+    .results-header { font-size: 13px; color: #9ca3af; margin-bottom: 20px; }
+
+    /* ── FACULTY GRID ── */
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .prof-card {
       background: #fff;
       border: 1.5px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 16px 20px;
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .prof-card:hover {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.08);
+    }
+
+    .prof-card-top {
       display: flex;
       align-items: center;
-      gap: 16px;
-      transition: border-color 0.12s;
-      cursor: pointer;
+      gap: 14px;
     }
 
-    .professor-card:hover {
-      border-color: #7c3aed;
-    }
-
-    .professor-avatar {
-      width: 44px;
-      height: 44px;
+    .prof-avatar {
+      width: 50px; height: 50px;
       border-radius: 50%;
       background: #ede9fe;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 700;
       color: #7c3aed;
+      font-size: 16px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      letter-spacing: 0.5px;
     }
 
-    .professor-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: #0f172a;
+    .prof-name  { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+    .prof-title { font-size: 12.5px; color: #57606a; margin-bottom: 2px; }
+    .prof-dept  { font-size: 12px; color: #9ca3af; }
+
+    .prof-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      color: #7c3aed; background: #ede9fe;
+      border-radius: 999px; padding: 2px 10px;
+      align-self: flex-start;
     }
 
-    .professor-dept {
-      font-size: 13px;
-      color: #57606a;
-      margin-top: 2px;
+    .prof-subjects {
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .subject-pill {
+      font-size: 11.5px; color: #374151;
+      background: #f3f4f6; border: 1.5px solid #e5e7eb;
+      border-radius: 999px; padding: 2px 10px;
     }
 
-    .professor-tag {
-      margin-left: auto;
-      font-size: 12px;
-      font-weight: 500;
-      color: #7c3aed;
-      background: #ede9fe;
-      border-radius: 999px;
-      padding: 3px 10px;
-      white-space: nowrap;
-      flex-shrink: 0;
+    .prof-research {
+      font-size: 12px; color: #9ca3af; line-height: 1.5;
     }
 
     .empty-state {
+      text-align: center; padding: 60px 20px;
+      color: #9ca3af; font-size: 15px;
       display: none;
-      text-align: center;
-      padding: 60px 20px;
-      color: #9ca3af;
-      font-size: 15px;
     }
 
-    .results-header {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 24px;
+    /* ── DRAWER ── */
+    .drawer-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(15,23,42,0.35); z-index: 100;
     }
+    .drawer-overlay.open { display: block; }
+
+    .drawer {
+      position: fixed; top: 0; right: -520px;
+      width: 480px; max-width: 100vw; height: 100%;
+      background: #fff; z-index: 101;
+      overflow-y: auto; transition: right 0.25s ease;
+      box-shadow: -4px 0 32px rgba(0,0,0,0.12);
+    }
+    .drawer.open { right: 0; }
+
+    .drawer-top {
+      background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .drawer-top-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .drawer-avatar {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      color: #fff; font-size: 20px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .drawer-name  { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 3px; line-height: 1.2; }
+    .drawer-title { font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 2px; }
+    .drawer-univ  { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+    .drawer-close {
+      margin-left: auto; background: rgba(255,255,255,0.2);
+      border: none; border-radius: 8px; cursor: pointer;
+      color: #fff; font-size: 18px; line-height: 1;
+      padding: 6px 8px; flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .drawer-close:hover { background: rgba(255,255,255,0.35); }
+
+    .drawer-action-row {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 999px;
+      font-size: 12.5px; font-weight: 600; cursor: pointer;
+      border: none; font-family: inherit; text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .action-btn:hover { opacity: 0.85; }
+    .action-btn svg { width: 13px; height: 13px; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+    .action-btn.white { background: #fff; color: #7c3aed; }
+    .action-btn.white svg { stroke: #7c3aed; }
+    .action-btn.ghost { background: rgba(255,255,255,0.18); color: #fff; border: 1.5px solid rgba(255,255,255,0.35); }
+    .action-btn.ghost svg { stroke: #fff; }
+
+    .drawer-body {
+      padding: 24px 28px 36px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+
+    .drawer-section-title {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: #9ca3af; margin-bottom: 8px;
+    }
+
+    .drawer-bio {
+      font-size: 14px; color: #374151; line-height: 1.7;
+    }
+
+    .drawer-divider { height: 1px; background: #f3f4f6; }
+
+    .detail-row {
+      display: flex; gap: 10px;
+    }
+    .detail-row svg {
+      width: 15px; height: 15px; stroke: #9ca3af;
+      fill: none; stroke-width: 1.8; flex-shrink: 0; margin-top: 2px;
+    }
+    .detail-label { font-size: 12px; color: #9ca3af; margin-bottom: 2px; }
+    .detail-value { font-size: 14px; color: #374151; }
+    .detail-value a { color: #7c3aed; word-break: break-all; }
+    .detail-value a:hover { text-decoration: underline; }
+
+    .pill-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      font-size: 12.5px; color: #374151;
+      background: #f3f4f6; border: 1.5px solid #e5e7eb;
+      border-radius: 999px; padding: 3px 11px;
+    }
+    .pill.purple { background: #ede9fe; color: #7c3aed; border-color: #ddd6fe; }
+
+    .sample-note {
+      font-size: 11.5px; color: #9ca3af; font-style: italic;
+      border-top: 1px solid #f3f4f6; padding-top: 12px; margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    /* email draft panel */
+    .draft-panel {
+      background: #f9fafb; border: 1.5px solid #e5e7eb;
+      border-radius: 12px; padding: 16px 18px;
+      display: none; flex-direction: column; gap: 10px;
+    }
+    .draft-panel.open { display: flex; }
+    .draft-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 2px; }
+    .draft-textarea {
+      width: 100%; border: 1.5px solid #d1d5db; border-radius: 10px;
+      padding: 10px 12px; font-size: 13px; color: #1f2328;
+      font-family: inherit; resize: vertical; min-height: 90px;
+      background: #fff; outline: none;
+      transition: border-color 0.15s;
+    }
+    .draft-textarea:focus { border-color: #7c3aed; }
+    .draft-note {
+      font-size: 11.5px; color: #9ca3af;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .draft-note svg { width: 12px; height: 12px; stroke: #9ca3af; fill: none; stroke-width: 2; }
+    .draft-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .draft-btn {
+      padding: 7px 14px; border-radius: 999px; font-size: 12.5px;
+      font-weight: 600; cursor: pointer; font-family: inherit; border: none;
+    }
+    .draft-btn.primary { background: #7c3aed; color: #fff; }
+    .draft-btn.primary:hover { background: #6d28d9; }
+    .draft-btn.secondary { background: #f3f4f6; color: #374151; border: 1.5px solid #e5e7eb; }
+    .draft-btn.secondary:hover { border-color: #9ca3af; }
+    .copy-toast {
+      display: none; font-size: 12px; color: #059669;
+      font-weight: 600; align-items: center; gap: 4px;
+    }
+    .copy-toast.show { display: flex; }
   </style>
 </head>
 <body>
 
+  <!-- DETAIL DRAWER -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-top">
+      <div class="drawer-top-row">
+        <div class="drawer-avatar" id="dAvatar"></div>
+        <div>
+          <div class="drawer-name"  id="dName"></div>
+          <div class="drawer-title" id="dTitle"></div>
+          <div class="drawer-univ"  id="dUniv"></div>
+        </div>
+        <button class="drawer-close" id="drawerClose" aria-label="Close">✕</button>
+      </div>
+      <div class="drawer-action-row" id="dActions"></div>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
+
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-      </svg>
+      <img src="LUNA_AGENT.jpg" alt="Luna avatar" />
     </a>
-    <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
-    <a href="profiles.html" class="back-link">← Back to Profiles</a>
+    <a href="index.html" class="nav-title">Luna Onboarding Agent</a>
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
   </nav>
+
+  <!-- SAMPLE DATA BANNER -->
+  <div class="sample-banner">
+    <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#92400e;fill:none;stroke-width:2;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Sample data.</strong> All faculty records below are fictional and created for demonstration purposes under Baruch College — CUNY. To replace them with verified university data, update the <code>FACULTY</code> array in this file's <code>&lt;script&gt;</code> section. LinkedIn profiles are only shown when explicitly provided in the data source.</span>
+  </div>
 
   <div class="page-content">
     <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="profiles.html">Profiles</a> / Professors
+      <a href="index.html">Home</a> / Faculty Directory
     </div>
-    <h1 class="page-title">Professors</h1>
-    <p class="page-sub">Browse faculty by last name. Click a letter to filter.</p>
+    <h1 class="page-title">Faculty Directory</h1>
+    <p class="page-sub">Baruch College — CUNY · Search by name, department, subject, research interest, or course.</p>
 
-    <!-- ALPHABET BAR -->
-    <div class="alpha-bar" id="alphaBar"></div>
+    <!-- SEARCH + FILTERS -->
+    <div class="search-bar-wrap">
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="searchInput" type="text" placeholder="Search by name, subject, research interest, or course…" />
+        </div>
+        <button class="clear-btn" id="clearBtn">Clear</button>
+      </div>
+      <div class="filter-row">
+        <select class="filter-select" id="filterDept">
+          <option value="">All Departments</option>
+        </select>
+        <select class="filter-select" id="filterRole">
+          <option value="">All Roles</option>
+          <option value="Advisor">Advisor</option>
+          <option value="Faculty">Faculty</option>
+          <option value="Lecturer">Lecturer</option>
+        </select>
+      </div>
+    </div>
 
     <div class="results-header" id="resultsHeader"></div>
-
-    <!-- PROFESSOR GROUPS -->
-    <div id="professorGroups"></div>
-    <div class="empty-state" id="emptyState">No professors found for this letter.</div>
+    <div class="faculty-grid" id="facultyGrid"></div>
+    <div class="empty-state" id="emptyState">No faculty members match your search.</div>
   </div>
 
   <script>
-    const professors = {
-      A: [
-        { name: "Dr. Andrea Alvarez",    dept: "Mathematics",          tag: "Advisor" },
-        { name: "Prof. Alan Ashford",    dept: "Physics",              tag: "Lecturer" },
-        { name: "Dr. Amara Adesanya",    dept: "Computer Science",     tag: "Faculty" },
-      ],
-      B: [
-        { name: "Prof. Barbara Bennett", dept: "English Literature",   tag: "Faculty" },
-        { name: "Dr. Benjamin Brooks",   dept: "Biology",              tag: "Advisor" },
-        { name: "Dr. Beatriz Bastos",    dept: "Chemistry",            tag: "Lecturer" },
-      ],
-      C: [
-        { name: "Dr. Carlos Castillo",   dept: "History",              tag: "Faculty" },
-        { name: "Prof. Claire Chen",     dept: "Computer Science",     tag: "Advisor" },
-        { name: "Dr. Colin Crawford",    dept: "Economics",            tag: "Lecturer" },
-      ],
-      D: [
-        { name: "Prof. Diana Dolan",     dept: "Philosophy",           tag: "Faculty" },
-        { name: "Dr. David Diaz",        dept: "Engineering",          tag: "Advisor" },
-      ],
-      E: [
-        { name: "Dr. Elena Eriksson",    dept: "Psychology",           tag: "Faculty" },
-        { name: "Prof. Elias Everett",   dept: "Sociology",            tag: "Lecturer" },
-      ],
-      F: [
-        { name: "Dr. Fatima Farooq",     dept: "Political Science",    tag: "Faculty" },
-        { name: "Prof. Frank Fletcher",  dept: "Mathematics",          tag: "Advisor" },
-      ],
-      G: [
-        { name: "Dr. Grace Gomez",       dept: "Art History",          tag: "Faculty" },
-        { name: "Prof. George Grant",    dept: "Physics",              tag: "Lecturer" },
-      ],
-      H: [
-        { name: "Dr. Hannah Hayes",      dept: "Nursing",              tag: "Faculty" },
-        { name: "Prof. Henry Huang",     dept: "Computer Science",     tag: "Advisor" },
-      ],
-      I: [
-        { name: "Dr. Irene Ibarra",      dept: "Linguistics",          tag: "Faculty" },
-      ],
-      J: [
-        { name: "Prof. James Johnson",   dept: "Business",             tag: "Advisor" },
-        { name: "Dr. Julia Jensen",      dept: "Chemistry",            tag: "Faculty" },
-        { name: "Prof. Jerome Jackson",  dept: "Law",                  tag: "Lecturer" },
-      ],
-      K: [
-        { name: "Dr. Karen Kim",         dept: "Biology",              tag: "Faculty" },
-        { name: "Prof. Kevin Knight",    dept: "Mathematics",          tag: "Advisor" },
-      ],
-      L: [
-        { name: "Dr. Laura Lopez",       dept: "History",              tag: "Faculty" },
-        { name: "Prof. Liam Lewis",      dept: "Engineering",          tag: "Lecturer" },
-      ],
-      M: [
-        { name: "Dr. Maria Martinez",    dept: "Psychology",           tag: "Advisor" },
-        { name: "Prof. Michael Moore",   dept: "Economics",            tag: "Faculty" },
-        { name: "Dr. Maya Mehta",        dept: "Computer Science",     tag: "Lecturer" },
-      ],
-      N: [
-        { name: "Prof. Nina Nakamura",   dept: "Art History",          tag: "Faculty" },
-        { name: "Dr. Nathan Nguyen",     dept: "Physics",              tag: "Advisor" },
-      ],
-      O: [
-        { name: "Dr. Olivia O'Brien",    dept: "Sociology",            tag: "Faculty" },
-      ],
-      P: [
-        { name: "Prof. Patricia Park",   dept: "English Literature",   tag: "Advisor" },
-        { name: "Dr. Peter Patel",       dept: "Mathematics",          tag: "Faculty" },
-      ],
-      Q: [
-        { name: "Dr. Quinn Quintero",    dept: "Political Science",    tag: "Lecturer" },
-      ],
-      R: [
-        { name: "Prof. Rachel Rivera",   dept: "Chemistry",            tag: "Faculty" },
-        { name: "Dr. Robert Ross",       dept: "Biology",              tag: "Advisor" },
-        { name: "Prof. Riya Reddy",      dept: "Computer Science",     tag: "Lecturer" },
-      ],
-      S: [
-        { name: "Dr. Sarah Singh",       dept: "Nursing",              tag: "Advisor" },
-        { name: "Prof. Samuel Scott",    dept: "Business",             tag: "Faculty" },
-        { name: "Dr. Sofia Santos",      dept: "Philosophy",           tag: "Lecturer" },
-      ],
-      T: [
-        { name: "Prof. Thomas Turner",   dept: "Engineering",          tag: "Faculty" },
-        { name: "Dr. Tanya Thompson",    dept: "Psychology",           tag: "Advisor" },
-      ],
-      U: [
-        { name: "Dr. Uma Upadhyay",      dept: "Linguistics",          tag: "Faculty" },
-      ],
-      V: [
-        { name: "Prof. Victor Vargas",   dept: "History",              tag: "Lecturer" },
-        { name: "Dr. Vanessa Vidal",     dept: "Art History",          tag: "Faculty" },
-      ],
-      W: [
-        { name: "Dr. William Walsh",     dept: "Economics",            tag: "Advisor" },
-        { name: "Prof. Wei Wang",        dept: "Computer Science",     tag: "Faculty" },
-      ],
-      X: [
-        { name: "Prof. Xiu Xiao",        dept: "Mathematics",          tag: "Lecturer" },
-      ],
-      Y: [
-        { name: "Dr. Yasmin Yilmaz",     dept: "Sociology",            tag: "Faculty" },
-      ],
-      Z: [
-        { name: "Prof. Zara Zaidi",      dept: "Political Science",    tag: "Advisor" },
-      ],
-    };
+    // ─────────────────────────────────────────────────────────────────
+    // FACULTY DATA — fictional records for Baruch College demonstration.
+    // Replace entries with verified university data before going live.
+    // LinkedIn is only shown when the `linkedin` field is explicitly set.
+    // ─────────────────────────────────────────────────────────────────
+    const FACULTY = [
+      {
+        name: "Dr. Andrea Alvarez", dept: "Mathematics", role: "Advisor",
+        title: "First-Year Academic Advisor", university: "Baruch College — CUNY",
+        subjects: ["Calculus I", "Calculus II", "Linear Algebra"],
+        research: ["Student Transition Support", "Quantitative Reasoning", "Undergraduate Advising"],
+        courses: ["MATH 2003 · Precalculus", "MATH 2205 · Calculus I"],
+        officeHours: "Mon & Wed 10am–12pm · Room NVC 6-250",
+        email: "a.alvarez@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/alvarez",
+        linkedin: null,
+        bio: "Dr. Alvarez joined the Mathematics Department in 2016 and specializes in supporting first-year students through the transition to university-level mathematics. She is a certified academic advisor and coordinates the department's peer-tutoring program. Her research interests include quantitative reasoning pedagogy and equity in STEM education."
+      },
+      {
+        name: "Prof. Alan Ashford", dept: "Physics", role: "Lecturer",
+        title: "Lecturer in Physics", university: "Baruch College — CUNY",
+        subjects: ["Quantum Mechanics", "Thermodynamics", "Introductory Physics"],
+        research: ["Physics Lab Instruction", "Active Learning", "Thermodynamics"],
+        courses: ["PHY 3010 · General Physics I", "PHY 3020 · General Physics II"],
+        officeHours: "Tue 2pm–4pm · Room NVC 7-110",
+        email: null,
+        profile: "https://baruch.cuny.edu/faculty/ashford",
+        linkedin: null,
+        bio: "Prof. Ashford has taught introductory and intermediate physics at Baruch for over eight years. He emphasizes hands-on lab work and applies active-learning techniques to make abstract concepts accessible. He holds an M.Sc. in Physics from Columbia University."
+      },
+      {
+        name: "Dr. Amara Adesanya", dept: "Computer Information Systems", role: "Faculty",
+        title: "Assistant Professor", university: "Baruch College — CUNY",
+        subjects: ["Machine Learning", "Data Ethics", "Algorithms", "AI Foundations"],
+        research: ["Responsible AI", "Data Ethics", "Algorithmic Fairness"],
+        courses: ["CIS 3400 · Database Management", "CIS 4820 · Artificial Intelligence"],
+        officeHours: "Thu 1pm–3pm · Room NVC 8-290",
+        email: "a.adesanya@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/adesanya",
+        linkedin: null,
+        bio: "Dr. Adesanya is an assistant professor whose work sits at the intersection of machine learning and social responsibility. She holds a Ph.D. in Computer Science from NYU and is currently researching bias detection in large language models."
+      },
+      {
+        name: "Prof. Barbara Bennett", dept: "English", role: "Faculty",
+        title: "Associate Professor of English", university: "Baruch College — CUNY",
+        subjects: ["Victorian Literature", "Narrative Theory", "Creative Writing", "Academic Writing"],
+        research: ["Victorian Fiction", "Narrative Ethics", "Writing Pedagogy"],
+        courses: ["ENG 2100 · Writing 1", "ENG 3200 · Victorian Literature"],
+        officeHours: "Mon 1pm–3pm · NVC 7-280",
+        email: "b.bennett@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/bennett",
+        linkedin: null,
+        bio: "Prof. Bennett is an associate professor of English with a specialization in Victorian fiction and narrative theory. She is the author of two scholarly books on the ethics of storytelling and a frequent contributor to literary journals. She teaches undergraduate writing and literature courses."
+      },
+      {
+        name: "Dr. Benjamin Brooks", dept: "Natural Sciences", role: "Advisor",
+        title: "Pre-Health Academic Advisor", university: "Baruch College — CUNY",
+        subjects: ["Cell Biology", "Genetics", "Pre-Health Advising"],
+        research: ["Biology Education", "Pre-Health Student Support", "Academic Planning"],
+        courses: ["BIO 1005 · General Biology I", "BIO 1006 · General Biology II"],
+        officeHours: "Wed & Fri 11am–1pm · NVC 6-180",
+        email: "b.brooks@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/brooks",
+        linkedin: null,
+        bio: "Dr. Brooks advises pre-health students and teaches introductory biology. He works closely with Baruch's Pre-Health Advising Center to help students prepare for professional school applications. He earned his Ph.D. in Cell Biology from CUNY Graduate Center."
+      },
+      {
+        name: "Prof. Claire Chen", dept: "Computer Information Systems", role: "Advisor",
+        title: "CS Undergraduate Advisor", university: "Baruch College — CUNY",
+        subjects: ["Software Engineering", "Intro to Programming", "Web Development"],
+        research: ["CS Education", "Diversity in Tech", "Student Advising"],
+        courses: ["CIS 2200 · Intro to Information Systems", "CIS 3100 · Object-Oriented Programming"],
+        officeHours: "Tue & Thu 10am–11:30am · NVC 8-285",
+        email: "c.chen@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/chen",
+        linkedin: null,
+        bio: "Prof. Chen is the undergraduate advisor for the Computer Information Systems program. She has a background in software engineering and has been instrumental in growing Baruch's coding boot-camp partnerships. Her passion is making computing accessible to students from all backgrounds."
+      },
+      {
+        name: "Prof. James Johnson", dept: "Business", role: "Advisor",
+        title: "Business School First-Year Advisor", university: "Baruch College — CUNY",
+        subjects: ["Business Communication", "Marketing Principles", "Academic Planning"],
+        research: ["First-Year Business Students", "Academic Transitions", "Professional Development"],
+        courses: ["BUS 1000 · Introduction to Business", "COM 1010 · Business Communication"],
+        officeHours: "Mon, Wed & Fri 9am–11am · NVC 10-240",
+        email: "j.johnson@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/johnson",
+        linkedin: null,
+        bio: "Prof. Johnson is the primary first-year advisor for the Zicklin School of Business. He has advised over 500 incoming students since joining Baruch in 2014 and leads the annual First-Year Business Orientation program. His research focuses on what predicts academic success in business school."
+      },
+      {
+        name: "Dr. Julia Jensen", dept: "Chemistry", role: "Faculty",
+        title: "Associate Professor of Chemistry", university: "Baruch College — CUNY",
+        subjects: ["Physical Chemistry", "Thermodynamics", "Green Chemistry"],
+        research: ["Green Synthesis", "Sustainable Chemistry", "Chemical Education"],
+        courses: ["CHEM 3000 · Physical Chemistry I", "CHEM 3300 · Green Chemistry"],
+        officeHours: "Thu 2pm–4pm · NVC 7-125",
+        email: "j.jensen@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/jensen",
+        linkedin: null,
+        bio: "Dr. Jensen is an associate professor whose work in green chemistry has earned recognition from the American Chemical Society. She teaches physical chemistry and a popular elective on sustainable chemical practices. She holds a Ph.D. from Princeton University."
+      },
+      {
+        name: "Dr. Maria Martinez", dept: "Psychology", role: "Advisor",
+        title: "Psychology Undergraduate Advisor", university: "Baruch College — CUNY",
+        subjects: ["Counseling Psychology", "Developmental Psychology", "Student Wellness"],
+        research: ["Student Well-being", "First-Generation Students", "Counseling Approaches"],
+        courses: ["PSY 1001 · Introduction to Psychology", "PSY 3200 · Developmental Psychology"],
+        officeHours: "Mon & Thu 1pm–3pm · NVC 6-215",
+        email: "m.martinez@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/martinez",
+        linkedin: null,
+        bio: "Dr. Martinez advises undergraduate psychology students and conducts research on the academic experiences of first-generation college students. She is a licensed counseling psychologist and a faculty mentor in Baruch's McNair Scholars Program."
+      },
+      {
+        name: "Prof. Michael Moore", dept: "Economics & Finance", role: "Faculty",
+        title: "Professor of Economics", university: "Baruch College — CUNY",
+        subjects: ["Macroeconomics", "Labor Markets", "Economic Policy"],
+        research: ["Labor Market Dynamics", "Monetary Policy", "Economic Inequality"],
+        courses: ["ECO 1001 · Macroeconomics", "ECO 4100 · Labor Economics"],
+        officeHours: "Fri 10am–12pm · NVC 11-150",
+        email: "m.moore@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/moore",
+        linkedin: null,
+        bio: "Prof. Moore is a full professor with a specialization in labor economics. He has consulted for the New York City Economic Development Corporation and published extensively on wage dynamics and inequality. He earned his Ph.D. in Economics from the University of Michigan."
+      },
+      {
+        name: "Dr. Sarah Singh", dept: "Natural Sciences", role: "Advisor",
+        title: "Nursing Program Advisor", university: "Baruch College — CUNY",
+        subjects: ["Clinical Practice", "Nursing Ethics", "Patient Care"],
+        research: ["Nursing Education", "Healthcare Access", "Clinical Mentorship"],
+        courses: ["NUR 2100 · Foundations of Nursing", "NUR 3300 · Nursing Ethics"],
+        officeHours: "Tue & Wed 2pm–4pm · NVC 6-180",
+        email: "s.singh@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/singh",
+        linkedin: null,
+        bio: "Dr. Singh is the program advisor for nursing and health sciences students. She has 15 years of clinical nursing experience and holds a Ph.D. in Nursing Education. She is committed to mentoring students from underrepresented communities into healthcare careers."
+      },
+      {
+        name: "Prof. Samuel Scott", dept: "Business", role: "Faculty",
+        title: "Associate Professor of Business", university: "Baruch College — CUNY",
+        subjects: ["Entrepreneurship", "Strategic Management", "Business Ethics"],
+        research: ["Startup Ecosystems", "Social Entrepreneurship", "Business Ethics"],
+        courses: ["MGT 3100 · Principles of Management", "ENT 4100 · Entrepreneurship"],
+        officeHours: "Mon 3pm–5pm · NVC 10-220",
+        email: "s.scott@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/scott",
+        linkedin: null,
+        bio: "Prof. Scott teaches entrepreneurship and strategic management in the Zicklin School. Before academia, he founded two startups in the fintech space. He now advises student ventures through Baruch's Entrepreneurship Center and brings a practitioner's lens to his teaching."
+      },
+      {
+        name: "Dr. Tanya Thompson", dept: "Psychology", role: "Advisor",
+        title: "Psychology Academic Advisor", university: "Baruch College — CUNY",
+        subjects: ["Stress & Coping", "First-Year Experience", "Mental Health"],
+        research: ["Stress in College Students", "Mindfulness Interventions", "First-Year Transitions"],
+        courses: ["PSY 2800 · Health Psychology", "PSY 1001 · Introduction to Psychology"],
+        officeHours: "Wed 10am–12pm, Fri 1pm–2pm · NVC 6-215",
+        email: "t.thompson@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/thompson",
+        linkedin: null,
+        bio: "Dr. Thompson is a psychologist and academic advisor whose work focuses on helping students manage the stress of college transitions. She runs Baruch's Mindfulness in Learning workshop series and collaborates with the counseling center on student mental health initiatives."
+      },
+      {
+        name: "Dr. William Walsh", dept: "Economics & Finance", role: "Advisor",
+        title: "Economics Undergraduate Advisor", university: "Baruch College — CUNY",
+        subjects: ["Econometrics", "Financial Markets", "Academic Planning"],
+        research: ["Econometric Methods", "Asset Pricing", "Student Academic Planning"],
+        courses: ["ECO 3100 · Econometrics", "FIN 3000 · Corporate Finance"],
+        officeHours: "Thu 11am–1pm · NVC 11-155",
+        email: "w.walsh@baruch.cuny.edu",
+        profile: "https://baruch.cuny.edu/faculty/walsh",
+        linkedin: null,
+        bio: "Dr. Walsh advises economics and finance undergraduates and teaches quantitative methods courses. He holds a Ph.D. from Columbia University and has published research on asset pricing models. He coordinates Baruch's Finance Career Mentorship Program."
+      },
+    ];
 
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    let activeLetter = null;
-
-    const alphaBar       = document.getElementById("alphaBar");
-    const groupsEl       = document.getElementById("professorGroups");
-    const emptyState     = document.getElementById("emptyState");
-    const resultsHeader  = document.getElementById("resultsHeader");
-
-    // Build alphabet buttons
-    alphabet.forEach(letter => {
-      const btn = document.createElement("button");
-      btn.className = "alpha-btn" + (professors[letter] ? "" : " empty");
-      btn.textContent = letter;
-      btn.dataset.letter = letter;
-      if (professors[letter]) {
-        btn.addEventListener("click", () => selectLetter(letter));
-      }
-      alphaBar.appendChild(btn);
+    // ── BUILD DEPT FILTER ──
+    const depts = [...new Set(FACULTY.map(f => f.dept))].sort();
+    const deptSelect = document.getElementById("filterDept");
+    depts.forEach(d => {
+      const opt = document.createElement("option");
+      opt.value = d; opt.textContent = d;
+      deptSelect.appendChild(opt);
     });
 
-    function selectLetter(letter) {
-      // Toggle off if same letter clicked again
-      if (activeLetter === letter) {
-        activeLetter = null;
-        document.querySelectorAll(".alpha-btn").forEach(b => b.classList.remove("active"));
-        renderAll();
-        return;
-      }
-
-      activeLetter = letter;
-      document.querySelectorAll(".alpha-btn").forEach(b => {
-        b.classList.toggle("active", b.dataset.letter === letter);
-      });
-      renderFiltered(letter);
-    }
+    // ── DRAWER ──
+    const drawer        = document.getElementById("drawer");
+    const drawerOverlay = document.getElementById("drawerOverlay");
 
     function initials(name) {
       return name.replace(/^(Dr\.|Prof\.)\s+/, "")
-                 .split(" ").slice(0, 2)
-                 .map(p => p[0]).join("").toUpperCase();
+        .split(" ").slice(0, 2).map(p => p[0]).join("").toUpperCase();
     }
 
-    function buildCard(p) {
-      return `
-        <div class="professor-card">
-          <div class="professor-avatar">${initials(p.name)}</div>
-          <div>
-            <div class="professor-name">${p.name}</div>
-            <div class="professor-dept">${p.dept}</div>
-          </div>
-          <span class="professor-tag">${p.tag}</span>
-        </div>`;
-    }
+    function openDrawer(p) {
+      document.getElementById("dAvatar").textContent = initials(p.name);
+      document.getElementById("dName").textContent   = p.name;
+      document.getElementById("dTitle").textContent  = p.title;
+      document.getElementById("dUniv").textContent   = p.university;
 
-    function buildGroup(letter) {
-      const list = professors[letter];
-      return `
-        <div class="professor-group" id="group-${letter}">
-          <div class="section-label">
-            <div class="section-letter">${letter}</div>
-            <span class="section-count">${list.length} professor${list.length !== 1 ? "s" : ""}</span>
-          </div>
-          <div class="professor-list">
-            ${list.map(buildCard).join("")}
-          </div>
-        </div>`;
-    }
+      // Action buttons
+      const actRow = document.getElementById("dActions");
+      actRow.innerHTML = "";
 
-    function renderAll() {
-      const letters = Object.keys(professors).sort();
-      const total = letters.reduce((s, l) => s + professors[l].length, 0);
-      resultsHeader.textContent = `Showing all ${total} professors`;
-      groupsEl.innerHTML = letters.map(buildGroup).join("");
-      emptyState.style.display = "none";
-    }
+      // Open profile
+      const profBtn = document.createElement("a");
+      profBtn.className = "action-btn white";
+      profBtn.href = p.profile; profBtn.target = "_blank"; profBtn.rel = "noopener";
+      profBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open Profile`;
+      actRow.appendChild(profBtn);
 
-    function renderFiltered(letter) {
-      if (!professors[letter]) {
-        groupsEl.innerHTML = "";
-        emptyState.style.display = "block";
-        resultsHeader.textContent = "";
-        return;
+      if (p.email) {
+        // Copy email
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "action-btn ghost";
+        copyBtn.innerHTML = `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Email`;
+        copyBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(p.email).then(() => {
+            copyBtn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+            setTimeout(() => {
+              copyBtn.innerHTML = `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Email`;
+            }, 2000);
+          });
+        });
+        actRow.appendChild(copyBtn);
+
+        // Draft email toggle
+        const draftToggle = document.createElement("button");
+        draftToggle.className = "action-btn ghost";
+        draftToggle.innerHTML = `<svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Draft Email`;
+        draftToggle.addEventListener("click", () => {
+          const panel = document.getElementById("draftPanel");
+          panel.classList.toggle("open");
+        });
+        actRow.appendChild(draftToggle);
       }
-      const count = professors[letter].length;
-      resultsHeader.textContent = `${count} professor${count !== 1 ? "s" : ""} found for "${letter}"`;
-      groupsEl.innerHTML = buildGroup(letter);
-      emptyState.style.display = "none";
+
+      if (p.linkedin) {
+        const liBtn = document.createElement("a");
+        liBtn.className = "action-btn ghost";
+        liBtn.href = p.linkedin; liBtn.target = "_blank"; liBtn.rel = "noopener";
+        liBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> LinkedIn`;
+        actRow.appendChild(liBtn);
+      }
+
+      // Body
+      const body = document.getElementById("drawerBody");
+      const researchPills = p.research.map(r => `<span class="pill">${r}</span>`).join("");
+      const subjectPills  = p.subjects.map(s => `<span class="pill purple">${s}</span>`).join("");
+      const coursesList   = p.courses.map(c => `<li style="font-size:13.5px;color:#374151;margin-bottom:4px">${c}</li>`).join("");
+
+      const emailSection = p.email ? `
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Contact</div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <div>
+              <div class="detail-label">Email (public)</div>
+              <div class="detail-value"><a href="mailto:${p.email}">${p.email}</a></div>
+            </div>
+          </div>
+          <div class="draft-panel" id="draftPanel">
+            <div>
+              <div class="draft-label">Compose draft (not sent automatically)</div>
+              <textarea class="draft-textarea" id="draftText" placeholder="Dear Prof. ${p.name.split(' ').pop()},&#10;&#10;My name is Rosario and I am a first-year student at Baruch. I am writing to…&#10;&#10;Thank you for your time.&#10;Rosario"></textarea>
+            </div>
+            <div class="draft-note">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              This is a draft only. Use "Open in Email Client" to send it yourself.
+            </div>
+            <div class="draft-actions">
+              <button class="draft-btn primary" onclick="openEmailClient('${p.email}', '${p.name}')">Open in Email Client</button>
+              <button class="draft-btn secondary" onclick="document.getElementById('draftPanel').classList.remove('open')">Cancel</button>
+            </div>
+          </div>
+        </div>` : "";
+
+      const officeSection = p.officeHours ? `
+        <div class="drawer-divider"></div>
+        <div class="detail-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div>
+            <div class="detail-label">Office Hours</div>
+            <div class="detail-value">${p.officeHours}</div>
+          </div>
+        </div>` : "";
+
+      body.innerHTML = `
+        <div>
+          <div class="drawer-section-title">Biography</div>
+          <p class="drawer-bio">${p.bio}</p>
+        </div>
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Department &amp; Role</div>
+          <div class="detail-row" style="margin-bottom:8px">
+            <svg viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z" stroke-linejoin="round"/><path d="M6 12v5c0 2.21 2.69 4 6 4s6-1.79 6-4v-5" stroke-linecap="round"/></svg>
+            <div><div class="detail-label">Department</div><div class="detail-value">${p.dept}</div></div>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <div><div class="detail-label">Academic Role</div><div class="detail-value">${p.title}</div></div>
+          </div>
+        </div>
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Academic Subjects</div>
+          <div class="pill-group">${subjectPills}</div>
+        </div>
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Research Interests</div>
+          <div class="pill-group">${researchPills}</div>
+        </div>
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Courses Taught</div>
+          <ul style="padding-left:16px;list-style:disc">${coursesList}</ul>
+        </div>
+        ${officeSection}
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">University Profile</div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <div class="detail-value"><a href="${p.profile}" target="_blank" rel="noopener">${p.profile}</a></div>
+          </div>
+        </div>
+        ${emailSection}
+        <div class="drawer-divider"></div>
+        <div>
+          <div class="drawer-section-title">Related Resources</div>
+          <div class="pill-group">
+            <a href="subjects.html" style="text-decoration:none"><span class="pill" style="cursor:pointer">📚 Subjects &amp; Courses</span></a>
+            <a href="deadlines.html" style="text-decoration:none"><span class="pill" style="cursor:pointer">📅 Deadlines</span></a>
+            <a href="index.html" style="text-decoration:none"><span class="pill" style="cursor:pointer">🏠 Dashboard</span></a>
+          </div>
+        </div>
+        <div class="sample-note">
+          ⚠ Sample data for demonstration only. All names, emails, office hours, and profile URLs are fictional. Replace with verified Baruch College faculty information before publishing.
+        </div>`;
+
+      drawer.classList.add("open");
+      drawerOverlay.classList.add("open");
+      document.body.style.overflow = "hidden";
     }
 
-    // Show all on load
-    renderAll();
+    function openEmailClient(email, name) {
+      const draft = document.getElementById("draftText");
+      const body  = draft ? encodeURIComponent(draft.value) : "";
+      const subj  = encodeURIComponent("Question from a First-Year Student");
+      window.location.href = `mailto:${email}?subject=${subj}&body=${body}`;
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      drawerOverlay.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    document.getElementById("drawerClose").addEventListener("click", closeDrawer);
+    drawerOverlay.addEventListener("click", closeDrawer);
+
+    // ── RENDER ──
+    function buildCard(p) {
+      const subjectPills = p.subjects.slice(0, 3)
+        .map(s => `<span class="subject-pill">${s}</span>`).join("");
+      const moreSubs = p.subjects.length > 3
+        ? `<span class="subject-pill">+${p.subjects.length - 3} more</span>` : "";
+
+      const card = document.createElement("div");
+      card.className = "prof-card";
+      card.innerHTML = `
+        <div class="prof-card-top">
+          <div class="prof-avatar">${initials(p.name)}</div>
+          <div>
+            <div class="prof-name">${p.name}</div>
+            <div class="prof-title">${p.title}</div>
+            <div class="prof-dept">${p.dept} · ${p.university}</div>
+          </div>
+        </div>
+        <span class="prof-tag">${p.role}</span>
+        <div class="prof-subjects">${subjectPills}${moreSubs}</div>
+        <div class="prof-research">🔬 ${p.research.slice(0, 2).join(" · ")}</div>`;
+      card.addEventListener("click", () => openDrawer(p));
+      return card;
+    }
+
+    function render(list) {
+      const grid = document.getElementById("facultyGrid");
+      const empty = document.getElementById("emptyState");
+      const header = document.getElementById("resultsHeader");
+      grid.innerHTML = "";
+      if (list.length === 0) {
+        empty.style.display = "block";
+        header.textContent = "";
+      } else {
+        empty.style.display = "none";
+        header.textContent = `Showing ${list.length} of ${FACULTY.length} faculty members`;
+        list.forEach(p => grid.appendChild(buildCard(p)));
+      }
+    }
+
+    function filter() {
+      const q    = document.getElementById("searchInput").value.toLowerCase().trim();
+      const dept = document.getElementById("filterDept").value;
+      const role = document.getElementById("filterRole").value;
+
+      const result = FACULTY.filter(p => {
+        const matchDept = !dept || p.dept === dept;
+        const matchRole = !role || p.role === role;
+        const matchQ = !q ||
+          p.name.toLowerCase().includes(q) ||
+          p.dept.toLowerCase().includes(q) ||
+          p.subjects.some(s => s.toLowerCase().includes(q)) ||
+          p.research.some(r => r.toLowerCase().includes(q)) ||
+          p.courses.some(c => c.toLowerCase().includes(q));
+        return matchDept && matchRole && matchQ;
+      });
+      render(result);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", filter);
+    document.getElementById("filterDept").addEventListener("change", filter);
+    document.getElementById("filterRole").addEventListener("change", filter);
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("filterDept").value  = "";
+      document.getElementById("filterRole").value  = "";
+      filter();
+    });
+
+    // On load — handle #hash filter from dashboard
+    const hashLetter = window.location.hash.replace("#", "").toUpperCase();
+    if (hashLetter) {
+      const match = FACULTY.filter(p => p.name.split(" ").pop()[0].toUpperCase() === hashLetter);
+      render(match.length ? match : FACULTY);
+    } else {
+      render(FACULTY);
+    }
   </script>
 
 </body>

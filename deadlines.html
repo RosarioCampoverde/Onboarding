@@ -18,23 +18,23 @@
     nav {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       padding: 18px 48px;
       background: #f3f4f6;
     }
     .nav-logo {
       width: 40px; height: 40px;
-      background: #7c3aed;
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; text-decoration: none;
+      flex-shrink: 0; text-decoration: none; overflow: hidden;
     }
-    .nav-logo svg { width: 20px; height: 20px; }
+    .nav-logo img { width: 40px; height: 40px; object-fit: cover; }
     .nav-title {
       font-size: 15px; font-weight: 600; color: #1f2328; text-decoration: none;
     }
     .back-link {
-      margin-left: auto; font-size: 13px; color: #7c3aed;
+      position: absolute; right: 48px; font-size: 13px; color: #7c3aed;
       text-decoration: none; font-weight: 500;
     }
     .back-link:hover { text-decoration: underline; }
@@ -42,7 +42,7 @@
     /* ── PAGE ── */
     .page-content {
       max-width: 980px;
-      margin: 48px auto 80px;
+      margin: 32px auto 80px;
       padding: 0 48px;
     }
 
@@ -56,143 +56,401 @@
       font-size: 34px; font-weight: 800; color: #0f172a; margin-bottom: 6px;
     }
     .page-sub {
-      font-size: 15px; color: #57606a; margin-bottom: 32px;
+      font-size: 15px; color: #57606a; margin-bottom: 28px;
     }
 
-    /* ── TAB BAR ── */
-    .tab-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 36px;
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 0;
-    }
-    .tab-btn {
+    /* ── REMINDER BANNER ── */
+    .reminder-banner {
       display: flex;
       align-items: center;
-      gap: 7px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #57606a;
-      background: none;
-      border: none;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      cursor: pointer;
-      border-radius: 6px 6px 0 0;
-      transition: color 0.15s;
-      font-family: inherit;
+      gap: 10px;
+      background: #fef3c7;
+      border: 1.5px solid #fcd34d;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+      color: #92400e;
     }
-    .tab-btn svg {
-      width: 17px; height: 17px;
-      stroke: currentColor; fill: none; stroke-width: 1.8;
+    .reminder-banner svg {
+      width: 18px; height: 18px; flex-shrink: 0;
+      stroke: #d97706; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .reminder-banner strong { font-weight: 700; }
+    .reminder-dismiss {
+      margin-left: auto; cursor: pointer; font-size: 15px; color: #d97706;
+      background: none; border: none; font-family: inherit; line-height: 1;
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .filter-tabs {
+      display: flex; gap: 4px;
+    }
+    .ftab {
+      padding: 7px 16px;
+      font-size: 13px; font-weight: 600;
+      border-radius: 999px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      color: #57606a;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .ftab:hover { border-color: #c4b5fd; color: #7c3aed; }
+    .ftab.active {
+      background: #7c3aed; border-color: #7c3aed;
+      color: #fff;
+    }
+    .ftab .badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      background: rgba(255,255,255,0.3);
+      margin-left: 5px;
+    }
+    .ftab:not(.active) .badge { background: #ede9fe; color: #7c3aed; }
+
+    .toolbar-right {
+      margin-left: auto;
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .select-filter {
+      padding: 7px 12px;
+      font-size: 13px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      background: #fff;
+      color: #374151;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .select-filter:focus { outline: none; border-color: #7c3aed; }
+
+    .btn-add {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 600;
+      background: #7c3aed; color: #fff;
+      border: none; border-radius: 8px;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-add:hover { background: #6d28d9; }
+    .btn-add svg {
+      width: 15px; height: 15px;
+      stroke: #fff; fill: none; stroke-width: 2.2;
       stroke-linecap: round; stroke-linejoin: round;
     }
-    .tab-btn:hover { color: #7c3aed; }
-    .tab-btn.active {
-      color: #7c3aed;
-      border-bottom-color: #7c3aed;
-      background: #faf5ff;
-    }
 
-    /* ── TAB PANELS ── */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    /* ── TASK LIST ── */
+    .task-list { display: flex; flex-direction: column; gap: 8px; }
 
-    /* ── SUBJECT ACCORDION ── */
-    .subject-row {
+    .task-card {
       background: #fff;
       border: 1.5px solid #e5e7eb;
-      border-radius: 14px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      transition: border-color 0.15s;
-    }
-    .subject-row:hover { border-color: #c4b5fd; }
-
-    .subject-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .subject-code-badge {
-      font-size: 11px; font-weight: 700;
-      color: #7c3aed;
-      background: #ede9fe;
-      border-radius: 999px;
-      padding: 3px 10px;
-      white-space: nowrap;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-    }
-    .subject-name-label {
-      font-size: 14px; font-weight: 600; color: #0f172a; flex: 1;
-    }
-    .subject-dept {
-      font-size: 12px; color: #9ca3af;
-    }
-    .chevron {
-      width: 18px; height: 18px;
-      stroke: #9ca3af; fill: none;
-      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-      flex-shrink: 0;
-    }
-    .subject-row.open .chevron { transform: rotate(180deg); }
-
-    .subject-body {
-      display: none;
-      padding: 0 20px 20px 20px;
-      border-top: 1.5px solid #f3f4f6;
-      margin-top: 0;
-    }
-    .subject-row.open .subject-body { display: block; }
-
-    .deadline-info {
+      border-radius: 12px;
+      padding: 16px 18px;
       display: flex;
       align-items: flex-start;
       gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px dashed #f0edfb;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      position: relative;
     }
-    .deadline-info:last-child { border-bottom: none; }
+    .task-card:hover { border-color: #c4b5fd; box-shadow: 0 2px 8px rgba(124,58,237,0.07); }
+    .task-card.completed { opacity: 0.65; }
+    .task-card.overdue { border-left: 4px solid #ef4444; }
+    .task-card.due-soon { border-left: 4px solid #f59e0b; }
 
-    .dl-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+    .task-check-wrap {
+      flex-shrink: 0; padding-top: 2px;
     }
-    .dl-icon svg {
-      width: 18px; height: 18px;
-      stroke: currentColor; fill: none;
+    .task-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      cursor: pointer;
+      background: #fff;
+    }
+    .task-check:hover { border-color: #7c3aed; }
+    .task-check.done {
+      background: #7c3aed; border-color: #7c3aed;
+    }
+    .task-check.done svg { display: block; }
+    .task-check svg {
+      display: none;
+      width: 10px; height: 10px;
+      stroke: #fff; fill: none; stroke-width: 2.5;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .task-body { flex: 1; min-width: 0; }
+    .task-name {
+      font-size: 14.5px; font-weight: 700; color: #0f172a; margin-bottom: 3px;
+    }
+    .task-card.completed .task-name { text-decoration: line-through; color: #9ca3af; }
+    .task-desc {
+      font-size: 13px; color: #57606a; margin-bottom: 8px; line-height: 1.5;
+    }
+    .task-meta {
+      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11.5px; font-weight: 600;
+      padding: 3px 9px; border-radius: 999px;
+    }
+    .tag.hw     { background: #ede9fe; color: #7c3aed; }
+    .tag.proj   { background: #fef3c7; color: #d97706; }
+    .tag.event  { background: #dcfce7; color: #16a34a; }
+    .tag.personal { background: #dbeafe; color: #2563eb; }
+    .tag.urgent { background: #fee2e2; color: #dc2626; }
+    .tag.medium { background: #fef3c7; color: #d97706; }
+    .tag.low    { background: #f1f5f9; color: #64748b; }
+
+    .task-due-col {
+      flex-shrink: 0; text-align: right; min-width: 100px;
+    }
+    .task-due-label {
+      font-size: 12px; color: #9ca3af; font-weight: 500; margin-bottom: 2px;
+    }
+    .task-due-val {
+      font-size: 13px; font-weight: 700; color: #0f172a;
+    }
+    .task-due-val.overdue  { color: #dc2626; }
+    .task-due-val.due-soon { color: #d97706; }
+    .task-due-val.ok       { color: #16a34a; }
+
+    .task-status-badge {
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 999px; margin-top: 4px;
+      display: inline-block;
+    }
+    .task-status-badge.pending    { background: #f1f5f9; color: #475569; }
+    .task-status-badge.completed  { background: #dcfce7; color: #16a34a; }
+    .task-status-badge.overdue    { background: #fee2e2; color: #dc2626; }
+    .task-status-badge.due-soon   { background: #fef3c7; color: #d97706; }
+
+    .task-actions {
+      display: flex; gap: 6px; align-items: center;
+      flex-shrink: 0; padding-top: 2px;
+    }
+    .icon-btn {
+      width: 30px; height: 30px;
+      border: 1.5px solid #e5e7eb; border-radius: 7px;
+      background: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .icon-btn:hover { border-color: #7c3aed; background: #faf5ff; }
+    .icon-btn svg {
+      width: 14px; height: 14px;
+      stroke: #57606a; fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .icon-btn:hover svg { stroke: #7c3aed; }
+    .icon-btn.danger:hover { border-color: #ef4444; background: #fff1f2; }
+    .icon-btn.danger:hover svg { stroke: #ef4444; }
+
+    .inst-lock {
+      font-size: 10.5px; color: #9ca3af; display: flex; align-items: center; gap: 3px;
+      margin-top: 5px;
+    }
+    .inst-lock svg {
+      width: 10px; height: 10px; stroke: #9ca3af; fill: none;
       stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
     }
-    .dl-icon.hw { background: #ede9fe; color: #7c3aed; }
-    .dl-icon.proj { background: #fef3c7; color: #d97706; }
-    .dl-icon.evt { background: #dcfce7; color: #16a34a; }
 
-    .dl-text {}
-    .dl-label {
-      font-size: 12px; font-weight: 700; color: #374151;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #9ca3af;
     }
-    .dl-message {
-      font-size: 13.5px; color: #57606a; line-height: 1.55;
+    .empty-state svg {
+      width: 44px; height: 44px; stroke: #d1d5db; fill: none;
+      stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
+      margin: 0 auto 16px; display: block;
     }
-    .dl-date {
-      font-weight: 700; color: #0f172a;
+    .empty-state p { font-size: 15px; font-weight: 600; color: #6b7280; }
+    .empty-state span { font-size: 13px; }
+
+    /* ── MODAL OVERLAY ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; padding: 24px;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%; max-width: 580px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      transform: translateY(16px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 30px; height: 30px; border-radius: 999px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; color: #9ca3af; line-height: 1;
+    }
+    .modal-close:hover { border-color: #ef4444; color: #ef4444; }
+
+    .modal-cat-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; padding: 4px 10px; border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .modal-title {
+      font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 6px;
+    }
+    .modal-desc {
+      font-size: 14px; color: #57606a; line-height: 1.65; margin-bottom: 18px;
     }
 
-    .section-label {
-      font-size: 12px; font-weight: 700; color: #9ca3af;
-      text-transform: uppercase; letter-spacing: 0.6px;
-      margin-bottom: 14px; margin-top: 4px;
+    .modal-row {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
     }
+    .modal-chip {
+      font-size: 12.5px; font-weight: 600; padding: 5px 12px;
+      border-radius: 999px; border: 1.5px solid #e5e7eb;
+      display: flex; align-items: center; gap: 5px; color: #374151;
+    }
+    .modal-chip svg {
+      width: 13px; height: 13px; stroke: currentColor; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .modal-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: #9ca3af; margin-bottom: 8px; margin-top: 20px;
+    }
+
+    .steps-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .steps-list li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 13.5px; color: #374151; line-height: 1.55;
+    }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #ede9fe; color: #7c3aed;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+
+    .resource-link {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 600; color: #7c3aed;
+      text-decoration: none; padding: 10px 14px;
+      border: 1.5px solid #ede9fe; border-radius: 8px;
+      margin-bottom: 8px; transition: all 0.15s;
+    }
+    .resource-link:hover { background: #faf5ff; border-color: #c4b5fd; }
+    .resource-link svg {
+      width: 15px; height: 15px; stroke: #7c3aed; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .verification-note {
+      display: flex; gap: 8px; align-items: flex-start;
+      background: #f8fafc; border: 1.5px solid #e5e7eb; border-radius: 8px;
+      padding: 12px 14px; font-size: 13px; color: #57606a; line-height: 1.55;
+      margin-top: 10px;
+    }
+    .verification-note svg {
+      width: 16px; height: 16px; stroke: #64748b; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    .modal-actions {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 24px; border-top: 1.5px solid #f3f4f6; padding-top: 20px;
+    }
+    .btn-primary {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      font-size: 13.5px; font-weight: 600;
+      background: #7c3aed; color: #fff;
+      border: none; border-radius: 8px;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #6d28d9; }
+    .btn-primary svg {
+      width: 15px; height: 15px; stroke: #fff; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .btn-secondary {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      font-size: 13.5px; font-weight: 600;
+      background: #fff; color: #374151;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .btn-secondary:hover { border-color: #7c3aed; color: #7c3aed; }
+    .btn-secondary svg {
+      width: 15px; height: 15px; stroke: currentColor; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .btn-danger {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      font-size: 13.5px; font-weight: 600;
+      background: #fff; color: #dc2626;
+      border: 1.5px solid #fecaca; border-radius: 8px;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .btn-danger:hover { background: #fff1f2; border-color: #ef4444; }
+    .btn-danger svg {
+      width: 15px; height: 15px; stroke: currentColor; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    /* ── ADD TASK MODAL ── */
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 700; color: #374151;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 8px;
+      font-size: 14px; color: #1f2328; font-family: inherit;
+      background: #fff; transition: border-color 0.15s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none; border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+    .form-textarea { min-height: 72px; resize: vertical; }
+    .form-row { display: flex; gap: 12px; }
+    .form-row .form-group { flex: 1; }
 
     /* ── AI BAR ── */
     .ai-bar-wrapper {
@@ -203,45 +461,24 @@
       justify-content: center;
     }
     .ai-bar {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      max-width: 760px;
-      width: 100%;
+      display: flex; align-items: center; gap: 14px;
+      max-width: 760px; width: 100%;
     }
-    .ai-bar-brand {
-      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-    }
+    .ai-bar-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .ai-bar-logo {
-      width: 38px; height: 38px;
-      background: #7c3aed;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 38px; height: 38px; background: #7c3aed;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .ai-bar-logo svg { width: 20px; height: 20px; }
-    .ai-bar-label {
-      font-size: 14px; font-weight: 600; color: #1f2328; white-space: nowrap;
-    }
+    .ai-bar-label { font-size: 14px; font-weight: 600; color: #1f2328; white-space: nowrap; }
     .ai-bar-input-wrap { flex: 1; }
     .ai-bar-input {
-      width: 100%;
-      border: 1.5px solid #d1d5db;
-      border-radius: 999px;
-      padding: 12px 20px;
-      font-size: 14px;
-      color: #1f2328;
-      background: #f9fafb;
-      outline: none;
-      font-family: inherit;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%; border: 1.5px solid #d1d5db; border-radius: 999px;
+      padding: 12px 20px; font-size: 14px; color: #1f2328; background: #f9fafb;
+      outline: none; font-family: inherit; transition: border-color 0.15s, box-shadow 0.15s;
     }
     .ai-bar-input::placeholder { color: #9ca3af; }
-    .ai-bar-input:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
-      background: #fff;
-    }
+    .ai-bar-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.12); background: #fff; }
   </style>
 </head>
 <body>
@@ -249,9 +486,7 @@
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
-      </svg>
+      <img src="LUNA_AGENT.jpg" alt="Luna avatar" />
     </a>
     <a href="index.html" class="nav-title">Luna Onboarding Assistant</a>
     <a href="index.html" class="back-link">← Back to Home</a>
@@ -263,40 +498,104 @@
       <a href="index.html">Home</a> / Deadlines
     </div>
     <h1 class="page-title">📅 Deadlines</h1>
-    <p class="page-sub">Stay on track — browse homework due dates, project milestones, and event registration windows for each of your courses.</p>
+    <p class="page-sub">Track homework, project milestones, and Baruch College events — all in one place.</p>
 
-    <!-- TAB BAR -->
-    <div class="tab-bar">
-      <button class="tab-btn active" data-tab="homework">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Homework
-      </button>
-      <button class="tab-btn" data-tab="projects">
-        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        Projects
-      </button>
-      <button class="tab-btn" data-tab="events">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2"/></svg>
-        Event Registration
-      </button>
+    <!-- REMINDER BANNER -->
+    <div class="reminder-banner" id="reminderBanner">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span><strong>Reminder:</strong> You have <span id="reminderCount">0</span> overdue or upcoming task(s) needing attention.</span>
+      <button class="reminder-dismiss" onclick="document.getElementById('reminderBanner').style.display='none'" title="Dismiss">✕</button>
     </div>
 
-    <!-- HOMEWORK PANEL -->
-    <div class="tab-panel active" id="panel-homework">
-      <div class="section-label">Homework Due Dates by Subject</div>
-      <div id="list-homework"></div>
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="ftab active" data-filter="all">All <span class="badge" id="badge-all">0</span></button>
+        <button class="ftab" data-filter="upcoming">Upcoming <span class="badge" id="badge-upcoming">0</span></button>
+        <button class="ftab" data-filter="due-soon">Due Soon <span class="badge" id="badge-due-soon">0</span></button>
+        <button class="ftab" data-filter="overdue">Overdue <span class="badge" id="badge-overdue">0</span></button>
+        <button class="ftab" data-filter="completed">Completed <span class="badge" id="badge-completed">0</span></button>
+      </div>
+      <div class="toolbar-right">
+        <select class="select-filter" id="catFilter">
+          <option value="all">All Categories</option>
+          <option value="hw">Homework</option>
+          <option value="proj">Project</option>
+          <option value="event">Event</option>
+          <option value="personal">Personal</option>
+        </select>
+        <select class="select-filter" id="priFilter">
+          <option value="all">All Priorities</option>
+          <option value="urgent">Urgent</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <select class="select-filter" id="dateFilter">
+          <option value="all">Any Date</option>
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+        <button class="btn-add" onclick="openAddModal()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Personal Task
+        </button>
+      </div>
     </div>
 
-    <!-- PROJECTS PANEL -->
-    <div class="tab-panel" id="panel-projects">
-      <div class="section-label">Project Milestones by Subject</div>
-      <div id="list-projects"></div>
-    </div>
+    <!-- TASK LIST -->
+    <div class="task-list" id="taskList"></div>
+  </div>
 
-    <!-- EVENT REGISTRATION PANEL -->
-    <div class="tab-panel" id="panel-events">
-      <div class="section-label">Event Registration Windows by Subject</div>
-      <div id="list-events"></div>
+  <!-- DETAIL MODAL -->
+  <div class="modal-overlay" id="detailOverlay" onclick="closeDetailIf(event)">
+    <div class="modal" id="detailModal">
+      <button class="modal-close" onclick="closeDetail()">✕</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT PERSONAL TASK MODAL -->
+  <div class="modal-overlay" id="addOverlay" onclick="closeAddIf(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAdd()">✕</button>
+      <h2 class="modal-title" id="addModalTitle">Add Personal Task</h2>
+      <p class="modal-desc" style="margin-bottom:20px;">Personal tasks are self-reported and only visible to you.</p>
+      <form id="addForm" onsubmit="submitPersonalTask(event)">
+        <div class="form-group">
+          <label class="form-label" for="f-name">Task Name *</label>
+          <input class="form-input" id="f-name" required placeholder="e.g. Review Chapter 4 notes" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-desc">Description</label>
+          <textarea class="form-textarea" id="f-desc" placeholder="What do you need to do?"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-due">Due Date *</label>
+            <input class="form-input" id="f-due" type="date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-pri">Priority</label>
+            <select class="form-select" id="f-pri">
+              <option value="medium">Medium</option>
+              <option value="urgent">Urgent</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-steps">Steps to Complete (one per line)</label>
+          <textarea class="form-textarea" id="f-steps" placeholder="Step 1&#10;Step 2&#10;Step 3"></textarea>
+        </div>
+        <div class="modal-actions" style="border-top:none;padding-top:0;margin-top:4px;">
+          <button type="submit" class="btn-primary">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Task
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeAdd()">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -318,174 +617,623 @@
   </div>
 
   <script>
-    // ── All subjects from subjects.html ──
-    const subjects = [
-      // Marxe School of Public and International Affairs
-      { code: "PAF 9100", name: "Public Affairs and Administration",         dept: "Marxe School of Public & International Affairs" },
-      { code: "PAF 9120", name: "Quantitative Methods for Public Affairs",   dept: "Marxe School of Public & International Affairs" },
-      { code: "PAF 9130", name: "Economics for Public Policy",               dept: "Marxe School of Public & International Affairs" },
-      { code: "PAF 9140", name: "Public Policy Analysis",                    dept: "Marxe School of Public & International Affairs" },
-      // Zicklin School of Business
-      { code: "MBA 7000", name: "Business Leadership and Communication",     dept: "Baruch School of Business (Zicklin)" },
-      { code: "ACC 7000", name: "Financial Accounting for MBAs",             dept: "Baruch School of Business (Zicklin)" },
-      { code: "BUS 7000", name: "Business Statistics",                       dept: "Baruch School of Business (Zicklin)" },
-      { code: "MGT 7100", name: "Organizational Behavior",                   dept: "Baruch School of Business (Zicklin)" },
-      { code: "FIN 7100", name: "Corporate Finance",                         dept: "Baruch School of Business (Zicklin)" },
-      { code: "MKT 7100", name: "Marketing Management",                     dept: "Baruch School of Business (Zicklin)" },
-      // CIS
-      { code: "CIS 9001", name: "Foundations of Information Systems",        dept: "Dept. of Computer Information Systems" },
-      { code: "CIS 9010", name: "Database Management Systems",               dept: "Dept. of Computer Information Systems" },
-      { code: "CIS 9020", name: "Systems Analysis and Design",               dept: "Dept. of Computer Information Systems" },
-      { code: "CIS 9490", name: "Data Analytics for Business",               dept: "Dept. of Computer Information Systems" },
-      // Economics & Finance
-      { code: "ECO 9710", name: "Microeconomic Theory",                      dept: "Dept. of Economics and Finance" },
-      { code: "ECO 9720", name: "Macroeconomic Theory",                      dept: "Dept. of Economics and Finance" },
-      { code: "FIN 9770", name: "Financial Markets and Institutions",         dept: "Dept. of Economics and Finance" },
-      { code: "FIN 9780", name: "Investment Analysis",                        dept: "Dept. of Economics and Finance" },
-      { code: "ECO 9800", name: "Econometrics",                              dept: "Dept. of Economics and Finance" },
-      // Humanities
-      { code: "ENG 7001", name: "Graduate Writing Seminar",                  dept: "Weissman School — Humanities" },
-      { code: "COM 9100", name: "Corporate Communication",                   dept: "Weissman School — Humanities" },
-      { code: "COM 9110", name: "Intercultural Communication",               dept: "Weissman School — Humanities" },
-      // Management
-      { code: "MGT 9100", name: "Leadership and Team Dynamics",              dept: "Dept. of Management" },
-      { code: "MGT 9200", name: "Strategic Management",                      dept: "Dept. of Management" },
-      { code: "MGT 9300", name: "Entrepreneurship and Innovation",           dept: "Dept. of Management" },
-      { code: "MGT 9410", name: "Human Resource Management",                 dept: "Dept. of Management" },
-      { code: "MGT 9420", name: "Negotiations",                              dept: "Dept. of Management" },
-      // Operations
-      { code: "OPM 9100", name: "Operations Management",                     dept: "Dept. of Operations Management" },
-      { code: "OPM 9200", name: "Supply Chain Management",                   dept: "Dept. of Operations Management" },
-      { code: "OPM 9300", name: "Project Management",                        dept: "Dept. of Operations Management" },
-      // Marketing & IB
-      { code: "MKT 9100", name: "Consumer Behavior",                         dept: "Dept. of Marketing & International Business" },
-      { code: "MKT 9200", name: "Marketing Research",                        dept: "Dept. of Marketing & International Business" },
-      { code: "IBS 9100", name: "International Business Strategy",           dept: "Dept. of Marketing & International Business" },
-      { code: "MKT 9300", name: "Digital Marketing",                         dept: "Dept. of Marketing & International Business" },
-      // Social Sciences
-      { code: "SOC 9100", name: "Sociology of Organizations",                dept: "Weissman School — Social Sciences" },
-      { code: "PSY 9100", name: "Industrial-Organizational Psychology",      dept: "Weissman School — Social Sciences" },
-      { code: "POL 9100", name: "Urban Politics and Policy",                 dept: "Weissman School — Social Sciences" },
-      // Technology
-      { code: "TEC 9100", name: "Emerging Technologies in Business",         dept: "Dept. of Technology and Innovation" },
-      { code: "TEC 9200", name: "Cybersecurity for Managers",                dept: "Dept. of Technology and Innovation" },
-      { code: "TEC 9300", name: "Business Intelligence and Data Visualization", dept: "Dept. of Technology and Innovation" },
-    ];
+  // ─────────────────────────────────────────────────────────────
+  //  DATA
+  // ─────────────────────────────────────────────────────────────
 
-    // ── Deadline data per subject ──
-    // Keys match subject codes
-    const deadlines = {
-      "PAF 9100": { hw: "Weekly response papers due every Sunday by 11:59 PM. First submission due Jan 26.", proj: "Policy brief proposal due Feb 14; final brief due Apr 11.", evt: "MPA Info Session registration closes Jan 20. Public Affairs symposium sign-up opens Mar 3." },
-      "PAF 9120": { hw: "Problem sets assigned biweekly; first set due Feb 2.", proj: "Data analysis project proposal due Mar 1; final report due Apr 25.", evt: "SPSS/R workshop registration due Jan 28. Research showcase registration opens Mar 10." },
-      "PAF 9130": { hw: "Reading reflections due before each class session.", proj: "Cost-benefit analysis group project due Apr 18.", evt: "NYC Budget Forum registration closes Feb 7. Guest lecture RSVP due Mar 14." },
-      "PAF 9140": { hw: "Case study memos due every other Wednesday.", proj: "Policy analysis paper (10 pp.) due Apr 30.", evt: "Policy Lab orientation registration closes Jan 22. Spring policy conference RSVP due Mar 28." },
+  // today reference used for urgency calc
+  const TODAY = new Date("2026-11-14");
 
-      "MBA 7000": { hw: "Leadership reflection journal entries due every Friday.", proj: "Team communication audit report due Mar 7.", evt: "Leadership workshop registration closes Jan 24. Networking mixer RSVP due Feb 20." },
-      "ACC 7000": { hw: "Problem sets due every Monday; first due Jan 27.", proj: "Financial statement analysis project due Apr 4.", evt: "Accounting club info session closes Jan 21. CPA exam prep webinar registration due Feb 15." },
-      "BUS 7000": { hw: "SPSS assignment sets due biweekly starting Feb 3.", proj: "Regression analysis project due Apr 10.", evt: "Statistics bootcamp registration closes Jan 25. Analytics career panel RSVP due Mar 5." },
-      "MGT 7100": { hw: "Chapter summaries due before each lecture.", proj: "Organizational case study due Mar 28.", evt: "OB simulation workshop sign-up closes Feb 3. Diversity & Inclusion seminar RSVP due Mar 12." },
-      "FIN 7100": { hw: "Financial problem sets due every Thursday.", proj: "Corporate valuation project due Apr 17.", evt: "Bloomberg terminal training registration closes Jan 29. Finance career fair RSVP due Mar 6." },
-      "MKT 7100": { hw: "Brand analysis posts due every Tuesday.", proj: "Marketing plan capstone due Apr 24.", evt: "Marketing club kickoff registration closes Jan 23. Guest CMO talk RSVP due Feb 27." },
+  const INST_TASKS = [
+    // ── HOMEWORK ──
+    {
+      id: "hw-1",
+      name: "Business Communications Essay",
+      desc: "Write a 3-page professional communication essay analysing a real-world corporate memo for tone, structure, and clarity.",
+      category: "hw",
+      priority: "urgent",
+      due: "2026-11-18",
+      status: "pending",
+      institution: true,
+      selfReport: true,
+      course: "MBA 7000",
+      why: "This essay counts for 20% of your final grade and builds core written communication skills required in every business role.",
+      steps: [
+        "Download the sample memo from Blackboard under MBA 7000 > Assignments.",
+        "Write a 3-page analysis (double-spaced, 12 pt Times New Roman).",
+        "Cover tone, audience awareness, and structure in separate sections.",
+        "Cite at least 2 sources from the course reader.",
+        "Submit as a PDF via Blackboard by 11:59 PM on Nov 18."
+      ],
+      resource: { label: "Baruch Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    {
+      id: "hw-2",
+      name: "Continue Reading — Business Comm, 2 Pages",
+      desc: "Read pages 44–46 of the assigned course text: 'The Language of Business' (Chapter 3).",
+      category: "hw",
+      priority: "urgent",
+      due: "2026-11-14",
+      status: "pending",
+      institution: true,
+      selfReport: true,
+      course: "MBA 7000",
+      why: "Chapter 3 material is covered in the next class session and feeds directly into your upcoming essay.",
+      steps: [
+        "Open the e-reader link on Blackboard under MBA 7000 > Course Materials.",
+        "Read pages 44–46 (approx. 15 minutes).",
+        "Take notes on key concepts for discussion."
+      ],
+      resource: { label: "Baruch Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    {
+      id: "hw-3",
+      name: "Math Quiz Prep — Chapter 3 Practice Problems",
+      desc: "Complete Chapter 3 practice problems from BUS 7000 to prepare for the upcoming quiz.",
+      category: "hw",
+      priority: "medium",
+      due: "2026-11-21",
+      status: "pending",
+      institution: true,
+      selfReport: true,
+      course: "BUS 7000",
+      why: "Quiz 2 covers Chapter 3 regression concepts. Practice problems are the best preparation.",
+      steps: [
+        "Download problem set from Blackboard > BUS 7000 > Quiz Prep.",
+        "Work through problems 1–15 (descriptive statistics + regression).",
+        "Check your answers with the posted answer key.",
+        "Flag any problems you couldn't solve and bring questions to office hours."
+      ],
+      resource: { label: "BUS 7000 Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    {
+      id: "hw-4",
+      name: "Weekly Response Paper — PAF 9100",
+      desc: "Write a 1-page response paper connecting this week's readings on public administration theory to a current NYC policy issue.",
+      category: "hw",
+      priority: "medium",
+      due: "2026-11-17",
+      status: "pending",
+      institution: true,
+      selfReport: true,
+      course: "PAF 9100",
+      why: "Response papers develop analytical writing and are graded weekly. Missing submissions affect your participation grade.",
+      steps: [
+        "Review the assigned readings (posted on Blackboard > PAF 9100 > Week 4).",
+        "Identify one NYC policy case that relates to this week's theory.",
+        "Write a 1-page (single-spaced) response paper.",
+        "Submit via Blackboard by Sunday 11:59 PM."
+      ],
+      resource: { label: "PAF 9100 Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    // ── PROJECTS ──
+    {
+      id: "proj-1",
+      name: "Marketing Project — Final Submission",
+      desc: "Submit the completed marketing plan capstone for MKT 7100, including market analysis, strategy, and financial projections.",
+      category: "proj",
+      priority: "medium",
+      due: "2026-12-01",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: "MKT 7100",
+      why: "The marketing plan is 40% of your final grade and demonstrates your ability to build an end-to-end business strategy.",
+      steps: [
+        "Finalise your market analysis section with updated data.",
+        "Complete the competitive landscape and SWOT analysis.",
+        "Build financial projections for Years 1–3.",
+        "Format the document following the MKT 7100 style guide.",
+        "Upload the final PDF to Blackboard by Dec 1 at 11:59 PM.",
+        "Ensure all group members are listed on the cover page."
+      ],
+      resource: { label: "MKT 7100 Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    {
+      id: "proj-2",
+      name: "Financial Statement Analysis Project",
+      desc: "Analyse the financial statements of a publicly traded company and present findings in a structured report for ACC 7000.",
+      category: "proj",
+      priority: "medium",
+      due: "2026-12-04",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: "ACC 7000",
+      why: "This project is worth 30% of your grade and builds core financial literacy skills expected of MBA graduates.",
+      steps: [
+        "Select a publicly traded company from the approved list on Blackboard.",
+        "Download the last 3 years of annual reports (10-K).",
+        "Calculate key ratios: liquidity, profitability, solvency.",
+        "Identify trends and write a 10-page analysis report.",
+        "Include references and submit via Blackboard by Dec 4."
+      ],
+      resource: { label: "SEC EDGAR — Public Filings", url: "https://www.sec.gov/edgar" }
+    },
+    {
+      id: "proj-3",
+      name: "Policy Brief Proposal — PAF 9100",
+      desc: "Submit a 1-page policy brief proposal identifying a public affairs issue, proposed solution, and stakeholders.",
+      category: "proj",
+      priority: "low",
+      due: "2026-11-28",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: "PAF 9100",
+      why: "The proposal must be approved before you can proceed to write the full policy brief due in April.",
+      steps: [
+        "Identify a current NYC or state-level public policy problem.",
+        "Draft a 1-page proposal: problem statement, proposed solution, affected stakeholders.",
+        "Get feedback from your faculty advisor before submission.",
+        "Submit as a Word document via Blackboard."
+      ],
+      resource: { label: "NYC Government Open Data", url: "https://opendata.cityofnewyork.us" }
+    },
+    // ── EVENTS (Baruch College) ──
+    {
+      id: "evt-1",
+      name: "GSA Workshop Registration",
+      desc: "Register for the Graduate Student Assembly (GSA) Workshop: Navigating Graduate Life at Baruch.",
+      category: "event",
+      priority: "medium",
+      due: "2026-11-19",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: null,
+      why: "The GSA Workshop introduces key campus resources, student government opportunities, and peer support networks for new graduate students.",
+      steps: [
+        "Log in to CUNYfirst at cunyfirst.cuny.edu.",
+        "Navigate to Student Center > Campus Events.",
+        "Search for 'GSA Workshop Nov 19' and click Register.",
+        "Add the event to your calendar.",
+        "Attend: Room 204, 3pm–5pm on Nov 19."
+      ],
+      resource: { label: "CUNYfirst Student Portal", url: "https://cunyfirst.cuny.edu" }
+    },
+    {
+      id: "evt-2",
+      name: "Campus Life Fair",
+      desc: "Attend the Campus Life Fair in the Main Quad — meet over 60 student clubs, organisations, and campus service booths.",
+      category: "event",
+      priority: "low",
+      due: "2026-11-16",
+      status: "completed",
+      institution: true,
+      selfReport: false,
+      course: null,
+      why: "Joining a student organisation is one of the strongest predictors of graduate student satisfaction and professional network building.",
+      steps: [
+        "Bring your Baruch student ID.",
+        "Review the club list in advance at studentaffairs.baruch.cuny.edu.",
+        "Attend: Main Quad, 10am–2pm on Nov 16.",
+        "Sign up for at least one organisation mailing list."
+      ],
+      resource: { label: "Baruch Student Affairs", url: "https://studentaffairs.baruch.cuny.edu" }
+    },
+    {
+      id: "evt-3",
+      name: "Leadership Workshop — MBA 7000",
+      desc: "Attend the half-day Leadership & Communication workshop (mandatory for MBA 7000 students).",
+      category: "event",
+      priority: "urgent",
+      due: "2026-11-24",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: "MBA 7000",
+      why: "Attendance counts toward your MBA 7000 participation grade. The workshop feeds directly into your Team Communication Audit report.",
+      steps: [
+        "Register by Nov 20 via Blackboard > MBA 7000 > Workshop Sign-Up.",
+        "Confirm your registration email.",
+        "Bring your laptop and course notebook.",
+        "Attend: Zicklin School, Room 1-220, 9am–1pm on Nov 24."
+      ],
+      resource: { label: "MBA 7000 Blackboard", url: "https://bbhosted.cuny.edu" }
+    },
+    {
+      id: "evt-4",
+      name: "Finance Career Fair — RSVP",
+      desc: "RSVP for the Baruch College Finance Career Fair where leading Wall Street firms and fintech companies recruit.",
+      category: "event",
+      priority: "low",
+      due: "2026-12-06",
+      status: "pending",
+      institution: true,
+      selfReport: false,
+      course: null,
+      why: "Many students secure internships and full-time offers at this event. Early RSVP ensures your name badge and access to premium booths.",
+      steps: [
+        "Log in to Handshake at joinhandshake.com.",
+        "Search for 'Baruch Finance Career Fair Dec 2026'.",
+        "RSVP and upload your latest resume.",
+        "Prepare 3–5 personalised elevator pitches for target firms.",
+        "Attend: NVC (Newman Vertical Campus) 14th Floor, Dec 10, 11am–4pm."
+      ],
+      resource: { label: "Baruch Handshake", url: "https://baruch.joinhandshake.com" }
+    },
+  ];
 
-      "CIS 9001": { hw: "Weekly lab exercises due Sunday midnight.", proj: "Systems inventory report due Mar 3.", evt: "IS orientation workshop registration closes Jan 22. Tech career fair RSVP due Mar 19." },
-      "CIS 9010": { hw: "SQL assignments due every Wednesday.", proj: "Database design and implementation project due Apr 7.", evt: "Oracle workshop registration closes Feb 4. Data management symposium RSVP due Mar 24." },
-      "CIS 9020": { hw: "UML diagram exercises due biweekly.", proj: "Full systems analysis report due Apr 21.", evt: "Agile/Scrum bootcamp registration closes Feb 10. IS conference RSVP due Apr 1." },
-      "CIS 9490": { hw: "Tableau/Power BI exercises due every Friday.", proj: "Business intelligence dashboard project due Apr 28.", evt: "Data analytics workshop registration closes Jan 31. Analytics hackathon sign-up due Mar 15." },
+  // Personal tasks (mutable, student-created)
+  let personalTasks = [];
+  let editingId = null;
 
-      "ECO 9710": { hw: "Problem sets due every Monday.", proj: "Microeconomics research paper due Apr 14.", evt: "Economics seminar registration closes Feb 5. Guest lecture RSVP due Mar 10." },
-      "ECO 9720": { hw: "Response assignments due every Wednesday.", proj: "Macro policy analysis paper due Apr 20.", evt: "Federal Reserve virtual tour registration closes Feb 12. Macro conference RSVP due Mar 22." },
-      "FIN 9770": { hw: "Market commentary briefs due every Friday.", proj: "Financial markets report due Apr 3.", evt: "Wall Street speaker series registration closes Jan 30. Bloomberg competition sign-up due Feb 25." },
-      "FIN 9780": { hw: "Portfolio tracking assignments due biweekly.", proj: "Investment portfolio simulation project due Apr 16.", evt: "CFA Society info session registration closes Feb 6. Investment club pitch event RSVP due Mar 18." },
-      "ECO 9800": { hw: "STATA exercises due every Thursday.", proj: "Econometric model project due Apr 29.", evt: "Econometrics workshop registration closes Feb 14. Research methods symposium RSVP due Apr 2." },
+  // Combined task list
+  function allTasks() {
+    return [...INST_TASKS, ...personalTasks];
+  }
 
-      "ENG 7001": { hw: "Weekly writing drafts due Sunday midnight.", proj: "Final research paper (15 pp.) due Apr 26.", evt: "Writing center orientation registration closes Jan 23. Graduate writing workshop RSVP due Feb 18." },
-      "COM 9100": { hw: "Communication case briefs due before each class.", proj: "Corporate communication strategy project due Apr 8.", evt: "PR industry panel registration closes Feb 1. Communications award ceremony RSVP due Mar 27." },
-      "COM 9110": { hw: "Cultural reflection journals due every Sunday.", proj: "Intercultural training module due Apr 15.", evt: "International student mixer registration closes Jan 28. Global business seminar RSVP due Mar 9." },
+  // ─────────────────────────────────────────────────────────────
+  //  URGENCY HELPERS
+  // ─────────────────────────────────────────────────────────────
+  function parseDue(d) { return new Date(d + "T00:00:00"); }
 
-      "MGT 9100": { hw: "Leadership assessment reflections due weekly.", proj: "Team dynamics field study due Mar 21.", evt: "Leadership summit registration closes Jan 26. Executive speaker series RSVP due Feb 22." },
-      "MGT 9200": { hw: "Strategy readings summary due before each session.", proj: "Company strategic analysis due Apr 22.", evt: "Strategy consulting info session registration closes Feb 3. Case competition sign-up due Mar 7." },
-      "MGT 9300": { hw: "Startup pitch decks submitted biweekly.", proj: "Business plan competition submission due Apr 19.", evt: "Entrepreneurship bootcamp registration closes Jan 27. Venture capital panel RSVP due Mar 13." },
-      "MGT 9410": { hw: "HR case memos due every Wednesday.", proj: "HR policy redesign project due Apr 9.", evt: "SHRM student chapter registration closes Feb 2. HR career fair RSVP due Mar 20." },
-      "MGT 9420": { hw: "Negotiation reflection logs due every Friday.", proj: "Live negotiation simulation report due Mar 31.", evt: "Mock negotiation workshop registration closes Feb 8. Mediation training RSVP due Mar 16." },
+  function getUrgency(task) {
+    if (task.status === "completed") return "completed";
+    const due = parseDue(task.due);
+    const diff = Math.ceil((due - TODAY) / 86400000);
+    if (diff < 0)  return "overdue";
+    if (diff <= 5) return "due-soon";
+    return "upcoming";
+  }
 
-      "OPM 9100": { hw: "Process mapping exercises due biweekly.", proj: "Operations improvement plan due Apr 12.", evt: "Supply chain webinar registration closes Jan 31. APICS info session RSVP due Feb 24." },
-      "OPM 9200": { hw: "Supply chain case analyses due every Tuesday.", proj: "Global supply chain project due Apr 23.", evt: "Logistics conference registration closes Feb 9. Supply chain site visit sign-up due Mar 11." },
-      "OPM 9300": { hw: "Project plan iterations due weekly via MS Project.", proj: "Full project lifecycle simulation due Apr 27.", evt: "PMP exam info session registration closes Feb 15. Project management fair RSVP due Mar 23." },
+  function dueDateDisplay(dateStr) {
+    const d = parseDue(dateStr);
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
 
-      "MKT 9100": { hw: "Consumer research memos due every Monday.", proj: "Consumer insights report due Apr 5.", evt: "Focus group facilitation workshop registration closes Jan 29. Marketing research symposium RSVP due Mar 8." },
-      "MKT 9200": { hw: "Survey instrument drafts due biweekly.", proj: "Full market research study due Apr 18.", evt: "Nielsen data workshop registration closes Feb 7. Marketing research career panel RSVP due Mar 17." },
-      "IBS 9100": { hw: "Country market analysis briefs due every Thursday.", proj: "International market entry strategy due Apr 20.", evt: "Global business competition sign-up closes Feb 11. International trade seminar RSVP due Mar 25." },
-      "MKT 9300": { hw: "Social media content plans due every Sunday.", proj: "Digital marketing campaign project due Apr 24.", evt: "Google Analytics workshop registration closes Feb 4. Digital marketing summit RSVP due Mar 14." },
+  function daysLabel(task) {
+    if (task.status === "completed") return "Done";
+    const due = parseDue(task.due);
+    const diff = Math.ceil((due - TODAY) / 86400000);
+    if (diff < 0)  return `${Math.abs(diff)}d overdue`;
+    if (diff === 0) return "Due today";
+    if (diff === 1) return "Due tomorrow";
+    return `${diff}d left`;
+  }
 
-      "SOC 9100": { hw: "Sociological analysis posts due every Wednesday.", proj: "Organizational ethnography paper due Apr 11.", evt: "Sociology seminar registration closes Feb 1. Research methods workshop RSVP due Mar 10." },
-      "PSY 9100": { hw: "Psychological assessment exercises due biweekly.", proj: "Workplace behavior study due Apr 17.", evt: "I-O psychology networking event registration closes Feb 5. SIOP conference registration due Mar 20." },
-      "POL 9100": { hw: "Policy news analyses due every Monday.", proj: "Urban policy brief due Apr 25.", evt: "City Hall site visit registration closes Feb 13. Urban policy debate RSVP due Mar 28." },
+  // ─────────────────────────────────────────────────────────────
+  //  FILTER STATE
+  // ─────────────────────────────────────────────────────────────
+  let activeFilter = "all";
+  let catFilter = "all";
+  let priFilter = "all";
+  let dateFilter = "all";
 
-      "TEC 9100": { hw: "Technology trend analyses due biweekly.", proj: "Emerging technology adoption proposal due Apr 13.", evt: "AI/ML workshop registration closes Jan 30. Technology innovation fair RSVP due Mar 6." },
-      "TEC 9200": { hw: "Security audit exercises due every Thursday.", proj: "Cybersecurity risk assessment report due Apr 16.", evt: "Cybersecurity awareness week registration closes Feb 6. ISACA student chapter sign-up due Mar 19." },
-      "TEC 9300": { hw: "Dashboard builds in Tableau due every Friday.", proj: "Full BI solution capstone due Apr 29.", evt: "Power BI certification workshop registration closes Feb 10. Data visualization competition sign-up due Mar 26." },
-    };
+  function matchesDate(task) {
+    if (dateFilter === "all") return true;
+    const due = parseDue(task.due);
+    const diff = Math.ceil((due - TODAY) / 86400000);
+    if (dateFilter === "today") return diff === 0;
+    if (dateFilter === "week")  return diff >= 0 && diff <= 7;
+    if (dateFilter === "month") return diff >= 0 && diff <= 31;
+    return true;
+  }
 
-    // ── Build accordion list ──
-    function buildList(containerId, type) {
-      const container = document.getElementById(containerId);
-      const iconType = type === "hw" ? "hw" : type === "proj" ? "proj" : "evt";
-
-      let html = "";
-      subjects.forEach(s => {
-        const dl = deadlines[s.code];
-        const message = dl ? dl[type] : "Deadline information will be posted by your instructor on Blackboard.";
-
-        const iconSvg = {
-          hw:   `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
-          proj: `<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
-          evt:  `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2"/></svg>`,
-        }[type];
-
-        const labelText = { hw: "Homework", proj: "Project", evt: "Event Registration" }[type];
-
-        html += `
-          <div class="subject-row" id="${containerId}-${s.code.replace(/\s/g, "-")}">
-            <div class="subject-header" onclick="toggleRow(this)">
-              <span class="subject-code-badge">${s.code}</span>
-              <span class="subject-name-label">${s.name}</span>
-              <span class="subject-dept">${s.dept}</span>
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="subject-body">
-              <div class="deadline-info">
-                <div class="dl-icon ${iconType}">${iconSvg}</div>
-                <div class="dl-text">
-                  <div class="dl-label">${labelText} Deadlines</div>
-                  <div class="dl-message">📌 ${message}</div>
-                </div>
-              </div>
-            </div>
-          </div>`;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function toggleRow(header) {
-      const row = header.closest(".subject-row");
-      row.classList.toggle("open");
-    }
-
-    // ── Tab switching ──
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
-      });
+  function filterTasks(tasks) {
+    return tasks.filter(t => {
+      const urg = getUrgency(t);
+      let passMain = true;
+      if (activeFilter === "upcoming")  passMain = urg === "upcoming";
+      if (activeFilter === "due-soon")  passMain = urg === "due-soon";
+      if (activeFilter === "overdue")   passMain = urg === "overdue";
+      if (activeFilter === "completed") passMain = t.status === "completed";
+      if (!passMain) return false;
+      if (catFilter !== "all" && t.category !== catFilter) return false;
+      if (priFilter !== "all" && t.priority !== priFilter) return false;
+      if (!matchesDate(t)) return false;
+      return true;
     });
+  }
 
-    // ── Init ──
-    buildList("list-homework", "hw");
-    buildList("list-projects", "proj");
-    buildList("list-events", "evt");
+  // ─────────────────────────────────────────────────────────────
+  //  COUNT BADGES
+  // ─────────────────────────────────────────────────────────────
+  function updateBadges() {
+    const tasks = allTasks();
+    document.getElementById("badge-all").textContent       = tasks.length;
+    document.getElementById("badge-upcoming").textContent  = tasks.filter(t => getUrgency(t) === "upcoming").length;
+    document.getElementById("badge-due-soon").textContent  = tasks.filter(t => getUrgency(t) === "due-soon").length;
+    document.getElementById("badge-overdue").textContent   = tasks.filter(t => getUrgency(t) === "overdue").length;
+    document.getElementById("badge-completed").textContent = tasks.filter(t => t.status === "completed").length;
+
+    const urgent = tasks.filter(t => ["overdue","due-soon"].includes(getUrgency(t)) && t.status !== "completed").length;
+    document.getElementById("reminderCount").textContent = urgent;
+    if (urgent === 0) document.getElementById("reminderBanner").style.display = "none";
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  RENDER
+  // ─────────────────────────────────────────────────────────────
+  function catLabel(cat) {
+    return { hw: "Homework", proj: "Project", event: "Event", personal: "Personal" }[cat] || cat;
+  }
+  function catClass(cat) {
+    return { hw: "hw", proj: "proj", event: "event", personal: "personal" }[cat] || "hw";
+  }
+
+  function render() {
+    const tasks = filterTasks(allTasks());
+    const container = document.getElementById("taskList");
+
+    if (tasks.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <p>No tasks match your filters</p>
+          <span>Try a different filter or add a personal task.</span>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = tasks.map(t => {
+      const urg = getUrgency(t);
+      const done = t.status === "completed";
+      const dueVal = urg === "overdue" && !done ? "overdue" : (urg === "due-soon" && !done ? "due-soon" : "ok");
+      const isPersonal = t.category === "personal";
+
+      const checkHtml = `
+        <div class="task-check-wrap" onclick="toggleComplete('${t.id}', event)">
+          <div class="task-check${done ? " done" : ""}">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>`;
+
+      const metaHtml = `
+        <div class="task-meta">
+          <span class="tag ${catClass(t.category)}">${catLabel(t.category)}</span>
+          <span class="tag ${t.priority}">${t.priority.charAt(0).toUpperCase()+t.priority.slice(1)}</span>
+          ${t.course ? `<span style="font-size:12px;color:#9ca3af;">${t.course}</span>` : ""}
+        </div>
+        ${t.institution ? `<div class="inst-lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Institution-managed · Not editable</div>` : ""}`;
+
+      const statusBadge = `<span class="task-status-badge ${done ? "completed" : urg === "overdue" ? "overdue" : urg === "due-soon" ? "due-soon" : "pending"}">${done ? "Completed" : urg === "overdue" ? "Overdue" : urg === "due-soon" ? "Due Soon" : "Upcoming"}</span>`;
+
+      const actionsHtml = isPersonal ? `
+        <div class="task-actions" onclick="event.stopPropagation()">
+          <button class="icon-btn" title="Edit" onclick="openEditModal('${t.id}')">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="icon-btn danger" title="Delete" onclick="deleteTask('${t.id}')">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>` : "";
+
+      return `
+        <div class="task-card${done ? " completed" : ""} ${!done && urg === "overdue" ? "overdue" : !done && urg === "due-soon" ? "due-soon" : ""}"
+             onclick="openDetail('${t.id}')">
+          ${checkHtml}
+          <div class="task-body">
+            <div class="task-name">${t.name}</div>
+            <div class="task-desc">${t.desc}</div>
+            ${metaHtml}
+          </div>
+          <div class="task-due-col">
+            <div class="task-due-label">Due</div>
+            <div class="task-due-val ${dueVal}">${dueDateDisplay(t.due)}</div>
+            ${statusBadge}
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:3px;">${daysLabel(t)}</div>
+          </div>
+          ${actionsHtml}
+        </div>`;
+    }).join("");
+
+    updateBadges();
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  COMPLETE / REOPEN
+  // ─────────────────────────────────────────────────────────────
+  function findTask(id) {
+    return INST_TASKS.find(t => t.id === id) || personalTasks.find(t => t.id === id);
+  }
+
+  function toggleComplete(id, e) {
+    e.stopPropagation();
+    const task = findTask(id);
+    if (!task) return;
+    // Institution tasks that require university verification cannot auto-complete
+    if (task.institution && !task.selfReport && task.status !== "completed") {
+      alert("This task requires university verification and cannot be self-reported as complete.");
+      return;
+    }
+    task.status = task.status === "completed" ? "pending" : "completed";
+    render();
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  DETAIL MODAL
+  // ─────────────────────────────────────────────────────────────
+  function openDetail(id) {
+    const t = findTask(id);
+    if (!t) return;
+    const urg = getUrgency(t);
+    const done = t.status === "completed";
+
+    const stepsHtml = (t.steps && t.steps.length)
+      ? `<div class="modal-section-title">Steps to Complete</div>
+         <ul class="steps-list">${t.steps.map((s,i) => `<li><span class="step-num">${i+1}</span>${s}</li>`).join("")}</ul>`
+      : "";
+
+    const resourceHtml = t.resource
+      ? `<div class="modal-section-title">Required Resources</div>
+         <a href="${t.resource.url}" target="_blank" rel="noopener" class="resource-link">
+           <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+           ${t.resource.label}
+         </a>`
+      : "";
+
+    const verificationHtml = `
+      <div class="modal-section-title">Completion Verification</div>
+      <div class="verification-note">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>${
+          t.category === "personal"
+            ? "Personal task — self-reported by you only."
+            : t.selfReport
+              ? "Self-reported: you may mark this task complete when finished."
+              : "Institution-verified: completion is confirmed by Baruch College systems, not by self-reporting."
+        }</span>
+      </div>`;
+
+    const toggleBtnHtml = (t.selfReport || t.category === "personal")
+      ? `<button class="btn-primary" onclick="toggleComplete('${t.id}', event); closeDetail();">
+           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+           ${done ? "Reopen Task" : "Mark Complete"}
+         </button>`
+      : "";
+
+    const resourceBtnHtml = t.resource
+      ? `<a href="${t.resource.url}" target="_blank" rel="noopener" class="btn-secondary" onclick="event.stopPropagation()">
+           <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+           View Resource
+         </a>`
+      : "";
+
+    const editHtml = t.category === "personal"
+      ? `<button class="btn-secondary" onclick="closeDetail(); openEditModal('${t.id}')">
+           <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+           Edit Task
+         </button>
+         <button class="btn-danger" onclick="closeDetail(); deleteTask('${t.id}')">
+           <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+           Delete
+         </button>`
+      : "";
+
+    document.getElementById("detailContent").innerHTML = `
+      <span class="modal-cat-badge tag ${catClass(t.category)}">${catLabel(t.category)}</span>
+      <h2 class="modal-title">${t.name}</h2>
+      <p class="modal-desc">${t.desc}</p>
+
+      <div class="modal-row">
+        <div class="modal-chip">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Due: ${dueDateDisplay(t.due)}
+        </div>
+        <div class="modal-chip">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${daysLabel(t)}
+        </div>
+        <div class="modal-chip tag ${t.priority}">${t.priority.charAt(0).toUpperCase()+t.priority.slice(1)} Priority</div>
+        ${t.course ? `<div class="modal-chip">${t.course}</div>` : ""}
+      </div>
+
+      ${t.why ? `<div class="modal-section-title">Why This Matters</div><p style="font-size:14px;color:#374151;line-height:1.65;margin-bottom:4px;">${t.why}</p>` : ""}
+
+      ${stepsHtml}
+      ${resourceHtml}
+      ${verificationHtml}
+
+      <div class="modal-actions">
+        ${toggleBtnHtml}
+        ${resourceBtnHtml}
+        ${editHtml}
+        <button class="btn-secondary" onclick="closeDetail()">Close</button>
+      </div>`;
+
+    document.getElementById("detailOverlay").classList.add("open");
+  }
+
+  function closeDetail() {
+    document.getElementById("detailOverlay").classList.remove("open");
+  }
+  function closeDetailIf(e) {
+    if (e.target === document.getElementById("detailOverlay")) closeDetail();
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  ADD / EDIT PERSONAL TASK
+  // ─────────────────────────────────────────────────────────────
+  function openAddModal() {
+    editingId = null;
+    document.getElementById("addModalTitle").textContent = "Add Personal Task";
+    document.getElementById("addForm").reset();
+    document.getElementById("addOverlay").classList.add("open");
+  }
+
+  function openEditModal(id) {
+    const task = personalTasks.find(t => t.id === id);
+    if (!task) return;
+    editingId = id;
+    document.getElementById("addModalTitle").textContent = "Edit Personal Task";
+    document.getElementById("f-name").value  = task.name;
+    document.getElementById("f-desc").value  = task.desc;
+    document.getElementById("f-due").value   = task.due;
+    document.getElementById("f-pri").value   = task.priority;
+    document.getElementById("f-steps").value = (task.steps || []).join("\n");
+    document.getElementById("addOverlay").classList.add("open");
+  }
+
+  function closeAdd() {
+    document.getElementById("addOverlay").classList.remove("open");
+  }
+  function closeAddIf(e) {
+    if (e.target === document.getElementById("addOverlay")) closeAdd();
+  }
+
+  function submitPersonalTask(e) {
+    e.preventDefault();
+    const name  = document.getElementById("f-name").value.trim();
+    const desc  = document.getElementById("f-desc").value.trim();
+    const due   = document.getElementById("f-due").value;
+    const pri   = document.getElementById("f-pri").value;
+    const steps = document.getElementById("f-steps").value.split("\n").map(s => s.trim()).filter(Boolean);
+
+    if (editingId) {
+      const task = personalTasks.find(t => t.id === editingId);
+      if (task) {
+        task.name = name; task.desc = desc; task.due = due;
+        task.priority = pri; task.steps = steps;
+      }
+    } else {
+      personalTasks.push({
+        id: "personal-" + Date.now(),
+        name, desc, due, priority: pri,
+        category: "personal",
+        status: "pending",
+        institution: false,
+        selfReport: true,
+        course: null,
+        why: null,
+        steps,
+        resource: null,
+      });
+    }
+    closeAdd();
+    render();
+    updateBadges();
+  }
+
+  function deleteTask(id) {
+    if (!confirm("Delete this personal task? This cannot be undone.")) return;
+    personalTasks = personalTasks.filter(t => t.id !== id);
+    render();
+    updateBadges();
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  FILTER WIRING
+  // ─────────────────────────────────────────────────────────────
+  document.querySelectorAll(".ftab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".ftab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  document.getElementById("catFilter").addEventListener("change", e => { catFilter = e.target.value; render(); });
+  document.getElementById("priFilter").addEventListener("change", e => { priFilter = e.target.value; render(); });
+  document.getElementById("dateFilter").addEventListener("change", e => { dateFilter = e.target.value; render(); });
+
+  // ─────────────────────────────────────────────────────────────
+  //  INIT
+  // ─────────────────────────────────────────────────────────────
+  render();
+  updateBadges();
   </script>
 
 </body>
